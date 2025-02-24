@@ -1,0 +1,18 @@
+{
+  "download_id": "c4824d14-2ff5-4abb-8819-e92c238a7ee2",
+  "duration_in_seconds": 1.150998,
+  "end": "2025-02-04T17:52:35.403789",
+  "file_format": "csv",
+  "files": [
+    "resource.csv",
+    "manifest.json"
+  ],
+  "format_args": {},
+  "ignore_empty_fields": false,
+  "query-doi": "10.5519/qd.bi2t5exy",
+  "resources": {},
+  "separate_files": false,
+  "start": "2025-02-04T17:52:34.252791",
+  "total_records": 26474,
+  "transform": {}
+}
