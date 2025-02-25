@@ -1,32 +1,117 @@
 \documentclass[12pt]{article}
 \usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
 \usepackage{graphicx} % Required for inserting images
-\usepackage[french]{babel}
+\usepackage[french]{babel} 
 \usepackage[T1]{fontenc}
-\usepackage{listings}
-\usepackage{color}
-\usepackage{xcolor}
+\usepackage{listings} % Listes
+\usepackage{color} % Couleurs
+\usepackage{xcolor} % Couleurs
 \usepackage{lipsum}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsmath} 
+\usepackage{amsmath} % Math
+\usepackage{amssymb} % Math
+\usepackage{amsmath}  % Math
 \usepackage{multicol} % Pour les colonnes
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref} % Hyperlien
+\usepackage[
+backend=biber,
+style=alphabetic,
+sorting=ynt
+]{biblatex}
+\addbibresource{biblio.bib} % Bibliographie
 
-\title{Rapport de projet tutoré}
+% Commandes Math
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Rd}{\mathbb{R}^d}
+\newcommand{\I}{\mathbf{I}}
+\newcommand{\dcrochetg}{[\![}
+\newcommand{\dcrochetd}{]\!]}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+\newtheorem{thm1}{Théorème}[section]
+\newtheorem{lemme1}[thm1]{Lemme}
+\newtheorem{prop1}[thm1]{Proposition}
+\newtheorem{rmq1}{Remarque}
+\newtheorem{exemple1}{Exemple}
+\newtheorem{defin1}{Définition}
+% Fin commandes Math
+
+\title{Titre du projet}
 \author{Yanis Petit, Rassem Djimadoum, Duc-Khoi Nguyen \& Garance Malnoë \\dirigés par Jean-François Coeurjolly}
-\date{M1 SSD - Année 2024-2025}
+\date{M1 SSD - Janvier-Avril 2025}
 
 \begin{document}
+
 \maketitle
+\newpage
 \tableofcontents
+\newpage
 \section{Introduction}
+Projet :  exploration assez libre d'un jeu de données issue de la NASA (lien pour télécharger le jeu de données).
+Plusieurs pistes potentielles que l'on a pu explorer en profondeur ou non :\\
+- Etude temporelle des données à partir de la date : effet saisonnier, tendance ?
+- Etude des liens entre les différentes variables : impact de la masse des météorites ?
+- Modèles glms : nombre de météorites par pays en fonction de la surface, latitude, longitute
+- Etude spatiale : régions les plus touchées si oui pourquoi, différences spatiales ?
+
+
+Expliquer que l'on a travaillé en R et en Python parce qu'on est à 4 sur le projet, qu'on maitrise tous les quatre les 2 langages et que l'on a profité des avantages et libraires proposées par les 2 langages.
+Python pour l'exploration du jeu de données et la modélisation de Rassem parce que package déjà proposés.
+R pour la visualisation end 3D car package et possibilité de faire une application Shiny.
+Lister les packages et libraries utilisées dans le projet + lien du package en hyperlien.
+
 
 \section{Exploration des données}
+Description du jeu de donnée, 
+
 \subsection{Analyses univariées}
+Reprendre les graphiques et les textes fait sur exploration.ipynb
+
 \subsection{Analyses multivariées}
-\subsection{Visualisation en 3D}
+Reprendre les graphiques et les textes fait sur exploration.ipynb + ajouter un équvalent de pairs en Python ?
+
+\subsection{Discussion des limites du jeu de données}
+
+On se rend compte que les météorites sont sans doutes pas du tout toutes répertoriées. Problème : le site de la NASA (et ailleurs sur internet) on a pas d'information sur la formation du jeu de données, on ne sait pas si ce sont des données rapportées par tout un chacun ou si ce sont seulement les données rapportées par des téléscopes / scientifiques. 
+
+On voit bien avec la carte par point que l'on a très peu de données dans les régions où il y a personne : déserts, forêt amazonienne, chine rurale. L'antarctique est une exception, cela est lié au fait qu'il y ait des recherches sur les météorites là bas. Citation, explications liées au projet lien vers le papier / l'article.
+
+On peut supposer que les grosses météorites sont + probables d'être vues/repérées que les météorites faisant seulement quelques grammes (lien vers le papier sur la dégradation des météorites dans l'atmosphère ?) une fois sur le sol.
+
+Pas possible de faire une étude temporelle car 1. on a seulement l'année ou est tombée la météorite (lié au fait qu'elles soient essentiellement trouvées une fois tombées ?) 2. on observe une forte augmentation du nombre de météorites répertoriées à partir des années 1970 alors que le jeu de données commence en 1640. On a alors cherché un autre jeu de données plus complet pour la partie temporelle. Nous avons trouvé le jeu de données MetCat (lien). Explication du jeu de données metcat, variables disponibles. Mais plusieurs problèmes sont resortis lors de l'analyse de ce jeu de données : 1. la temporalité n'est pas très précise (mois =  Printemps ou Juin-Août) 2. Si on se restreint aux données correctement labelisées on en a finalement très peu et très étalées dans le temps (précision, il faut finir l'analyse du jeu de données.
+
+
+\section{Visualisation en 3D}
+Travail de Yanis et Duc-Khoi.
+
+Capture d'écran des possibilités de visualisation que nous proposons + lien vers une page hébergeant l'application shiny ?
 
 \section{Modélisation}
+Travail de Rassem
 
+\section{Conclusion}
+\section{Remerciements}
+\section{Références}
+\printbibliography
+- Lien vers l'article sur les météorites en Antartique.
+\section{Impact environnemental et sociétal du projet}
+J'ai remis les consignes du pdf de l'Ensimag. Cette section doit représenter envrion 20\% du rapport.
+\subsection{Impact environnemental personnel}
+Partie moins importante.
+Estimation de l'impact des trajets domicile-travail, impact de la consommation des équipements utiliés (ordinateurs perso/fixes, temps d'utilisation des serveurs github,...), autres impacts.
+Expression en exprimé en kg eq. CO2.
+
+\subsection{Impact global du projet}
+Dans cette section, nous vous demandons d’évaluer l’impact global du projet sur lequel vous avez travaillé. Si vous avez travaillé sur un produit fini (logiciel, infrastructure…), vous devrez mettre en valeur non seulement l’impact du produit lui-même mais également l’évolution de cet impact entre le début et la fin de votre PFE. Si vous avez travaillé sur une preuve de concept, un avant-projet, un projet de recherche et développement ou un projet de recherche pure, votre évaluation devra tenir compte des possibles utilisations de votre travail dans un contexte applicatif. Cette section sera la plus importante de la partie consacrée à l’impact environnemental et sociétal. Nous ne vous demandons pas une simple évaluation technique, mais une véritable réflexion déclinée sur deux plans :
+1. à petite échelle (concernant uniquement votre projet, à court terme)
+2. à plus grande échelle (long terme, et dans l’hypothèse où le même type de projet venait à se généraliser et/ou
+se transposer dans différents secteurs)
+Nous demandons dans cette section un avis honnête, critique et argumenté sur les impacts positifs et négatifs du projet. Vous ne serez pas évalué sur la quantité ni la qualité des bonnes pratiques sociales et environnementales mises en œuvre dans le cadre de votre PFE : il est donc inutile d’écoblanchir votre discours. Ce qui nous importe est la vision critique que vous adoptez.
+
+\subsection{Politique de la structure d'acceuil}
+Dans cette section, nous vous demandons de dresser une liste des actions menées par la structure d’accueil sur les aspects écologiques et sociaux. Cela peut concerner des actions individuelles ou la mise en œuvre d’une véritable politique dans ce domaine. De même, cela concerne à la fois des politiques extérieures éventuelles (fondations, dons à des organismes…), mais également des actions destinées à l’ensemble des collaborateurs de l’entreprise (conditions de travail, mise en œuvre de bonnes pratiques environnementales au quotidien…). Vous mettrez bien entendu en évidence tous les aspects positifs de cette politique. En revanche, si vous estimez qu’il y a des voies d’amélioration possibles en termes de politique de responsabilité sociale et environnementale, nous vous encourageons à proposer une liste d’actions concrètes qui pourraient être mises en œuvre. Cela montrera non seulement votre capacité à réaliser une analyse critique, mais cela vous permettra également d’être une force de proposition pour votre structure d’accueil.
+\newpage
+\section{Annexe}
 \end{document}
