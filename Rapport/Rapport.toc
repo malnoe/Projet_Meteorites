@@ -1,24 +1,17 @@
 \babel@toc {french}{}\relax 
 \contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
-\contentsline {section}{\numberline {2}Organisation, Outils, bibliothèques R et Python}{1}{section.2}%
+\contentsline {section}{\numberline {2}Organisation, Outils, bibliothèques R et Python}{2}{section.2}%
 \contentsline {section}{\numberline {3}Exploration des données}{2}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Analyses univariées}{2}{subsection.3.1}%
-\contentsline {subsubsection}{\numberline {3.1.1}Name}{2}{subsubsection.3.1.1}%
-\contentsline {subsubsection}{\numberline {3.1.2}Nametype}{3}{subsubsection.3.1.2}%
-\contentsline {subsubsection}{\numberline {3.1.3}Recclass}{3}{subsubsection.3.1.3}%
-\contentsline {subsubsection}{\numberline {3.1.4}Mass}{3}{subsubsection.3.1.4}%
-\contentsline {subsubsection}{\numberline {3.1.5}Fall}{3}{subsubsection.3.1.5}%
-\contentsline {subsubsection}{\numberline {3.1.6}Year}{4}{subsubsection.3.1.6}%
-\contentsline {subsubsection}{\numberline {3.1.7}Location}{4}{subsubsection.3.1.7}%
-\contentsline {subsection}{\numberline {3.2}Analyses multivariées}{4}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Discussion des limites du jeu de données}{4}{subsection.3.3}%
-\contentsline {section}{\numberline {4}Visualisation en 3 dimensions}{5}{section.4}%
-\contentsline {section}{\numberline {5}Modélisation de processus ponctuels}{5}{section.5}%
-\contentsline {section}{\numberline {6}Conclusion}{5}{section.6}%
-\contentsline {section}{\numberline {7}Remerciements}{5}{section.7}%
-\contentsline {section}{\numberline {8}Références}{5}{section.8}%
-\contentsline {section}{\numberline {9}Impact environnemental et sociétal du projet}{5}{section.9}%
-\contentsline {subsection}{\numberline {9.1}Impact environnemental personnel}{5}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}Impact global du projet}{5}{subsection.9.2}%
-\contentsline {subsection}{\numberline {9.3}Politique de la structure d'acceuil}{6}{subsection.9.3}%
-\contentsline {section}{\numberline {10}Annexe}{7}{section.10}%
+\contentsline {subsection}{\numberline {3.1}Analyses univariées}{3}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Analyses multivariées}{9}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Discussion des limites du jeu de données}{10}{subsection.3.3}%
+\contentsline {section}{\numberline {4}Modélisation de processus ponctuels}{11}{section.4}%
+\contentsline {section}{\numberline {5}Visualisation en 3 dimensions}{11}{section.5}%
+\contentsline {section}{\numberline {6}Conclusion}{11}{section.6}%
+\contentsline {section}{\numberline {7}Remerciements}{11}{section.7}%
+\contentsline {section}{\numberline {8}Références}{11}{section.8}%
+\contentsline {section}{\numberline {9}Impact environnemental et sociétal du projet}{11}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Impact environnemental personnel}{11}{subsection.9.1}%
+\contentsline {subsection}{\numberline {9.2}Impact global du projet}{11}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Politique de la structure d'acceuil}{12}{subsection.9.3}%
+\contentsline {section}{\numberline {10}Annexe}{13}{section.10}%
