@@ -16,6 +16,7 @@
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
+    citecolor=blue,
     filecolor=magenta,      
     urlcolor=blue,
     pdftitle={Overleaf Example},
@@ -72,25 +73,25 @@ sorting=ynt
 \clearpage
 \pagenumbering{arabic}
 \section{Introduction}
-Ce rapport présente le projet tutoré réalisé de janvier à avril 2025 dans le cadre de notre première année de Master Statistique et Sciences des Données, sous la direction de Jean-François Coeurjolly. Ce projet porte sur l'analyse du jeu de données \textit{Meteorite Landings} rescencant des météorites tombées au sol. Ce jeu de données est mis à disposition par la Meteoritical Society et accessible sur  l'\href{https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh/about_data}{\underline{Open Data de la NASA}}.\\
+Ce rapport présente le projet tutoré réalisé de janvier à avril 2025 dans le cadre de notre première année de Master Statistique et Sciences des Données, sous la direction de Jean-François Coeurjolly. Ce projet porte sur l'analyse du jeu de données \textit{Meteorite Landings} recensant des météorites tombées au sol. Ce jeu de données est mis à disposition par la Meteoritical Society et accessible sur l'Open Data de la NASA \cite{OpenData_NASA}.\\
 \\
 En commençant, nous n'avions pas d'objectif défini pour ce projet, l'idée première était d'explorer librement le jeu de données et d'identifier les axes d'analyses les plus pertinents. Toutefois, plusieurs pistes nous avaient été suggérées lors de notre premier échange avec Jean-François Coeurjolly :\\
 \begin{itemize}
 	\item[-] Étudier la dimension temporelle des données, notamment la présence d'une saisonnalité ou d'une tendance.\\
 	\item[-] Analyser les relations entre différentes variables du jeu de données, en particulier l'influence de la masse des 		météorites.\\
 	\item[-] Construire un modèle prédictif du nombre de météorites tombées dans un pays en fonction de sa superficie et de sa localisation géographique.\\
-	\item[-] Réaliser une étude spatiale afin de determiner si certaines régions sont plus touchées et le cas échéant essayer de déterminer la source des différences.\\
+	\item[-] Réaliser une étude spatiale afin de déterminer si certaines régions sont plus touchées et le cas échéant essayer de déterminer la source des différences.\\
 	\item[-] Visualiser les chutes de météorites sur un planisphère.\\
 \end{itemize}
 
 Cependant, à cause de la nature des données, nous n'avons pas pu explorer toutes ces pistes. Néanmoins, nous avons pu explorer de nouvelles pistes d'analyse et de modélisation.\\
 \\
-Nous débutons ce rapport par une présentation de notre organisation de travail ainsi que des outils, langages et bibliothèques utilisés. Nous poursuivons avec une analyse exploratoire des données, comprenant des analyse univariées et multivariées, qui nous ont amener à discuter des pistes à explorer. Ensuite, nous étudions la modélisation des chutes de météorites à l'aide des processus ponctuels, avant de proposer une visualisation interactive du jeu de données sur un globe. Enfin, nous concluons par une réflexion sur l'impact environnemental du projet.\\
+Nous débutons ce rapport par une présentation de notre organisation de travail ainsi que des outils, langages et bibliothèques utilisés. Nous poursuivons avec une analyse exploratoire des données, comprenant des analyses univariées et multivariées, qui nous ont amenés à discuter des pistes à explorer. Ensuite, nous étudions la modélisation des chutes de météorites à l'aide des processus ponctuels, avant de proposer une visualisation interactive du jeu de données sur un globe. Enfin, nous concluons par une réflexion sur l'impact environnemental du projet.\\
 \newpage
 \section{Organisation, Outils, bibliothèques R et Python}
-Organisation : rendez-vous avec Jean-François, répartition du travail, cours de gestion de projet (mermaid chart, plannification).\\
+Organisation : rendez-vous avec Jean-François, répartition du travail, cours de gestion de projet (mermaid chart, planification).\\
 \\
-Outils : GitHub, Python, R, VSCode, RStudio. Expliquer que l'on a travaillé en R et en Python parce qu'on est à 4 sur le projet, qu'on maitrise tous les quatre les 2 langages et que l'on a profité des avantages et libraires proposées par les 2 langages.Python pour l'exploration du jeu de données et la modélisation de Rassem parce que package déjà proposés. R pour la visualisation end 3D car package et possibilité de faire une application Shiny.\\
+Outils : GitHub, Python, R, VSCode, RStudio. Expliquer que l'on a travaillé en R et en Python parce qu'on est à 4 sur le projet, qu'on maîtrise tous les quatre les 2 langages et que l'on a profité des avantages et librairies proposées par les 2 langages.Python pour l'exploration du jeu de données et la modélisation de Rassem parce que package déjà proposé. R pour la visualisation end 3D car package et possibilité de faire une application Shiny.\\
 \\
 Packages Python : numpy, pandas, geopandas, plotly, shapely.\\
 \\
@@ -101,11 +102,10 @@ Packages R : ggplot2.\\
 {\setlength{\baselineskip}{1\baselineskip}
 L'analyse exploratoire des données a été la première étape de notre projet. Notre but était de comprendre les distributions des varaibles de manière inviduelle mais aussi de trouver et de comprendre les éventuels liens entre variables afin de choisir des axes d'exploration pertinents pour la suite du projet.\\
 \\
-Pour réaliser les analyses univariées et multivariées, nous avons utilisé Python avec les packages numpy, pandas, geopandas, plotly et shapely et certains visuels ont ensuite été refait en R. Le code se trouve sur le fichier \textit{exploration.ipynb} disponible sur le GitHub.\\
+Pour réaliser les analyses univariées, nous avons utilisé Python avec les packages numpy, pandas, geopandas, plotly et shapely et pour les analyses multivariées, nous avons utilisé R. Le code pour ces analyses est réparti sur les fichiers \textit{exploration.ipynb} et \textit{MetCat\_analyse.ipynb} pour les analyses univariées et les analyses multivariées sont sur le fichier \textit{script\_analyses\_multivariées.R}. Ces fichier sont disponibles sur le repository GitHub du projet.\\
 \\
 Le jeu de données est composé de 45716 entrées décrites par neuf variables :\\
 }
-
 {\setlength{\baselineskip}{1.5\baselineskip}
 \begin{itemize}
 \item[-] \textbf{name} (qualitative nominale): le nom de la météorite.
@@ -130,7 +130,7 @@ Il n'y a pas de données manquantes pour le nom des météorites et tous les nom
 \includegraphics[width=15cm]{Images/exploration/name_barplot_lettres.png}
 \caption{Diagramme en barres du choix de la première lettre du nom des météorites}
 \end{figure}
-Nous pouvons notamment voir que la lettre Y ressort nettement plus souvent que les autres. Cela n'est pas une coincidence mais est lié aux conventions de nommage des météorites [\href{https://www.lpi.usra.edu/meteor/docs/nc-guidelines-2015-february.htm}{source}] : la grande majorité des météorites sont nommées d'après la localité géographique où elles ont été trouvées avec éventuellement une référence numérique après le nom si de nombreuses météorites sont collectées dans la zone. La popularité de la lettre Y est liée aux nombreuses expéditions japonaises effectuées sur le glacier Yamato en Antartique dont les météorites tiennent leur nom. Sur les 7315 météorites dont le nom commence par la lettre Y, 7269 ont été répertoriées sur le glacier Yamato. De même pour la lettre N, sur 4667 météorites, 4499 météorites commencent par "Northwest Africa".
+Nous pouvons notamment voir que la lettre Y ressort nettement plus souvent que les autres. Cela n'est pas une coincidence mais est lié aux conventions de nommage des météorites \cite{Convention_nommage_meteorites} : la grande majorité des météorites sont nommées d'après la localité géographique où elles ont été trouvées avec éventuellement une référence numérique après le nom si de nombreuses météorites sont collectées dans la zone. La popularité de la lettre Y est liée aux nombreuses expéditions japonaises effectuées sur le glacier Yamato en Antartique dont les météorites tiennent leur nom. Sur les 7315 météorites dont le nom commence par la lettre Y, 7269 ont été répertoriées sur le glacier Yamato. De même pour la lettre N, sur 4667 météorites, 4499 météorites commencent par "Northwest Africa".
 \subsubsection*{Nametype}
 Cette variable n'a pas de données manquantes. Comme expliqué précédemment, c'est une variable qualitative binaire décrivant si la météorite a bien été identifiée comme valide (Valid) ou s'il s'agit d'un objet fortement déformé qui est probablement d'origine météorite (Relict). Une large majorité de entrées du jeu de données sont considéréees comme valides : 45641 météorites valides soit 99,8\% contre 75 "Relict" soit 0,02\%.
 \subsubsection*{Recclass}
@@ -140,7 +140,7 @@ Il n'y a pas de données manquantes pour la variable \textbf{recclass} qui corre
 \includegraphics[width=15cm]{Images/exploration/recclass_piechart_class.png}
 \caption{Piechart des classes de météorites}
 \end{figure}
-Ces 6 classes sont celles de chondrites ordinaires [\href{http://www.meteorite.fr/en/classification/}{source}]. Les lettres L, H et LL correspondent aux trois sous-groupes de chrondrites ordinaires : H pour "High Iron" pour celles contenant 25-30\% de fer et de métal libre, L pour "Low Iron" pour celles contenant 20-25\% de fer et moins de métal libre et LL pour celles contenant encore moins de fer ( environ 15-20\%) et très peu de métal libre. Le numéro qui suit correspond au degré de métamorphisme, compris entre 3 et 7, il indique le niveau des modifications subies par la météorites lors de sa chute dues à la pression et la chaleur modifiant leur composition minéralogique, plus le numéro est élevé plus l'alteration est importante.
+Ces 6 classes sont celles de chondrites ordinaires \cite{Classification_meteorites}. Les lettres L, H et LL correspondent aux trois sous-groupes de chrondrites ordinaires : H pour "High Iron" pour celles contenant 25-30\% de fer et de métal libre, L pour "Low Iron" pour celles contenant 20-25\% de fer et moins de métal libre et LL pour celles contenant encore moins de fer ( environ 15-20\%) et très peu de métal libre. Le numéro qui suit correspond au degré de métamorphisme, compris entre 3 et 7, il indique le niveau des modifications subies par la météorites lors de sa chute dues à la pression et la chaleur modifiant leur composition minéralogique, plus le numéro est élevé plus l'alteration est importante.
 \subsubsection*{Mass}
 Il manque 131 données pour la variable \textbf{Mass} soit moins de 0,3\% du jeu de données. L'analyse de cette variable révèle tout d'abord de grosses différences : plusieurs milliers de météorites pèsent moins de cinq grammes tandis que la plus grosse pèse 60 tonnes.\\
 \\
@@ -235,7 +235,7 @@ Nous nous sommes alors intéressés plus précisément aux 50 dernières années
 \includegraphics[width=14cm]{Images/exploration/histogramme1963-2013.png}
 \caption{Répartition des météorites tombées entre 1963 et 2013}
 \end{figure}
-Nous observons une nette augmentation du nombre de météorites rescencées à partir de 1974. Nous pouvons alors nous poser la question de la source de l'absence de données dans les années précédentes : est-ce que réellement peu de météorites sont tombées ou n'ont-elles juste pas été référencées ? Avant les années 1970 la détection de météorites reposaient principalement sur des découvertes fortuites ou des témoignages. Les années 1970 ont vu l'essor des réseaux de surveillance qui ont permis un suivi plus rigoureux des météorites comme le \href{https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1945-5100.1989.tb00959.x}{\textit{Meteorite Observation and Recovery Projet}} lancé au Canada en 1974 ainsi que la mise en place de bases de données centralisées comme celle de la \href{https://www.lpi.usra.edu/meteor/metbull.php}{\textit{Meteoritical Society}} et de missions de recherche comme le programme \href{https://caslabs.case.edu/ansmet/faqs/}{\textit{The Antarctic Search for Meteorites}} lancé au milieu des années 1970. Ainsi, l'hypothèse que les météorites n'étaient pas correctement rescencées avant les années 1970 semble plus raisonnable.
+Nous observons une nette augmentation du nombre de météorites recensées à partir de 1974. Nous pouvons alors nous poser la question de la source de l'absence de données dans les années précédentes : est-ce que réellement peu de météorites sont tombées ou n'ont-elles juste pas été référencées ? Avant les années 1970, la détection de météorites reposaient principalement sur des découvertes fortuites ou des témoignages. Les années 1970 ont vu l'essor des réseaux de surveillance qui ont permis un suivi plus rigoureux des météorites comme le Meteorite Observation and Recovery Projet \cite{Article_Canada_1970} lancé au Canada en 1974 ainsi que la mise en place de bases de données centralisées comme celle de la \textit{Meteoritical Society} \cite{BDD_centralisees} et de missions de recherche comme le programme \textit{The Antarctic Search for Meteorites} \cite{Mission_recherche_antartictique} lancé au milieu des années 1970. Ainsi, l'hypothèse que les météorites n'étaient pas correctement recensées avant les années 1970 semble plus raisonnable.
 
 \subsubsection*{Location}
 Cette variable est celle avec le plus de données manquantes : 7315 entrées où il manque à chaque fois à la fois la longitude, la latitude et la geolocation soit environ 16\% du jeu de données.\\
@@ -248,7 +248,7 @@ Dans un premier temps, nous pouvons visualiser sur le planisphère où sont les 
 \end{figure}
 Nous pouvons observer que certaines régions, comme les États-Unis, l’Europe de l’Ouest, le Japon, l’Afrique du Nord et le sud de l’Australie, concentrent une grande partie des recensements. À l’inverse, d’autres zones, telles que le nord du Canada, la Russie ou la forêt amazonienne, sont presque dépourvues de données. Sans surprise, les zones maritimes sont totalement absentes de notre jeu de données, puisqu’il ne répertorie que les météorites tombées sur des terres émergées.\\
 \\
-Cette répartition inégale met en évidence un biais de recensement important : les régions à faible densité de population, comme la forêt amazonienne ou les territoires du nord du Canada, comptent peu ou pas d’observations, contrairement aux zones fortement peuplées, comme l’Europe de l’Ouest, où les découvertes sont bien plus fréquentes. La seule exception notable à cette tendance est l’Antarctique, où de nombreux recensements ont été réalisés. Cette spécificité s’explique par les nombreuses missions de recherche dédiées à l’étude des météorites dans cette région [\href{https://caslabs.case.edu/ansmet/faqs/}{\textit{source}}]. En effet, les déserts glacées de l’Antarctique représentent des conditions idéales pour l’identification des météorites, facilitant leur repérage et leur collecte.\\
+Cette répartition inégale met en évidence un biais de recensement important : les régions à faible densité de population, comme la forêt amazonienne ou les territoires du nord du Canada, comptent peu ou pas d’observations, contrairement aux zones fortement peuplées, comme l’Europe de l’Ouest, où les découvertes sont bien plus fréquentes. La seule exception notable à cette tendance est l’Antarctique, où de nombreux recensements ont été réalisés. Cette spécificité s’explique par les nombreuses missions de recherche dédiées à l’étude des météorites dans cette région \cite{Mission_recherche_antartictique}. En effet, les déserts glacées de l’Antarctique représentent des conditions idéales pour l’identification des météorites, facilitant leur repérage et leur collecte.\\
 \\
 Nous pouvons compléter cette première étude par une étude séparée des longitudes et latitudes :\\
 \\
@@ -283,6 +283,7 @@ Cette nouvelle représentation met en évidence plusieurs tendances intéressant
 Enfin, nous avons également regardé la répartition des météorites dans le monde selon la masse mais aucune tendance n'est resortie.
 
 \subsection{Analyses multivariées}
+Nous avons ensuite procédé à des analyses multivariées en faisant le croisement des différentes variables entre elles.
 \subsubsection*{Analyse quali-quali}
 \begin{table}[H]
 \centering
@@ -310,8 +311,10 @@ Enfin, nous avons également regardé la répartition des météorites dans le m
    \hline
 \end{tabular}
 \end{table}
+A priori, aucune des variables ne sont très corrélées, la plus forte corrélation est entre la latitude et la longitude à $-0.59$ qui reste relativement faible et peut s'expliquer par le biais de recensement identifié lors des analyses univariées.
+
 \subsubsection*{Analyse quanti-quali}
-Nous avons effectué un test de normalité par le test de Shapiro-Wilk qui était très significatif (p-valeur < $2\times 10^{-16}$) donc on effectue le test de Kruskal-Wallis ou de Mann-Whitney qui sont robustes à l'absence de l'hypothèse de normalité. O
+Avant de faire les croisement entre variables quantitatives et qualitatives, nous avons testé l'hypothèse de normalité des données avec un test de Shapiro-Wilk. Pour l'ensemble des variables, le test est toujours ressorti comme étant très significatif (p-valeur < $2\times 10^{-16}$). Nous avons donc effectué un test de Kruskal-Wallis ou de Mann-Whitney qui sont robustes à l'absence de l'hypothèse de normalité.
 \begin{table}[H]
 \centering
 \begin{tabular}{rllr}
@@ -333,42 +336,37 @@ Nous avons effectué un test de normalité par le test de Shapiro-Wilk qui étai
    \hline
 \end{tabular}
 \end{table}
-
+La plupart des croisements sont très significatifs.
 \subsection{Discussion des limites du jeu de données}
 
-L’étude des données manquantes a révélé que seules trois variables sont concernées : la masse des météorites, l’année de leur chute et leur localisation. Malgré ces lacunes, en supprimant toutes les entrées comportant au moins une valeur manquante, il reste 38 115 observations, soit environ 83\% du jeu de données initial. Ce volume semble suffisant pour mener des analyses pertinentes.\\
+L’étude des données manquantes a révélé que seules trois variables sont concernées : la masse des météorites, l’année de leur chute et leur localisation. Malgré ces lacunes, en supprimant toutes les entrées comportant au moins une valeur manquante, il reste 38 115 observations, soit environ 83\% du jeu de données initial. Ce volume semble a priori suffisant pour mener des analyses pertinentes.\\
 \\
-L’analyse univariée des variables, en particulier l’emplacement et l’année de chute, a mis en évidence plusieurs biais significatifs dans les données. D’une part, un biais temporel est présent : les météorites récentes sont surreprésentées en raison de l’amélioration du suivi, de la centralisation des bases de données et du développement de missions dédiées à leur recherche. D’autre part, un biais géographique est également perceptible : les météorites sont davantage recensées dans les zones densément peuplées, à l’exception notable de l’Antarctique, où des campagnes de recherche intensives ont été menées. Enfin, il est probable qu’un biais en faveur des météorites les plus massives existe, celles-ci étant plus faciles à identifier et à distinguer des roches environnantes. Il est donc évident que toutes les météorites ne sont pas répertoriées.\\
+L’analyse univariée des variables, en particulier l’emplacement et l’année de chute, a mis en évidence plusieurs biais significatifs dans les données. D’une part, la présence d'un biais temporel : les météorites récentes sont surreprésentées en raison de l’amélioration du suivi, de la centralisation des bases de données et du développement de missions dédiées à leur recherche depuis les années 1970. D’autre part, un biais géographique est également perceptible : les météorites sont davantage recensées dans les zones densément peuplées, à l’exception notable de l’Antarctique, où des campagnes de recherche intensives ont été menées. Enfin, il est probable qu’un biais en faveur des météorites les plus massives existe, celles-ci étant plus faciles à identifier et à distinguer des roches environnantes. Il semble donc évident que toutes les météorites ne sont pas répertoriées et que le jeu de données est très incomplet.\\
 \\
-Un problème majeur réside dans le manque d’informations sur la constitution du jeu de données : le site de la NASA où nous avons récupéré nos données (ainsi que d’autres sources en ligne) ne précise pas si les données proviennent uniquement d’observations scientifiques (téléscopes, chercheurs) ou si elles incluent des signalements grand public. Cette incertitude complique l’interprétation des analyses.\\
+Un problème majeur réside alors dans le manque d’informations sur la constitution du jeu de données : le site de la NASA où nous avons récupéré nos données (ainsi que d’autres sources en ligne) ne précise pas si les données proviennent uniquement d’observations scientifiques (télescopes, chercheurs, etc) ou si elles incluent des signalements grand public. Cette incertitude complique l’interprétation des analyses.\\
 \\
-Concernant les pistes que nous souhaitions initialement explorer, plusieurs ont dû être écartées :
+Concernant les pistes que nous souhaitions initialement explorer, plusieurs ont dû être écartées :\\
 \\
- - Analyse temporelle : Cette approche s’est révélée impraticable pour plusieurs raisons. Tout d’abord, les données disponibles ne contiennent que l’année de chute des météorites, sans précision sur le mois ou le jour. De plus, le biais temporel implique que seules les quarante dernières années sont véritablement exploitables, une période trop courte pour une analyse robuste. Nous avons tenté d’explorer un autre jeu de données, MetCat, qui inclut des informations plus détaillées sur la temporalité (mois, jour). Cependant, son utilisation s’est avérée problématique : la précision temporelle reste insuffisante (mois indiqués sous des catégories larges comme Printemps ou Juin-Août), et le nombre d’observations réellement exploitables est trop faible en raison de la rareté des données bien documentées. Cette piste a donc été abandonnée.\\
+ - Analyse temporelle : Cette approche s’est révélée impraticable pour plusieurs raisons. Tout d’abord, les données disponibles ne contiennent que l’année de chute des météorites, sans précision sur le mois ou le jour. De plus, le biais temporel implique que seules les quarante dernières années sont véritablement exploitables, une période trop courte pour une analyse temporelle robuste. Nous avons tenté d’explorer un autre jeu de données du Natural History Museum \cite{MetCat} qui inclut des informations plus détaillées sur la temporalité comme le mois et le jour. Cependant, son utilisation s’est avérée problématique : la précision temporelle reste insuffisante (mois indiqués sous des catégories larges comme Printemps ou Juin-Août), et le nombre d’observations réellement exploitables est trop faible en raison de la rareté des données bien documentées. Cette piste a donc été abandonnée.\\
 \\
-- Modélisation prédictive : Construire un modèle visant à prédire le nombre de météorites tombées dans un pays en fonction de sa superficie et de sa position géographique n’a pas été jugé pertinent. En effet, la présence d’un fort biais de recensement fausse la relation entre ces variables et le nombre de météorites réellement observé.\\
+- Modélisation prédictive : Construire un modèle visant à prédire le nombre de météorites tombées dans un pays en fonction de sa superficie et de sa position géographique n’a pas été jugé pertinent à cause de la présence d’un fort biais de recensement faussant la relation entre ces variables et le nombre de météorites réellement observées.\\
 \\
-Finalement, nous avons décidé de nous concentrer sur deux axes principaux :\\
+Finalement, nous avons décidé de nous concentrer sur deux axes de travail principaux :\\
 \\
-- Une visualisation en 3D, afin de pallier les distorsions engendrées par la projection plane du planisphère et d’obtenir une représentation plus fidèle de la répartition des météorites.\\
+- Une visualisation en 3D, afin de se détacher des distorsions engendrées par la projection sur le planisphère et d’obtenir une représentation plus fidèle de la répartition des météorites.\\
 \\
-- Une analyse du processus sous-jacent à la chute des météorites, en testant si leur distribution suit un processus ponctuel (c’est-à-dire aléatoire), notamment via l’application d’un processus de Poisson homogène et inhomogène, complété par des simulations.
+- Une analyse du processus derrière la chute des météorites, en testant si leur distribution suit un processus ponctuel (c’est-à-dire aléatoire), notamment via la modélisation par un processus de Poisson homogène et inhomogène, complété par des simulations.
 
 \section{Modélisation de processus ponctuels}
 Math processus de Poisson homogène et inhomogène + simulations de Rassem.\\
+\\
+\cite{analysing_spacial_points}
 \\
 K de Ripley.\\
 \section{Visualisation en 3 dimensions}
 Travail de Yanis et Duc-Khoi.
 
 Capture d'écran des possibilités de visualisation que nous proposons + lien vers une page hébergeant l'application shiny ?
-
-\section{Conclusion}
-\section{Remerciements}
-\cite{these_remi_coulaud}
-\section{Références}
-\printbibliography
-- Lien vers l'article sur les météorites en Antartique.
 \section{Impact environnemental et sociétal du projet}
 J'ai remis les consignes du pdf de l'Ensimag. Cette section doit représenter envrion 20\% du rapport.
 \subsection{Impact environnemental personnel}
@@ -385,7 +383,12 @@ Nous demandons dans cette section un avis honnête, critique et argumenté sur l
 
 \subsection{Politique de la structure d'acceuil}
 Dans cette section, nous vous demandons de dresser une liste des actions menées par la structure d’accueil sur les aspects écologiques et sociaux. Cela peut concerner des actions individuelles ou la mise en œuvre d’une véritable politique dans ce domaine. De même, cela concerne à la fois des politiques extérieures éventuelles (fondations, dons à des organismes…), mais également des actions destinées à l’ensemble des collaborateurs de l’entreprise (conditions de travail, mise en œuvre de bonnes pratiques environnementales au quotidien…). Vous mettrez bien entendu en évidence tous les aspects positifs de cette politique. En revanche, si vous estimez qu’il y a des voies d’amélioration possibles en termes de politique de responsabilité sociale et environnementale, nous vous encourageons à proposer une liste d’actions concrètes qui pourraient être mises en œuvre. Cela montrera non seulement votre capacité à réaliser une analyse critique, mais cela vous permettra également d’être une force de proposition pour votre structure d’accueil.
-\newpage
+\section{Conclusion}
+
+\section{Remerciements}
+\addcontentsline{toc}{section}{Références}
+\printbibliography
+
 \section{Annexe}
 
 
