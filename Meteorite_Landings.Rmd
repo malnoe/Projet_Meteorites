@@ -28,14 +28,14 @@ meteorite_clean <- meteorite_clean[meteorite_clean$year != 860,]
 On clean les données et on lance une app shiny :
 ```{r}
 library(shiny)
-library(shinyjs)
-library(dplyr)
-library(geojsonio)
-library(threejs)
-library(sf)
 library(shinydashboard)
+library(shinyjs)
+library(threejs)
+library(scales)
+library(leaflet)
+library(sf)
 
-countries <- read_sf('/Users/yannis/Desktop/Projet tutoré/countries.geojson')
+countries <- read_sf('/Users/yannis/Desktop/Projet tutoré/countries.geojson')
 meteorite_clean <- meteorite_clean[!is.na(meteorite_clean$year) & meteorite_clean$year >= 1900 & meteorite_clean$year <= 2013, ]
 
 ui <- dashboardPage(
@@ -57,10 +57,6 @@ ui <- dashboardPage(
                           max = 2013, 
                           value = c(1900, 2013), 
                           step = 10),
-              selectInput("weight_category", 
-                          "Choisissez une catégorie de poids :", 
-                          choices = c("Tous les poids", unique(meteorite_clean$weight_category)),
-                          selected = "Tous les poids"),
               selectInput("mass_category", 
                           "Choisissez une plage de masse :", 
                           choices = c("Toutes les masses", 
@@ -72,20 +68,25 @@ ui <- dashboardPage(
       ),
       tabItem(tabName = "map",
               uiOutput("globe"),
-              textOutput("meteorite_count")
+              textOutput("meteorite_count"),
+              # Afficher les informations de la météorite en cliquant
+              uiOutput("meteorite_info"),
+              # Légende en gradient avec échelle log, centrée sous le globe
+              div(style = "position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+                          width: 400px; height: 20px; background: linear-gradient(to right, green, yellow, red); 
+                          border: 1px solid black;",
+                  div(style = "position: absolute; left: 0; color: white; font-size: 12px;", "0g"),
+                  div(style = "position: absolute; right: 0; color: white; font-size: 12px;", "100T")
+              )
       )
     )
   )
 )
 
 server <- function(input, output, session) {
-  
   filtered_data <- reactive({
-      data <- meteorite_clean[meteorite_clean$year >= input$year_range[1] & meteorite_clean$year <= input$year_range[2], ]
-      
-      if (input$weight_category != "Tous les poids") {
-          data <- subset(data, weight_category == input$weight_category)
-      }
+      data <- meteorite_clean[meteorite_clean$year >= input$year_range[1] & 
+                              meteorite_clean$year <= input$year_range[2], ]
       
       if (input$mass_category != "Toutes les masses") {
           mass_ranges <- list(
@@ -101,14 +102,22 @@ server <- function(input, output, session) {
           range <- mass_ranges[[input$mass_category]]
           data <- subset(data, mass..g. >= range[1] & mass..g. <= range[2])
       }
-      
       return(data)
   })
 
   output$globe <- renderUI({
       data <- filtered_data()
-      colors <- ifelse(data$mass..g. > 1000, "red", "green")
       
+      # Appliquer l'échelle logarithmique sur la masse des météorites
+      log_masses <- log10(pmax(data$mass..g., 1))  # Utiliser log10 pour transformer les masses
+      min_log_mass <- min(log_masses, na.rm = TRUE)
+      max_log_mass <- max(log_masses, na.rm = TRUE)
+      
+      # Échelle logarithmique pour l'attribution des couleurs
+      palette <- colorRampPalette(c("green", "yellow", "red"))(100)
+      mass_scaled <- rescale(log_masses, to = c(1, 100))
+      colors <- palette[round(mass_scaled)]  # Assigner les couleurs en fonction des masses
+
       globejs(
           img = earth,
           lat = data$reclat, 
@@ -118,17 +127,11 @@ server <- function(input, output, session) {
           pointsize = 1, 
           atmosphere = TRUE,
           geojson = countries,
-          onClick = "function(event) {
-              if (event.properties && event.properties.name) {
-                  var countryName = event.properties.name; 
-                  alert('Vous avez cliqué sur ' + countryName);
-              }
-          }",
-          onHover = "function(event) {
-              if (event.properties && event.properties.name) {
-                  return event.properties.name; 
-              }
-          }"
+          # Ajout de l'événement onClick pour récupérer les informations des météorites
+          onClick = JS("function(event) { 
+              var meteoriteData = event.point;
+              Shiny.setInputValue('meteorite_click', meteoriteData, {priority: 'event'});
+          }")
       )
   })
 
@@ -136,9 +139,29 @@ server <- function(input, output, session) {
       count <- nrow(filtered_data())
       paste("Nombre de météorites :", count)  
   })
+
+  # Afficher les informations de la météorite sélectionnée
+  output$meteorite_info <- renderUI({
+      req(input$meteorite_click)  # Assurer que l'événement a bien eu lieu
+      meteorite <- input$meteorite_click
+      if (!is.null(meteorite)) {
+          # Chercher les informations associées au clic
+          selected_meteorite <- filtered_data()[filtered_data()$reclat == meteorite.lat & 
+                                                 filtered_data()$reclong == meteorite.lng, ]
+          if (nrow(selected_meteorite) > 0) {
+              paste("Nom : ", selected_meteorite$name, "<br>",
+                    "Masse : ", selected_meteorite$mass..g., "g<br>",
+                    "Année de chute : ", selected_meteorite$year, "<br>",
+                    "Pays : ", selected_meteorite$reclat)
+          } else {
+              "Aucune information trouvée."
+          }
+      }
+  })
 }
 
 shinyApp(ui = ui, server = server)
+
 
 ```
 Objectif : Faire un dashboard dans ce style :
@@ -146,87 +169,41 @@ https://github.com/sebkl/globejs/blob/master/README.md
 
 
 ```{r}
+
 library(shiny)
-library(shinyjs)
-library(dplyr)
-library(geojsonio)
-library(threejs)
-library(sf)
 library(shinydashboard)
+library(shinyjs)
+library(threejs)
+library(scales)
+library(leaflet)
+library(sf)
 
+countries <- read_sf('/Users/yannis/Desktop/Projet tutoré/countries.geojson')
+meteorite_clean <- meteorite_clean[!is.na(meteorite_clean$year) & meteorite_clean$year >= 1900 & meteorite_clean$year <= 2013, ]
 
-
-
-ui <- dashboardPage(
-  dashboardHeader(title = "Visualisation des Météorites"),
-  dashboardSidebar(
-    sidebarMenu(
-      menuItem("Filtres", tabName = "filters", icon = icon("filter")),
-      menuItem("Carte", tabName = "map", icon = icon("globe"))
-    )
-  ),
-  dashboardBody(
-    useShinyjs(),
-    tags$head(
-      tags$style(HTML("
-        body {
-          background-color: #e0e0e0;
-        }
-        .content {
-          background-color: #f4f4f4;
-          border-radius: 8px;
-          padding: 20px;
-        }
-        .sidebar {
-          background-color: #3c8dbc;
-          color: white;
-        }
-        .btn {
-          background-color: #007bff;
-          color: white;
-          border-radius: 5px;
-        }
-        .btn:hover {
-          background-color: #0056b3;
-        }
-        .tooltip {
-          position: absolute;
-          text-align: center;
-          padding: 5px;
-          background-color: rgba(0, 0, 0, 0.7);
-          color: white;
-          border-radius: 5px;
-          visibility: hidden;
-          z-index: 1000; /* Pour s'assurer que l'info-bulle est au-dessus des autres éléments */
-        }
-      "))
+ui <- fluidPage(
+  dashboardPage(
+    dashboardHeader(title = "Carte des Météorites"),
+    dashboardSidebar(
+      sidebarMenu(
+        menuItem("Carte", tabName = "map", icon = icon("globe"))
+      )
     ),
-    div(class = "tooltip", id = "tooltip"),
-    tabItems(
-      tabItem(tabName = "filters",
-              h3("Filtres"),
-              radioButtons("filter_type", 
-                           "Choisissez le type de filtrage :", 
-                           choices = list("Par décennie" = "decade", "Toutes les années" = "all"), 
-                           selected = "decade"),
-              conditionalPanel(
-                condition = "input.filter_type == 'decade'",
-                sliderInput("decade", 
-                            "Sélectionnez la décennie :", 
-                            min = min(meteorite_clean$decade), 
-                            max = max(meteorite_clean$decade), 
-                            value = min(meteorite_clean$decade), 
-                            step = 10)
-              ),
-              selectInput("weight_category", 
-                          "Choisissez une catégorie de poids :", 
-                          choices = c("Tous les poids", unique(meteorite_clean$weight_category)),
-                          selected = "Tous les poids"),
-              actionButton("play", "Play", class = "btn")
-      ),
-      tabItem(tabName = "map",
-              uiOutput("globe"),
-              textOutput("meteorite_count")
+    dashboardBody(
+      tabItems(
+        tabItem(tabName = "map",
+                uiOutput("globe"),
+                textOutput("meteorite_count"),
+                # Affichage de la masse de la météorite sélectionnée au clic
+                textOutput("meteorite_info"),
+                # Légende en gradient avec échelle log, centrée sous le globe
+                div(style = "position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+                          width: 400px; height: 20px; background: linear-gradient(to right, green, yellow, red); 
+                          border: 1px solid black;",
+                    div(style = "position: absolute; left: 0; color: white; font-size: 12px;", "0g"),
+                    div(style = "position: absolute; right: 0; color: white; font-size: 12px;", "100T")
+                )
+        )
       )
     )
   )
@@ -234,71 +211,189 @@ ui <- dashboardPage(
 
 server <- function(input, output, session) {
   
-
-  filtered_data <- reactive({
-    if (input$filter_type == "all") {
-      return(meteorite_clean)
-    } else {
-      data <- subset(meteorite_clean, decade == input$decade)
-      if (input$weight_category != "Tous les poids") {
-        data <- subset(data, weight_category == input$weight_category)
-      }
-      return(data)
-    }
-  })
-  
   output$globe <- renderUI({
-    data <- filtered_data()
-    colors <- ifelse(data$mass..g. > 1000, "red", "green")
+    # Récupérer les informations des météorites (tout le jeu de données)
+    data <- meteorite_clean
     
+    # Appliquer un log à la masse pour un affichage logarithmique
+    mass_log <- log1p(data$mass..g.)  # log1p applique log(x+1) pour éviter les problèmes avec la masse 0
+    
+    # Utiliser les couleurs en fonction de la masse des météorites
+    colors <- colorRampPalette(c("green", "yellow", "red"))(length(mass_log))
+    
+    # Globe 3D avec la bibliothèque threejs
     globejs(
-      img = earth,  
-      lat = data$reclat, 
-      long = data$reclong, 
-      color = colors, 
-      arcsHeight = 0.3, 
-      pointsize = 1, 
+      lat = data$reclat,
+      long = data$reclong,
+      color = colors,
+      arcsHeight = 0.3,
+      pointsize = 1,
       atmosphere = TRUE,
-      geojson = countries_geojson,
-      onClick = "function(event) {
-        if (event.properties && event.properties.name) {
-          var countryName = event.properties.name; 
-          alert('Vous avez cliqué sur ' + countryName);
-        }
-      }"
+      geojson = countries,  # Assurez-vous que 'countries' est votre geojson des pays
+      onClick = JS("function(event) {
+          var meteoriteData = event.point;
+          Shiny.setInputValue('meteorite_click', meteoriteData, {priority: 'event'});
+      }")
     )
   })
   
-
-  outputOptions(output, "globe", suspendWhenHidden = FALSE)
+  output$meteorite_count <- renderText({
+    count <- nrow(meteorite_clean)  # Nombre total de météorites
+    paste("Nombre de météorites :", count)
+  })
   
-  observe({
-    shinyjs::runjs("
-      var tooltip = document.getElementById('tooltip');
-      var globe = document.querySelector('.threejs');
+  # Afficher la masse de la météorite sélectionnée au clic
+  output$meteorite_info <- renderText({
+    req(input$meteorite_click)  # Assurer que l'événement a bien eu lieu
+    meteorite <- input$meteorite_click
+    
+    if (!is.null(meteorite)) {
+      # Trouver la météorite correspondante en fonction des coordonnées du clic
+      dist <- sqrt((meteorite$lat - meteorite_clean$reclat)^2 + (meteorite$long - meteorite_clean$reclong)^2)
+      closest_idx <- which.min(dist)  # Trouver la météorite la plus proche des coordonnées cliquées
       
-      globe.addEventListener('mousemove', function(event) {
-        var country = event.target;
-        if (country && country.properties && country.properties.name) {
-          tooltip.style.visibility = 'visible';
-          tooltip.innerHTML = country.properties.name;
-          tooltip.style.left = event.clientX + 'px';
-          tooltip.style.top = (event.clientY - 30) + 'px'; // Ajuste la position
-        } else {
-          tooltip.style.visibility = 'hidden';
+      # Afficher la masse de la météorite la plus proche
+      paste("Masse de la météorite : ", meteorite_clean$mass..g.[closest_idx], "g")
+    }
+  })
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+```{r}
+library(shiny)
+library(threejs)
+library(dplyr)
+library(sf)
+
+# Application Shiny
+ui <- fluidPage(
+  dashboardPage(
+    dashboardHeader(title = "Carte des Météorites"),
+    dashboardSidebar(
+      sidebarMenu(
+        menuItem("Carte", tabName = "map", icon = icon("globe"))
+      )
+    ),
+    dashboardBody(
+      tabItems(
+        tabItem(tabName = "map",
+                uiOutput("globe"),
+                textOutput("meteorite_count"),
+                # Affichage de la masse de la météorite sélectionnée au clic
+                textOutput("meteorite_info"),
+                # Légende en gradient avec échelle log, centrée sous le globe
+                div(style = "position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+                          width: 400px; height: 20px; background: linear-gradient(to right, green, yellow, red); 
+                          border: 1px solid black;",
+                    div(style = "position: absolute; left: 0; color: white; font-size: 12px;", "0g"),
+                    div(style = "position: absolute; right: 0; color: white; font-size: 12px;", "100T")
+                )
+        )
+      )
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  
+  output$globe <- renderUI({
+    # Récupérer les informations des météorites (tout le jeu de données)
+    data <- meteorite_clean
+    
+    # Appliquer un log à la masse pour un affichage logarithmique
+    mass_log <- log1p(data$mass..g.)  # log1p applique log(x+1) pour éviter les problèmes avec la masse 0
+    
+    # Utiliser les couleurs en fonction de la masse des météorites
+    colors <- colorRampPalette(c("green", "yellow", "red"))(length(mass_log))
+    
+    # Globe 3D avec la bibliothèque threejs
+    globejs(
+      lat = data$reclat,
+      long = data$reclong,
+      color = colors,
+      arcsHeight = 0.3,
+      pointsize = 1,
+      atmosphere = TRUE,
+      geojson = countries,  # Assurez-vous que 'countries' est votre geojson des pays
+      onClick = JS("
+        function(event) {
+          var meteoriteData = event.point;
+          Shiny.setInputValue('meteorite_click', meteoriteData, {priority: 'event'});
         }
-      });
-    ")
+      "),
+      # Animation des météorites tombant du ciel vers la Terre
+      onLoad = JS("
+        var earthRadius = 6371; // Rayon de la Terre
+        var meteorites = []; // Liste des météorites
+        var animationDuration = 2; // Durée de l'animation en secondes
+        
+        // Créez une animation pour chaque météorite
+        function createMeteoriteAnimation(lat, lon) {
+          var startHeight = 10000; // Altitude initiale (au-dessus de la Terre)
+          
+          var meteorite = new THREE.Mesh(
+            new THREE.SphereGeometry(10, 16, 16), // Crée une petite sphère pour la météorite
+            new THREE.MeshBasicMaterial({color: 0xff0000}) // Couleur rouge
+          );
+          
+          meteorite.position.set(lon, lat, startHeight); // Position initiale
+          scene.add(meteorite); // Ajouter la météorite à la scène
+          
+          // Animation de la chute
+          var targetPosition = new THREE.Vector3(lon, lat, earthRadius);
+          var startTime = Date.now();
+          
+          function animateMeteorite() {
+            var elapsedTime = (Date.now() - startTime) / 1000;
+            var progress = Math.min(elapsedTime / animationDuration, 1);
+            
+            meteorite.position.lerp(targetPosition, progress); // Lerp pour un déplacement linéaire
+            
+            if (progress < 1) {
+              requestAnimationFrame(animateMeteorite); // Continuer l'animation jusqu'à ce que la météorite atteigne la Terre
+            } else {
+              scene.remove(meteorite); // Supprimer la météorite une fois qu'elle a atteint la Terre
+            }
+          }
+          
+          animateMeteorite(); // Démarre l'animation
+        }
+        
+        // Créez les animations pour toutes les météorites
+        var latitudes = ", paste(data$reclat, collapse = ", "), ";
+        var longitudes = ", paste(data$reclong, collapse = ", "), ";
+        
+        for (var i = 0; i < latitudes.length; i++) {
+          createMeteoriteAnimation(latitudes[i], longitudes[i]);
+        }
+      ")
+    )
   })
   
   output$meteorite_count <- renderText({
-    count <- nrow(filtered_data())
-    paste("Nombre de météorites :", count)  
+    count <- nrow(meteorite_clean)  # Nombre total de météorites
+    paste("Nombre de météorites :", count)
+  })
+  
+  # Afficher la masse de la météorite sélectionnée au clic
+  output$meteorite_info <- renderText({
+    req(input$meteorite_click)  # Assurer que l'événement a bien eu lieu
+    meteorite <- input$meteorite_click
+    
+    if (!is.null(meteorite)) {
+      # Trouver la météorite correspondante en fonction des coordonnées du clic
+      dist <- sqrt((meteorite$lat - meteorite_clean$reclat)^2 + (meteorite$long - meteorite_clean$reclong)^2)
+      closest_idx <- which.min(dist)  # Trouver la météorite la plus proche des coordonnées cliquées
+      
+      # Afficher la masse de la météorite la plus proche
+      paste("Masse de la météorite : ", meteorite_clean$mass..g.[closest_idx], "g")
+    }
   })
 }
 
 shinyApp(ui = ui, server = server)
 
 ```
-
 
