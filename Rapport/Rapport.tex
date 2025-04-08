@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+ \documentclass[12pt]{article}
 \usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
 \usepackage{graphicx} % Required for inserting images
 \usepackage[french]{babel} 
@@ -95,12 +95,12 @@ Outils : GitHub, Python, R, VSCode, RStudio. Expliquer que l'on a travaillé en 
 \\
 Packages Python : numpy, pandas, geopandas, plotly, shapely.\\
 \\
-Packages R : ggplot2.\\ 
+Packages R : ggplot2, threejs, shiny, shinyjs, dplyr.\\ 
 \\
 
 \section{Exploration des données}
 {\setlength{\baselineskip}{1\baselineskip}
-L'analyse exploratoire des données a été la première étape de notre projet. Notre but était de comprendre les distributions des varaibles de manière inviduelle mais aussi de trouver et de comprendre les éventuels liens entre variables afin de choisir des axes d'exploration pertinents pour la suite du projet.\\
+L'analyse exploratoire des données a été la première étape de notre projet. Notre but était de comprendre les distributions des variables de manière inviduelle mais aussi de trouver et de comprendre les éventuels liens entre variables afin de choisir des axes d'exploration pertinents pour la suite du projet.\\
 \\
 Pour réaliser les analyses univariées, nous avons utilisé Python avec les packages numpy, pandas, geopandas, plotly et shapely et pour les analyses multivariées, nous avons utilisé R. Le code pour ces analyses est réparti sur les fichiers \textit{exploration.ipynb} et \textit{MetCat\_analyse.ipynb} pour les analyses univariées et les analyses multivariées sont sur le fichier \textit{script\_analyses\_multivariées.R}. Ces fichier sont disponibles sur le repository GitHub du projet.\\
 \\
@@ -280,11 +280,12 @@ Sans surprise, l’Antarctique est le territoire où le plus grand nombre de mé
  \end{figure}
 Cette nouvelle représentation met en évidence plusieurs tendances intéressantes : Oman ressort davantage que dans la carte précédente, tandis que l’Australie et l’Antarctique, bien qu’ayant un grand nombre de météorites recensées en valeur absolue, apparaissent moins dominantes lorsqu’on tient compte de leur superficie. Par ailleurs, les pays d’Europe de l’Ouest présentent des valeurs comparables à celles des États-Unis et des pays d’Afrique du Nord-Ouest.\\
 \\
-Enfin, nous avons également regardé la répartition des météorites dans le monde selon la masse mais aucune tendance n'est resortie.
+Enfin, nous avons également regardé la répartition des météorites dans le monde selon la masse, mais aucune tendance n'est ressortie.
 
 \subsection{Analyses multivariées}
-Nous avons ensuite procédé à des analyses multivariées en faisant le croisement des différentes variables entre elles.
+Nous avons ensuite procédé à des analyses multivariées en effectuant des tests sur les croisements des différentes variables entre elles.
 \subsubsection*{Analyse quali-quali}
+Pour le croisement de variables qualitatives entre elles, nous avons effectué des tests de $\chi^2$. Pour chaque croisement, nous donnons dans le tabl eau suivant la p value associée au résultat du test.
 \begin{table}[H]
 \centering
 \begin{tabular}{rlr}
@@ -298,6 +299,7 @@ Nous avons ensuite procédé à des analyses multivariées en faisant le croisem
 \end{tabular}
 \end{table}
 \subsubsection*{Analyse quanti-quanti}
+Pour le croisement de variables quantitatives entre elles, nous regardons cette fois le coefficient de corrélation de Pearson. Les résultats sont résumés dans le tableau ci-contre :
 \begin{table}[H]
 \centering
 \begin{tabular}{rlrrrr}
@@ -358,15 +360,26 @@ Finalement, nous avons décidé de nous concentrer sur deux axes de travail prin
 - Une analyse du processus derrière la chute des météorites, en testant si leur distribution suit un processus ponctuel (c’est-à-dire aléatoire), notamment via la modélisation par un processus de Poisson homogène et inhomogène, complété par des simulations.
 
 \section{Modélisation de processus ponctuels}
-Math processus de Poisson homogène et inhomogène + simulations de Rassem.\\
-\\
-\cite{analysing_spacial_points}
-\\
-K de Ripley.\\
-\section{Visualisation en 3 dimensions}
-Travail de Yanis et Duc-Khoi.
+Chapitre 5 : Définition d'un processus de Poisson.
 
-Capture d'écran des possibilités de visualisation que nous proposons + lien vers une page hébergeant l'application shiny ?
+L'idée est de voir si nos données concordent avec un processus ponctuel de Poisson. Nous explorerons deux versions prenant en compte plus ou moins de complexité, tout d'abord un processus homogène puis un processus inhomogène.\\
+\\
+Dans ces deux approches, nous commençons par développer la théorie mathématique que nous appliquons ensuite à nos données au travers de simulations. Cette partie du projet s'appuie sur le livre \textit{Analysing spatial point patterns in R} \cite{analysing_spacial_points}.\\
+\\
+\subsection{Poisson homogène}
+
+\subsection{Poisson inhomogène}
+\section{Visualisation en 3 dimensions}
+Travail de Yannis et Duc-Khoi.\\
+\\
+- Choix de R + Python : voir les limites des deux langages, les comparer et utiliser leurs forces et faiblesses pour des applications différentes, Jeff est plus à l'aise en R et les ressources qu'il nous a données sont en R, ...
+- Réexpliquer l'intérêt d'une visualisation end 3D par rapport à une visualisation sur un planisphère (si possible avec des sources).
+- Pour les deux, mettre \textit{QUELQUES} visuels (utiliser la possibilité de faire des colonnes notamment).
+- Pour les deux, expliquer les forces et les faiblesses, les limitations rencontrées.
+
+\subsection{Visualisation avec Python}
+\subsection{Visualisation avec R}
+
 \section{Impact environnemental et sociétal du projet}
 J'ai remis les consignes du pdf de l'Ensimag. Cette section doit représenter envrion 20\% du rapport.
 \subsection{Impact environnemental personnel}
