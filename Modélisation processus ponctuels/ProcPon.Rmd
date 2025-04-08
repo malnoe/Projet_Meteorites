@@ -1,0 +1,249 @@
+---
+title: "Processus Ponctuel"
+author: "DJIMADOUM Rassem"
+date: "2025-03-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+
+file_path <- "Données/Meteorite_Landings.csv"
+df <- read.csv(file_path, stringsAsFactors = FALSE)
+
+# Sélection des colonnes et suppression des valeurs manquantes
+df <- na.omit(df[, c("reclat", "reclong")])
+
+ggplot(df, aes(x = reclong, y = reclat)) +
+  geom_point(alpha = 0.5, color = "blue") +
+  labs(x = "Longitude", y = "Latitude", title = "Répartition des impacts de météorites") +
+  theme_minimal()
+
+```
+```{r}
+
+library(rnaturalearth)
+library(sf)
+library(ggplot2)
+library(patchwork)
+library(spatstat)
+
+# ---------------------------
+# 1. CHARGEMENT DES DONNÉES
+# ---------------------------
+
+# Charger les contours des pays (projection WGS84 par défaut)
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+# Charger les données de météorites (exemple : colonnes reclat, reclong)
+df <- read.csv("Données/Meteorite_Landings.csv", stringsAsFactors = FALSE) |>
+  na.omit() |>  # Supprimer les NA
+  dplyr::select(reclat, reclong)  # Sélectionner les colonnes pertinentes
+
+# ---------------------------
+# 2. PROJECTION OPTIMALE (MOLLWEIDE)
+# ---------------------------
+# La projection Mollweide (ESRI:54009) préserve les surfaces -> idéale pour les calculs de densité
+target_crs <- "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
+
+# Reprojecter les données
+world_proj <- st_transform(world, crs = target_crs)
+df_sf <- st_as_sf(df, coords = c("reclong", "reclat"), crs = 4326) |>
+  st_transform(crs = target_crs)
+
+# ---------------------------
+# 3. CALCUL DE LA DENSITÉ (λ)
+# ---------------------------
+# Surface totale terrestre (en m²)
+world_proj$area <- st_area(world_proj)
+surface_totale <- sum(world_proj$area)  # Somme des surfaces des pays
+
+# Densité de météorites (par m²)
+N <- nrow(df_sf)
+lambda_hat <- N / as.numeric(surface_totale)  # λ en météorites/m²
+
+cat("Densité estimée (λ):", format(lambda_hat, scientific = TRUE), "météorites/m²\n")
+
+# 4. SIMULATION POISSON SPATIAL 
+# ------------------------------------------------
+# Convertir le monde en fenêtre spatstat (owin)
+world_owin <- as.owin(world_proj)
+
+# Simuler un processus de Poisson homogène
+simulated_ppp <- rpoispp(lambda = lambda_hat, win = world_owin)
+
+# Convertir en sf -> sfc_POINT explicitement
+sim_points_sf <- st_as_sf(data.frame(x = simulated_ppp$x, y = simulated_ppp$y), 
+                          coords = c("x", "y"), 
+                          crs = target_crs)  # CRS Mollweide
+
+# Reprojeter en WGS84 pour visualisation
+sim_points_wgs84 <- st_transform(sim_points_sf, crs = 4326)
+
+# Extraire les coordonnées
+sim_points <- st_coordinates(sim_points_wgs84) |> 
+  as.data.frame()
+names(sim_points) <- c("long", "lat")
+
+# ---------------------------
+# 5. VISUALISATION
+# ---------------------------
+# Graphique des données réelles
+plot_reel <- ggplot() +
+  geom_sf(data = world, fill = "lightgray", color = "black", linewidth = 0.1) +
+  geom_point(data = df, aes(x = reclong, y = reclat), 
+             color = "red", alpha = 0.3, size = 0.5) +
+  labs(title = "Données réelles (WGS84)", 
+       subtitle = paste(N, "impacts observés")) +
+  theme_minimal()
+
+# Graphique des données simulées
+plot_simule <- ggplot() +
+  geom_sf(data = world, fill = "lightgray", color = "black", linewidth = 0.1) +
+  geom_point(data = sim_points, aes(x = long, y = lat), 
+             color = "blue", alpha = 0.3, size = 0.5) +
+  labs(title = "Simulation Poisson (Mollweide)", 
+       subtitle = paste(simulated_ppp$n, "points simulés")) +
+  theme_minimal()
+
+# Combinaison des graphiques
+combined_plot <- plot_reel + plot_simule +
+  plot_annotation(title = "Comparaison des distributions de météorites",
+                  theme = theme(plot.title = element_text(hjust = 0.5)))
+
+print(combined_plot)
+
+```
+
+```{r}
+
+# ---------------------------
+# 3. CALCUL DE LA DENSITÉ SPATIALE λ(x, y)
+# ---------------------------
+# Transformer les points en objet spatstat
+ppp_data <- as.ppp(df_sf, W = world_owin)
+
+# Estimation par noyau de la densité spatiale
+lambda_density <- density(ppp_data, sigma = bw.diggle(ppp_data), positive = TRUE)
+
+# Normaliser l'intensité pour respecter la moyenne des événements observés
+lambda_density <- lambda_density * (nrow(df_sf) / integral(lambda_density))
+
+# ---------------------------
+# 4. SIMULATION D'UN PROCESSUS DE POISSON INHOMOGÈNE
+# ---------------------------
+
+simulated_ppp <- rpoispp(lambda = lambda_density, win = world_owin)
+
+# Conversion des points simulés en sf
+sim_points_sf <- st_as_sf(data.frame(x = simulated_ppp$x, y = simulated_ppp$y), 
+                          coords = c("x", "y"), 
+                          crs = target_crs)
+
+# Reprojeter en WGS84 pour la visualisation
+sim_points_wgs84 <- st_transform(sim_points_sf, crs = 4326)
+
+# Extraction des coordonnées
+sim_points <- st_coordinates(sim_points_wgs84) |> as.data.frame()
+names(sim_points) <- c("long", "lat")
+
+# ---------------------------
+# 5. VISUALISATION
+# ---------------------------
+# Données réelles
+plot_reel <- ggplot() +
+  geom_sf(data = world, fill = "lightgray", color = "black", linewidth = 0.1) +
+  geom_point(data = df, aes(x = reclong, y = reclat),
+             color = "red", alpha = 0.3, size = 0.5) +
+  labs(title = "Données réelles (WGS84)",
+       subtitle = paste(nrow(df_sf), "impacts observés")) +
+  theme_minimal()
+
+# Données simulées inhomogènes
+plot_simule <- ggplot() +
+  geom_sf(data = world, fill = "lightgray", color = "black", linewidth = 0.1) +
+  geom_point(data = sim_points, aes(x = long, y = lat),
+             color = "blue", alpha = 0.3, size = 0.5) +
+  labs(title = "Simulation Poisson Inhomogène",
+       subtitle = paste(simulated_ppp$n, "points simulés")) +
+  theme_minimal()
+
+# Combiner les deux graphiques
+combined_plot <- plot_reel + plot_simule +
+  plot_annotation(title = "Comparaison des distributions de météorites",
+                  theme = theme(plot.title = element_text(hjust = 0.5)))
+
+print(combined_plot)
+plot(lambda_density)
+
+```
+
+```{r}
+# ---------------------------
+# 1. CHARGEMENT DES DONNÉES
+# ---------------------------
+oman <- ne_countries(country = "Oman", scale = "medium", returnclass = "sf")
+
+df <- read.csv("Données/Meteorite_Landings.csv", stringsAsFactors = FALSE) |>
+  na.omit() |>
+  dplyr::select(reclat, reclong)
+
+df_sf <- st_as_sf(df, coords = c("reclong", "reclat"), crs = 4326)
+df_sf <- df_sf[st_within(df_sf, st_union(oman), sparse = FALSE), ]
+
+# ---------------------------
+# 2. PROJECTION ET PRÉPARATION
+# ---------------------------
+crs_mollweide <- "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs"
+oman_proj <- st_transform(oman, crs = crs_mollweide)
+df_sf_proj <- st_transform(df_sf, crs = crs_mollweide)
+
+# ---------------------------
+# 3. SIMULATION POISSON INHOMOGÈNE
+# ---------------------------
+oman_owin <- as.owin(oman_proj)
+ppp_data <- as.ppp(st_coordinates(df_sf_proj), W = oman_owin)
+
+# Estimation de densité
+lambda_density <- density(ppp_data, sigma = bw.diggle, dimyx = 256, positive = TRUE)
+lambda_density <- lambda_density * (ppp_data$n / integral(lambda_density))
+
+
+# 9 Simulations du processus de Poisson inhomogène
+simulations <- lapply(1:9, function(i) {
+  sim_ppp <- rpoispp(lambda_density)
+  sim_points <- data.frame(x = sim_ppp$x, y = sim_ppp$y) |>
+    st_as_sf(coords = c("x", "y"), crs = crs_mollweide) |>
+    st_transform(4326) |>
+    st_coordinates() |>
+    as.data.frame()
+  names(sim_points) <- c("long", "lat")
+  return(sim_points)
+})
+
+# ---------------------------
+# 4. VISUALISATION
+# ---------------------------
+plot_simulation <- function(sim_points, i) {
+  ggplot() +
+    geom_sf(data = oman, fill = "#f7f7f7", color = "gray30", linewidth = 0.3) +
+    geom_point(data = sim_points, aes(x = long, y = lat), color = "blue", alpha = 0.6, size = 1) +
+    labs(title = paste("Simulation", i)) +
+    theme_minimal() +
+    theme(panel.background = element_rect(fill = "#e0f3f8"))
+}
+
+# Générer les 9 graphiques
+simulation_plots <- lapply(1:9, function(i) plot_simulation(simulations[[i]], i))
+final_plot <- wrap_plots(simulation_plots, ncol = 3)
+
+# Affichage du résultat
+print(final_plot)
+
+
+```
+
