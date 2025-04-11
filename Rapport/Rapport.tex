@@ -1,38 +1,58 @@
- \documentclass[12pt]{article}
+\documentclass[12pt]{article}
 \usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
 \usepackage{graphicx} % Required for inserting images
-\usepackage[french]{babel} 
+\usepackage[french]{babel}
 \usepackage[T1]{fontenc}
-\usepackage{float} % Pour forcer les images à être là où il faut.
-\usepackage{listings} % Listes
-\usepackage{color} % Couleurs
-\usepackage{xcolor} % Couleurs
+\usepackage{listings}
+\usepackage{float}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{tikzducks}
 \usepackage{lipsum}
-\usepackage{amsmath} % Math
-\usepackage{amssymb} % Math
-\usepackage{amsmath}  % Math
+\usepackage{amsmath,amsthm}
+\usepackage{amssymb}
+\usepackage{changepage}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{multicol} % Pour les colonnes
-\usepackage{hyperref} % Hyperlien
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    citecolor=blue,
-    filecolor=magenta,      
-    urlcolor=blue,
-    pdftitle={Overleaf Example},
-    pdfpagemode=FullScreen,
-    }
+\usepackage[hidelinks]{hyperref}
+\usepackage{csquotes}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{frame=tb,
+  language=Python,
+  extendedchars,  % Extended ASCII
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{teal},
+  stringstyle=\color{violet},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
 \usepackage{tikz}
-\usepackage{pgfplots} % Pour les dessins / formes
-\usepackage{siunitx} % Pour formater les unités
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzstyle{box} = [rectangle, 
+minimum width=2cm, 
+minimum height=1cm,
+text centered, 
+draw=black]
+\tikzstyle{arrow} = [thick,->,>=stealth]
 \usepackage[
 backend=biber,
 style=alphabetic,
 sorting=ynt
 ]{biblatex}
-\addbibresource{bib.bib} % Bibliographie
+\addbibresource{bib.bib}
 
-% Commandes Math
+
 \newcommand{\K}{\mathbb{K}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\C}{\mathbb{C}}
@@ -43,32 +63,24 @@ sorting=ynt
 \newcommand{\dcrochetd}{]\!]}
 \newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
 \def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+%Gary's stuff 
 \newtheorem{thm1}{Théorème}[section]
 \newtheorem{lemme1}[thm1]{Lemme}
 \newtheorem{prop1}[thm1]{Proposition}
-\newtheorem{rmq1}{Remarque}
-\newtheorem{exemple1}{Exemple}
-\newtheorem{defin1}{Définition}
-% Fin commandes Math
+\newtheorem*{rmq1}{Remarque}
+\newtheorem*{exemple1}{Exemple}
+\newtheorem*{defin1}{Définition}
+%End of Gary's stuff
+
 
 \begin{document}
+\title{Rapport de projet tutoré : Etudes des chutes de météorites sur Terre}
+\author{Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen \& Garance Malnoë \\ encadré.e.s par Jean-François Coeurjolly}
+\date{Janvier-Avril 2025 - M1 SSD}
 
-
-\begin{titlepage}
-    \centering   
-    {\huge\bfseries Projet Météorites\par}
-    \vspace{1cm}
-    {\scshape\Large Rapport de projet tutoré\par}
-    \vspace{1.5cm}
-    {\large Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen \& Garance Malnoë\par
-    encadré.e.s par Jean-François Coeurjolly\par}
-    \vspace{0.5cm}
-    {\large Master 1 SSD\par}
-    \vspace{0.5cm}
-    {\large Janvier - Avril 2025\par}
-    \vspace{3cm}
-\end{titlepage}
 \pagenumbering{gobble}
+\maketitle
 \tableofcontents
 \clearpage
 \pagenumbering{arabic}
@@ -95,7 +107,7 @@ Outils : GitHub, Python, R, VSCode, RStudio. Expliquer que l'on a travaillé en 
 \\
 Packages Python : numpy, pandas, geopandas, plotly, shapely.\\
 \\
-Packages R : ggplot2, threejs, shiny, shinyjs, dplyr.\\ 
+Packages R : ggplot2, threejs, shiny, shinyjs, dplyr, corrr, xtable.\\ 
 \\
 
 \section{Exploration des données}
@@ -127,7 +139,7 @@ Nous avons commencé par l'analyse univariée de chaque variable en regroupant l
 Il n'y a pas de données manquantes pour le nom des météorites et tous les noms sont uniques. Par curiosité, nous avons regardé la répartition du choix de la première lettre :
 \begin{figure}[H]
 \centering
-\includegraphics[width=15cm]{Images/exploration/name_barplot_lettres.png}
+\includegraphics[width=16cm]{Images/exploration/name_barplot_lettres.png}
 \caption{Diagramme en barres du choix de la première lettre du nom des météorites}
 \end{figure}
 Nous pouvons notamment voir que la lettre Y ressort nettement plus souvent que les autres. Cela n'est pas une coincidence mais est lié aux conventions de nommage des météorites \cite{Convention_nommage_meteorites} : la grande majorité des météorites sont nommées d'après la localité géographique où elles ont été trouvées avec éventuellement une référence numérique après le nom si de nombreuses météorites sont collectées dans la zone. La popularité de la lettre Y est liée aux nombreuses expéditions japonaises effectuées sur le glacier Yamato en Antartique dont les météorites tiennent leur nom. Sur les 7315 météorites dont le nom commence par la lettre Y, 7269 ont été répertoriées sur le glacier Yamato. De même pour la lettre N, sur 4667 météorites, 4499 météorites commencent par "Northwest Africa".
@@ -137,7 +149,7 @@ Cette variable n'a pas de données manquantes. Comme expliqué précédemment, c
 Il n'y a pas de données manquantes pour la variable \textbf{recclass} qui correspond à la classification de la météorite. Le jeu de données compte 422 classes différentes mais les classes L5, L6, H5, H6, LL5 et LL6 sont nettement majoritaires et représente près de 74\% du jeu de données.
 \begin{figure}[H]
 \centering
-\includegraphics[width=15cm]{Images/exploration/recclass_piechart_class.png}
+\includegraphics[width=17cm]{Images/exploration/recclass_piechart_class.png}
 \caption{Piechart des classes de météorites}
 \end{figure}
 Ces 6 classes sont celles de chondrites ordinaires \cite{Classification_meteorites}. Les lettres L, H et LL correspondent aux trois sous-groupes de chrondrites ordinaires : H pour "High Iron" pour celles contenant 25-30\% de fer et de métal libre, L pour "Low Iron" pour celles contenant 20-25\% de fer et moins de métal libre et LL pour celles contenant encore moins de fer ( environ 15-20\%) et très peu de métal libre. Le numéro qui suit correspond au degré de métamorphisme, compris entre 3 et 7, il indique le niveau des modifications subies par la météorites lors de sa chute dues à la pression et la chaleur modifiant leur composition minéralogique, plus le numéro est élevé plus l'alteration est importante.
@@ -232,7 +244,7 @@ Nous pouvons tout de suite voir que la majorité des valeurs sont très récente
 Nous nous sommes alors intéressés plus précisément aux 50 dernières années du jeu de données (1963-2013) :\\
 \begin{figure}[H]
 \centering
-\includegraphics[width=14cm]{Images/exploration/histogramme1963-2013.png}
+\includegraphics[width=16cm]{Images/exploration/histogramme1963-2013.png}
 \caption{Répartition des météorites tombées entre 1963 et 2013}
 \end{figure}
 Nous observons une nette augmentation du nombre de météorites recensées à partir de 1974. Nous pouvons alors nous poser la question de la source de l'absence de données dans les années précédentes : est-ce que réellement peu de météorites sont tombées ou n'ont-elles juste pas été référencées ? Avant les années 1970, la détection de météorites reposaient principalement sur des découvertes fortuites ou des témoignages. Les années 1970 ont vu l'essor des réseaux de surveillance qui ont permis un suivi plus rigoureux des météorites comme le Meteorite Observation and Recovery Projet \cite{Article_Canada_1970} lancé au Canada en 1974 ainsi que la mise en place de bases de données centralisées comme celle de la \textit{Meteoritical Society} \cite{BDD_centralisees} et de missions de recherche comme le programme \textit{The Antarctic Search for Meteorites} \cite{Mission_recherche_antartictique} lancé au milieu des années 1970. Ainsi, l'hypothèse que les météorites n'étaient pas correctement recensées avant les années 1970 semble plus raisonnable.
@@ -254,14 +266,15 @@ Nous pouvons compléter cette première étude par une étude séparée des long
 \\
 \begin{figure}[H]
 \centering
-\includegraphics[width=17cm]{Images/exploration/histogramme_latitude.png}
+\includegraphics[width=16cm,height=6cm]{Images/exploration/histogramme_latitude.png}
 \caption{Latitude des météorites}
 \end{figure}
 \begin{figure}[H]
 \centering
-\includegraphics[width=17cm]{Images/exploration/histogramme_longitude.png}
+\includegraphics[width=16cm,height=6cm]{Images/exploration/histogramme_longitude.png}
 \caption{Longitutde des météorites}
 \end{figure}
+
 L'histogramme des latitudes montre une distribution inégale avec plusieurs tendances marquées. On observe un nombre particulièrement élevé d'impacts aux latitudes inférieures à -70°, correspondant aux nombreux points recencés en Antarctique. Un autre pic notable apparaît autour de 0°, ce qui pourrait être associé à l'Afrique du Nord. En revanche, la répartition est plus diffuse entre 15° et 60° Nord, couvrant des régions comme l'Europe de l'Ouest et l'Amérique du Nord.\\
 \\
 L'analyse des longitudes révèle également une répartition très hétérogène. Une grande partie des météorites enregistrées sont tombées sur des terres émergées, ce qui s'explique par la difficulté de recenser les impacts en milieu océanique. Un pic marqué est visible autour de 0°, correspondant notamment à l'Europe de l'Ouest et au nord de l'Afrique. D'autres concentrations apparaissent entre -150° et -162°, suggérant une fréquence plus élevée d'impacts en Australie et en Antarctique.\\
@@ -360,15 +373,115 @@ Finalement, nous avons décidé de nous concentrer sur deux axes de travail prin
 - Une analyse du processus derrière la chute des météorites, en testant si leur distribution suit un processus ponctuel (c’est-à-dire aléatoire), notamment via la modélisation par un processus de Poisson homogène et inhomogène, complété par des simulations.
 
 \section{Modélisation de processus ponctuels}
-Chapitre 5 : Définition d'un processus de Poisson.
-
-L'idée est de voir si nos données concordent avec un processus ponctuel de Poisson. Nous explorerons deux versions prenant en compte plus ou moins de complexité, tout d'abord un processus homogène puis un processus inhomogène.\\
+Lorsque l'on analyse des points et surtout leur distribution on peut se poser plusieurs questions :
+- la répartition est-elle uniforme dans l'espace ?
+- la densité locale est-elle liée à une variable (longitude ou latitude dans notre cas)
+- la répartition est-elle totalement aléatoire ?
+- Y a-t-il des clusters ?\\
 \\
-Dans ces deux approches, nous commençons par développer la théorie mathématique que nous appliquons ensuite à nos données au travers de simulations. Cette partie du projet s'appuie sur le livre \textit{Analysing spatial point patterns in R} \cite{analysing_spacial_points}.\\
+Nous voulons savoir si nos données concordent avec un processus ponctuel de Poisson. Nous explorerons deux versions prenant en compte plus ou moins de complexité, tout d'abord un processus homogène puis un processus inhomogène.\\
 \\
-\subsection{Poisson homogène}
+Dans ces deux approches, nous commençons par développer la théorie mathématique que nous appliquons ensuite à nos données au travers de simulations. Cette partie du projet s'appuie sur le livre \textit{Analysing spatial point patterns in R} \cite{analysing_spacial_points}.
 
-\subsection{Poisson inhomogène}
+\subsection{Définitions générales des processus ponctuels}
+Pour simplifier notre analyse, nous nous plaçons en dimension 2 et nous travaillons donc sur $\R^2$ pour représenter le planisphère plutôt qu'en dimension 3 sur la surface du globe. Commençons par quelques définitions :
+
+\begin{defin1}
+Un \textbf{modèle de points x} est un ensemble de points dans $\R^2$. On note $n(\textbf{x})$ le nombre d'éléments dans cet ensemble et $n(\textbf{x}\cap B)$ le nombre d'éléments de l'ensemble dans la région $B$.
+\end{defin1}
+
+\begin{rmq1}
+Il est permis d'avoir deux points d'un même modèle de point ayant les mêmes coordonnées.
+\end{rmq1}
+
+\begin{defin1}
+Un \textbf{processus ponctuel X} est un méchanisme aléatoire dont les réalisations sont des modèles de points.
+\end{defin1}
+
+\begin{defin1}
+Un processus ponctuel \textbf{fini} est un méchanisme aléatoire \textbf{X} tel que :
+\begin{enumerate}
+    \item Ses réalisations sont des modèles de points avec un nombre fini d'éléments.
+    \item Pour toute région $B$ bornée et fermée, le nombre $n(\textbf{X}\cap B)$ de points tombants dans la région $B$ est une variable aléatoire bien définie.
+\end{enumerate}
+\end{defin1}
+Pour notre analyse, nous travaillerons sur des processus ponctuel de Poisson, nous aurons donc besoin de la notion de processus localement fini.
+
+\begin{defin1}
+Un modèle de point \textbf{localement fini} est un ensemble $\textbf{x} = \{x_1,x_2,\dots\}$ de points dans $\R^2$ tel que pour toute région $B$, $n(\textbf{x}\cap B)$ est fini même si $\textbf{x}$ n'est pas fini.
+\end{defin1}
+
+\begin{defin1}
+Un processus ponctuel \textbf{localement fini} $\textbf{X}$ est un méchanisme aléatoire tel que
+\begin{enumerate}
+    \item Ses réalisations sont des modèles de points \textbf{localement fini}.
+    \item Pour toute région $B$ bornée et fermée, le nombre $n(\textbf{X}\cap B)$ de points tombants dans la région $B$ est une variable aléatoire bien définie.
+\end{enumerate}
+\end{defin1}
+
+
+
+\subsection{Processus ponctuel de Poisson}
+
+\subsubsection*{Définition et propriétés}
+L'objectif est de décrire un processus complètement aléatoire. Pour le décrire, on passe par 3 propriétés que l'on a va expliquer "avec les mains"/grossièrement, on donnera une définition complète ensuite.\\
+\\
+On a un nombre aléatoire de points et non pas fixé, il n'est pas forcément fini.\\
+\\
+1. Homogénéité :\\
+On souhaite que les points n'aient aucune préférence spatiale. C'est à dire que le nombre de points attendus dans une région quelconque B devrait être proportionnel à son aire : 
+\[
+\mathbb{E}[n(\textbf{X}\cap B] = \lambda|B| \quad \text{ où } \lambda \text{ est une constante.} 
+\] 
+Dans les faits $\lambda$ est la moyenne de points par unité d'aire. On l'apppelle \textbf{l'intensité du processus ponctuel}.\\
+\\
+2. Indépendance :\\
+L'information sur les réalisation dans une région n'a pas d'influence sur les réalisations dans les autres régions. C'est à dire que pour deux région $A$ et $B$, $n(\textbf{X}\cap A)$ et $n(\textbf{X}\cap B))$ sont deux variables aléatoires indépendantes. La valeur de $n(\textbf{X}\cap A))$ n'a pas d'influcence sur les probabilités des différentes valeurs de $n(\textbf{X}\cap B))$. On souhaite que cette hypothèse d'indépendance s'applique à n'importe quelles régions disjointes $A$ et $B$ et à n'importe quel nombre de ses régions.\\
+\\
+3. Ordonnancement :\\
+On souhaite que la probabilité qu'une région contienne plus d'un point tende vers 0 lorsque l'aire de la région se réduit. C'est à dire :
+$\frac{\mathbb{P}(n(\textbf{X}\cap B))}{|A|} \underset{|A|\to 0 }{\longrightarrow} 0$. La probas q'une région contienne plus d'un point est négligable lorsque la région est suffisament petite. Cela correspond en fait au fait que $n(\textbf{X}\cap A))$ suive une loi de Poisson : $\mathbb{P}(n(\textbf{X}\cap B)=k) = e^{-\mu}\frac{\mu^k}{k!}$ avec $\mu$ la moyenne de la densité de Poisson. Donc $\mathbb{E}[n(\textbf{X}\cap A)] = \mu = \lambda|A|$
+
+\begin{defin1}
+    Un \textbf{processus ponctuel de Poisson homogène X} d'intensité $\lambda > 0$ est un processus ponctuel localement fini vérifiant :
+    \begin{enumerate}
+        \item \textbf{Homogénéité} : Pour toute région $B$, la valeur moyenne du nombre de points dans la région $B$ $\mathbb{E}[n(\textbf{X}\cap B)] = \lambda|B|$.
+        \item \textbf{Indépendance} : Pour $m$ régions de tests $B_1,B_2,\dots,B_m$ telles que $\forall i \neq j \in \{1,\dots,m\} B_1 \cap B_j = \varnothing $, $n(\textbf{X}\cap B_1),\dots,n(\textbf{X}\cap B_m)$ sont des variables aléatoires bien définies
+        \item \textbf{Distribution de Poisson} : pour toute région $B$, $n(\textbf{X}\cap B$ suit une distribution de Poisson.
+    \end{enumerate}
+\end{defin1}
+
+Plusieurs propriétés découlent de cette définition :
+\begin{prop1}
+Soit $B$ une région de $\R^2$ telle que $n(\textbf{X} \cap B) =n$. La \textbf{propriété conditionnelle} d'un processus de Poisson est que ces $n$ points sont indépendemment et uniformément distribués dans $B$.
+\end{prop1}
+
+\begin{prop1}
+\textbf{Propriété de réduction}
+\end{prop1}
+
+\begin{prop1}
+\textbf{Propriété de superposition}
+\end{prop1}
+
+
+Bien que les processus ponctuel de Poisson soit très simples, ils sont réalistes pour certains phénomènes réels tels que la radioactivité, les évènements rares ou les évènements extrèmes ce qui a encouragé leur utilisation pour notre étude sur les chutes de météorites.\\
+\\
+Ils sont également utilisés comme modèles de références pour faire des comparaisons à d'autres modèles. Ils sont utilisés comme hypothèse nulle pour les tests statistiques.\\
+\\
+D'autres modèles sont construits à partir de lui comme le processus ponctuel de Poisson inhomogène que nous verrons par la suite.
+\subsubsection*{Simulations}
+
+\subsection{Processus ponctuel de Poisson inhomogène}
+\subsubsection*{Définition et propriétés}
+
+\begin{defin1}
+\end{defin1}
+
+\subsubsection*{Simulations}
+
+
+
 \section{Visualisation en 3 dimensions}
 Travail de Yannis et Duc-Khoi.\\
 \\
@@ -382,19 +495,19 @@ Travail de Yannis et Duc-Khoi.\\
 
 \section{Impact environnemental et sociétal du projet}
 J'ai remis les consignes du pdf de l'Ensimag. Cette section doit représenter envrion 20\% du rapport.
-\subsection{Impact environnemental personnel}
+\subsection*{Impact environnemental personnel}
 Partie moins importante.
 Estimation de l'impact des trajets domicile-travail, impact de la consommation des équipements utiliés (ordinateurs perso/fixes, temps d'utilisation des serveurs github,...), autres impacts.
 Expression en exprimé en kg eq. CO2.
 
-\subsection{Impact global du projet}
+\subsection*{Impact global du projet}
 Dans cette section, nous vous demandons d’évaluer l’impact global du projet sur lequel vous avez travaillé. Si vous avez travaillé sur un produit fini (logiciel, infrastructure…), vous devrez mettre en valeur non seulement l’impact du produit lui-même mais également l’évolution de cet impact entre le début et la fin de votre PFE. Si vous avez travaillé sur une preuve de concept, un avant-projet, un projet de recherche et développement ou un projet de recherche pure, votre évaluation devra tenir compte des possibles utilisations de votre travail dans un contexte applicatif. Cette section sera la plus importante de la partie consacrée à l’impact environnemental et sociétal. Nous ne vous demandons pas une simple évaluation technique, mais une véritable réflexion déclinée sur deux plans :
 1. à petite échelle (concernant uniquement votre projet, à court terme)
 2. à plus grande échelle (long terme, et dans l’hypothèse où le même type de projet venait à se généraliser et/ou
 se transposer dans différents secteurs)
 Nous demandons dans cette section un avis honnête, critique et argumenté sur les impacts positifs et négatifs du projet. Vous ne serez pas évalué sur la quantité ni la qualité des bonnes pratiques sociales et environnementales mises en œuvre dans le cadre de votre PFE : il est donc inutile d’écoblanchir votre discours. Ce qui nous importe est la vision critique que vous adoptez.
 
-\subsection{Politique de la structure d'acceuil}
+\subsection*{Politique de la structure d'acceuil}
 Dans cette section, nous vous demandons de dresser une liste des actions menées par la structure d’accueil sur les aspects écologiques et sociaux. Cela peut concerner des actions individuelles ou la mise en œuvre d’une véritable politique dans ce domaine. De même, cela concerne à la fois des politiques extérieures éventuelles (fondations, dons à des organismes…), mais également des actions destinées à l’ensemble des collaborateurs de l’entreprise (conditions de travail, mise en œuvre de bonnes pratiques environnementales au quotidien…). Vous mettrez bien entendu en évidence tous les aspects positifs de cette politique. En revanche, si vous estimez qu’il y a des voies d’amélioration possibles en termes de politique de responsabilité sociale et environnementale, nous vous encourageons à proposer une liste d’actions concrètes qui pourraient être mises en œuvre. Cela montrera non seulement votre capacité à réaliser une analyse critique, mais cela vous permettra également d’être une force de proposition pour votre structure d’accueil.
 \section{Conclusion}
 
