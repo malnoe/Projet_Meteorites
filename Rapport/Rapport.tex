@@ -101,20 +101,28 @@ Cependant, en raison de la nature des données, nous n'explorons finalement pas 
 Nous débutons ce rapport par une présentation de notre organisation de travail ainsi que des outils, langages et bibliothèques utilisés. Nous poursuivons avec une analyse exploratoire des données, comprenant des analyses univariées et multivariées, qui nous amènent à discuter des pistes à explorer. Ensuite, nous étudions la modélisation des chutes de météorites à l'aide des processus ponctuels, avant de proposer une visualisation interactive du jeu de données sur un globe. Enfin, nous concluons par une réflexion sur l'impact environnemental du projet.\\
 \newpage
 
-\section{Organisation, Outils, bibliothèques R et Python}
-Organisation : rendez-vous avec Jean-François, répartition du travail, cours de gestion de projet (mermaid chart, planification).\\
+\section{Organisation, Outils, bibliothèques \texttt{R} et \texttt{Python}}
+Notre projet a débuté en janvier, contrairement aux autres groupes qui ont commencé en octobre. Ce décalage est du au fait que nous ayons initiallement commencé à travailler sur  premier projet d'application Shiny pour le Conseil National des Universités, qui n'a finalement pas abouti. Suite à cela, Jean-François Coeurjolly nous a proposé de nous engager dans ce nouveau projet.\\
 \\
-Outils : GitHub, Python, R, VSCode, RStudio. Expliquer que l'on a travaillé en R et en Python parce qu'on est à 4 sur le projet, qu'on maîtrise tous les quatre les 2 langages et que l'on a profité des avantages et librairies proposées par les 2 langages.Python pour l'exploration du jeu de données et la modélisation de Rassem parce que package déjà proposé. R pour la visualisation end 3D car package et possibilité de faire une application Shiny.\\
+Pour assurer un suivi régulier de notre avancement, nous avons organisé six réunions d'environ 45 minutes, toutes les deux semaines, avec notre encadrant. Ces rencontres nous ont permis de faire le point sur nos progrès, de poser des questions et d'ajuster notre travail en fonction des retours reçus.\\
 \\
-Packages Python : numpy, pandas, geopandas, plotly, shapely.\\
+En ce qui concerne la répartition du travail, chaque membre de l'équipe a contribué de manière spécifique. Garance a pris en charge l'exploration des données et a également collaboré avec Rassem sur la modélisation par les processus ponctuels, où elle s'est concentrée sur la partie mathématique tandis que Rassem s'est occupé de la simulation. Yannis et Duc-Khoi ont chacun travaillé sur la visualisation en 3D, Duc-Khoi utilisant \texttt{Python} pour sa partie, tandis que Yannis s'est concentré sur \texttt{R}. Pour la rédaction du rapport, chaque membre a rédigé la section correspondant à sa contribution. Garance a également pris en charge l'introduction, la partie organisation et la conclusion, tandis que Rassem a rédigé la section sur l'impact environnemental.\\
 \\
-Packages R : ggplot2, threejs, shiny, shinyjs, dplyr, corrr, xtable.\\ 
+Nous n'avons pas mis en place d'outils d'organisation formels, tels qu'un diagramme Mermaid ou d'autres outils présentés lors de nos cours de gestion de projet que nous avions alors mis en oeuvre pour notre projet inital. Nous avons privilégié des discussions informelles pour définir les tâches à accomplir et faire le point avant chaque rendez-vous avec notre encadrant, chacun travaillant de manière autonome sur sa partie.\\
 \\
+Concernant les langages de programmation, nous avons opté pour un mélange de \texttt{R} et de \texttt{Python} afin de tirer parti des avantages offerts par les deux langages. Pour l'exploration des données, nous avons utilisé \texttt{Python} en raison de ses bibliothèques intéressantes pour la création de graphiques interactifs, telles que \texttt{Plotly} et \texttt{Shapely}. En revanche, nous avons choisi R pour produire des graphiques esthétiques avec \texttt{ggplot2} et pour réaliser des tests d'analyse multivariée. Pour les processus ponctuels, \texttt{R} s'est avéré être le choix idéal grâce à la bibliothèque \texttt{Spatstat},  présentée dans le livre \textit{Spatial Point Patterns - Methodology and Applications with \texttt{R}} \cite{analysing_spacial_points} fourni Jean-François Coeurjolly, qui était spécifiquement axé sur \texttt{R}. Pour la visualisation 3D, nous avons décidé de travailler sur \texttt{R} et \texttt{Python}, ce choix est explicité dans la partie correspondante.\\
+\\
+Enfin, pour les outils de développement, nous avons hébergé notre code sur GitHub et utilisé Visual Studio Code (VSCode) ainsi que RStudio pour la rédaction de notre code selon les langages utilisés et les préférences de chacun.\\
+\\
+Packages \texttt{Python} : \texttt{geopandas}, \texttt{pandas},\texttt{matplotlib}, \texttt{numpy}, \texttt{plotly} et \texttt{shapely}.\\
+Packages \texttt{R} : \texttt{corrr}, \texttt{dplyr}, \texttt{ggplot2}, \texttt{leaflet}, \texttt{patchwork},\texttt{rnaturalearth}, \texttt{scales}, \texttt{sf}, \texttt{shiny},\texttt{shinydashboard}, \texttt{shinyjs}, \texttt{spastat}, \texttt{threejs}, \texttt{xtable} et 
+\texttt{patchwork}.
 
+\newpage
 \section{Exploration des données}
 L'analyse exploratoire des données constitue la première étape de notre projet. Notre objectif est de comprendre les distributions des variables de manière individuelle tout en identifiant les données manquantes qui pourraient influencer les possibilités d'exploration pour la suite. Nous examinons également les éventuels liens entre les variables au travers de différents tests. Cette démarche nous permet de sélectionner des axes d'exploration pertinents pour la suite de notre projet.\\
 \\
-Pour réaliser les analyses univariées, nous travaillons dans un premier temps avec Python avec les bibliothèques numpy, pandas, geopandas, plotly et shapely qui nous permettent notamment d'obtenir des planishphères intéractifs mais nous réalisons également certaines analyses en R pour obtenir des graphiques avec ggplot2. Pour les analyses multivariées, nous utilisons uniquement R. Le code de ces analyses est organisé dans les fichiers \texttt{exploration.ipynb} pour la partie en Python et \texttt{script\_analyses\_multivariées.R} pour la partie en R. Tous ces fichiers sont disponibles sur le repository GitHub du projet dans le dossier "Exploration des données".\\
+Pour réaliser les analyses univariées, nous travaillons dans un premier temps avec \texttt{Python} avec les bibliothèques numpy, pandas, geopandas, plotly et shapely qui nous permettent notamment d'obtenir des planishphères intéractifs mais nous réalisons également certaines analyses en \texttt{R} pour obtenir des graphiques avec ggplot2. Pour les analyses multivariées, nous utilisons uniquement \texttt{R}. Le code de ces analyses est organisé dans les fichiers \texttt{exploration.ipynb} pour la partie en \texttt{Python} et \texttt{script\_analyses\_multivariées.R} pour la partie en \texttt{R}. Tous ces fichiers sont disponibles sur le repository GitHub du projet dans le dossier "Exploration des données".\\
 \\
 Le jeu de données est composé de 45716 entrées décrites par neuf variables :
 
@@ -490,13 +498,13 @@ D'autres modèles sont construits à partir de lui comme le processus ponctuel d
 \section{Visualisation en 3 dimensions}
 Travail de Yannis et Duc-Khoi.\\
 \\
-- Choix de R + Python : voir les limites des deux langages, les comparer et utiliser leurs forces et faiblesses pour des applications différentes, Jeff est plus à l'aise en R et les ressources qu'il nous a données sont en R, ...
+- Choix de R + \texttt{Python} : voir les limites des deux langages, les comparer et utiliser leurs forces et faiblesses pour des applications différentes, Jeff est plus à l'aise en R et les ressources qu'il nous a données sont en R, ...
 - Réexpliquer l'intérêt d'une visualisation end 3D par rapport à une visualisation sur un planisphère (si possible avec des sources).
 - Pour les deux, mettre \textit{QUELQUES} visuels (utiliser la possibilité de faire des colonnes notamment).
 - Pour les deux, expliquer les forces et les faiblesses, les limitations rencontrées.
 
-\subsection{Visualisation avec Python}
-\subsection{Visualisation avec R}
+\subsection{Visualisation avec \texttt{Python}}
+\subsection{Visualisation avec \texttt{R}}
 
 \section{Impact environnemental et sociétal du projet}
 J'ai remis les consignes du pdf de l'Ensimag. Cette section doit représenter envrion 20\% du rapport.
@@ -516,7 +524,7 @@ Nous demandons dans cette section un avis honnête, critique et argumenté sur l
 Dans cette section, nous vous demandons de dresser une liste des actions menées par la structure d’accueil sur les aspects écologiques et sociaux. Cela peut concerner des actions individuelles ou la mise en œuvre d’une véritable politique dans ce domaine. De même, cela concerne à la fois des politiques extérieures éventuelles (fondations, dons à des organismes…), mais également des actions destinées à l’ensemble des collaborateurs de l’entreprise (conditions de travail, mise en œuvre de bonnes pratiques environnementales au quotidien…). Vous mettrez bien entendu en évidence tous les aspects positifs de cette politique. En revanche, si vous estimez qu’il y a des voies d’amélioration possibles en termes de politique de responsabilité sociale et environnementale, nous vous encourageons à proposer une liste d’actions concrètes qui pourraient être mises en œuvre. Cela montrera non seulement votre capacité à réaliser une analyse critique, mais cela vous permettra également d’être une force de proposition pour votre structure d’accueil.
 \section{Conclusion}
 
-\section{Remerciements}
+\newpage
 \addcontentsline{toc}{section}{Références}
 \printbibliography
 \section{Annexe}
