@@ -381,22 +381,20 @@ Concernant les pistes inialement envisagées, nous en écartons plusieurs :\\
 \\
 Finalement, nous décidons donc de nous concentrer sur deux axes de travail principaux :\\
 \\
-- Une analyse du processus derrière la chute des météorites, en testant si leur distribution suit un processus ponctuel de Poisson homogène et inhomogène, complété par des simulations.\\
+- Une analyse du processus derrière la chute des météorites, en testant si leur distribution suit un processus ponctuel de Poisson homogène et inhomogène par le biais de simulations.\\
 \\
 - Une visualisation en 3D, afin de se détacher des distorsions engendrées par la projection sur le planisphère et d’obtenir une représentation plus fidèle de la répartition des météorites.\\
 
 \section{Modélisation de processus ponctuels}
-Lorsque l'on analyse des points et surtout leur distribution on peut se poser plusieurs questions :
-- la répartition est-elle uniforme dans l'espace ?
-- la densité locale est-elle liée à une variable (longitude ou latitude dans notre cas)
-- la répartition est-elle totalement aléatoire ?
-- Y a-t-il des clusters ?\\
+Nous avons vu lors de l'exploration de données que les points de chutes des météorites ne sont pas répartis de manière uniforme sur le globle. Nous nous demandons si par contre elles sont indépendantes ou si peut-être nous pouvons observer des phénomènes de "repoussement" ou à l'inverse de concentration de météorites dans une espace très restreint.\\
 \\
-Nous voulons savoir si nos données concordent avec un processus ponctuel de Poisson. Nous explorerons deux versions prenant en compte plus ou moins de complexité, tout d'abord un processus homogène puis un processus inhomogène.\\
+Pour répondre à ce questionnement, nous simulons des processus ponctuels de Poisson où les points sont répartis aléatoirement dans l'espace mais surtout sont placés de manière indépendante les uns des autres. Nous souhaitons voir si nos données sont similaires aux réalisations d'un processus de Poisson homogène ou inhomogène, ce qui nous permettrait d'avoir une idée sur l'indépendance des chutes de météorites.\\
+\\
+Nous commençons par le processus poncutel de Poisson homogène très simple pour prendre en main la méthode puis nous passon au cas inhomogène plus complexe mais qui peut mieux coller à nos données et au biais de rescensement observé précédemment..\\
 \\
 Dans ces deux approches, nous commençons par développer la théorie mathématique que nous appliquons ensuite à nos données au travers de simulations. Cette partie du projet s'appuie sur le livre \textit{Analysing spatial point patterns in R} \cite{analysing_spacial_points}.
 
-\subsection{Définitions générales des processus ponctuels}
+\subsection{Définitions générales des processus ponctuels et distribution uniforme}
 Pour simplifier notre analyse, nous nous plaçons en dimension 2 et nous travaillons donc sur $\R^2$ pour représenter le planisphère plutôt qu'en dimension 3 sur la surface du globe. Commençons par quelques définitions :
 
 \begin{defin1}
@@ -432,65 +430,86 @@ Un processus ponctuel \textbf{localement fini} $\textbf{X}$ est un méchanisme a
 \end{enumerate}
 \end{defin1}
 
-
-
 \subsection{Processus ponctuel de Poisson}
 
 \subsubsection*{Définition et propriétés}
-L'objectif est de décrire un processus complètement aléatoire. Pour le décrire, on passe par 3 propriétés que l'on a va expliquer "avec les mains"/grossièrement, on donnera une définition complète ensuite.\\
+Pour définir les processus ponctuels de Poisson, nous commençons par décrire "avec les mains" les trois propriétés qui le caractérise. Nous donnons la définition plus rigoureuse ensuite.\\
 \\
-On a un nombre aléatoire de points et non pas fixé, il n'est pas forcément fini.\\
+Nous nous donnons un nombre aléatoire de points, pas forcément fini et nous souhaitons construire un processus ponctuel totalement aléatoire, pour cela, nous le munissons de trois propriétés :\\
 \\
 1. Homogénéité :\\
-On souhaite que les points n'aient aucune préférence spatiale. C'est à dire que le nombre de points attendus dans une région quelconque B devrait être proportionnel à son aire : 
+Nous souhaitons que les points n'aient aucune préférence spatiale. C'est-à-dire que le nombre de points attendus dans une région quelconque B soit être proportionnel à son aire : 
 \[
 \mathbb{E}[n(\textbf{X}\cap B] = \lambda|B| \quad \text{ où } \lambda \text{ est une constante.} 
 \] 
 Dans les faits $\lambda$ est la moyenne de points par unité d'aire. On l'apppelle \textbf{l'intensité du processus ponctuel}.\\
 \\
 2. Indépendance :\\
-L'information sur les réalisation dans une région n'a pas d'influence sur les réalisations dans les autres régions. C'est à dire que pour deux région $A$ et $B$, $n(\textbf{X}\cap A)$ et $n(\textbf{X}\cap B))$ sont deux variables aléatoires indépendantes. La valeur de $n(\textbf{X}\cap A))$ n'a pas d'influcence sur les probabilités des différentes valeurs de $n(\textbf{X}\cap B))$. On souhaite que cette hypothèse d'indépendance s'applique à n'importe quelles régions disjointes $A$ et $B$ et à n'importe quel nombre de ses régions.\\
+Nous souhaitons que l'information sur les réalisations d'une région n'ait pas d'influence sur les réalisations dans les autres régions. C'est à dire que pour deux région $A$ et $B$, $n(\textbf{X}\cap A)$ et $n(\textbf{X}\cap B))$ sont deux variables aléatoires indépendantes : la valeur de $n(\textbf{X}\cap A))$ n'a pas d'influcence sur les probabilités des différentes valeurs de $n(\textbf{X}\cap B))$. On souhaite que cette hypothèse d'indépendance s'applique à n'importe quelles régions disjointes $A$ et $B$ et à n'importe quel nombre de ses régions.\\
 \\
 3. Ordonnancement :\\
-On souhaite que la probabilité qu'une région contienne plus d'un point tende vers 0 lorsque l'aire de la région se réduit. C'est à dire :
-$\frac{\mathbb{P}(n(\textbf{X}\cap B))}{|A|} \underset{|A|\to 0 }{\longrightarrow} 0$. La probas q'une région contienne plus d'un point est négligable lorsque la région est suffisament petite. Cela correspond en fait au fait que $n(\textbf{X}\cap A))$ suive une loi de Poisson : $\mathbb{P}(n(\textbf{X}\cap B)=k) = e^{-\mu}\frac{\mu^k}{k!}$ avec $\mu$ la moyenne de la densité de Poisson. Donc $\mathbb{E}[n(\textbf{X}\cap A)] = \mu = \lambda|A|$
-
+Nous souhaitons que la probas qu'une région $A$ contienne plus d'un point soit négligable lorsque la région est suffisament petite. C'est à dire :
+$\frac{\mathbb{P}(n(\textbf{X}\cap A))}{|A|} \underset{|A|\to 0 }{\longrightarrow} 0$.  Cela correspond en fait au fait que $n(\textbf{X}\cap A))$ suive une loi de Poisson : $\mathbb{P}(n(\textbf{X}\cap B)=k) = e^{-\mu}\frac{\mu^k}{k!}$ avec $\mu$ la moyenne de la densité de Poisson. Donc $\mathbb{E}[n(\textbf{X}\cap A)] = \mu = \lambda|A|$\\
+\\
+Plus rigoureusement :\\
 \begin{defin1}
-    Un \textbf{processus ponctuel de Poisson homogène X} d'intensité $\lambda > 0$ est un processus ponctuel localement fini vérifiant :
+    Un \textbf{processus ponctuel de Poisson homogène X d'intensité $\lambda > 0$} est un processus ponctuel localement fini vérifiant :
     \begin{enumerate}
         \item \textbf{Homogénéité} : Pour toute région $B$, la valeur moyenne du nombre de points dans la région $B$ $\mathbb{E}[n(\textbf{X}\cap B)] = \lambda|B|$.
         \item \textbf{Indépendance} : Pour $m$ régions de tests $B_1,B_2,\dots,B_m$ telles que $\forall i \neq j \in \{1,\dots,m\} B_1 \cap B_j = \varnothing $, $n(\textbf{X}\cap B_1),\dots,n(\textbf{X}\cap B_m)$ sont des variables aléatoires bien définies
         \item \textbf{Distribution de Poisson} : pour toute région $B$, $n(\textbf{X}\cap B$ suit une distribution de Poisson.
     \end{enumerate}
 \end{defin1}
-
 Plusieurs propriétés découlent de cette définition :
 \begin{prop1}
 Soit $B$ une région de $\R^2$ telle que $n(\textbf{X} \cap B) =n$. La \textbf{propriété conditionnelle} d'un processus de Poisson est que ces $n$ points sont indépendemment et uniformément distribués dans $B$.
 \end{prop1}
 
 \begin{prop1}
-\textbf{Propriété de réduction}
+Réduire dans le cadre des processus ponctuels signifie que l'on supprime quelques points d'un modèle de points. Dans le cas d'une \textit{réduction complètement aléatoire} chaque point du modèle de point est aléatoirement supprimé ou conservé avec une probabilité $p$ d'être conservé indépendemment de ce qu'il advient des autres points. La \textbf{propriété de réduction} affirme que pour un processus de Poisson homogène d'intensité $\lambda$ au quel on applique une réduction complètement aléatoire avec une probabilité de conservation $p$ alors les points obtenus suivent un processus de Poisson homogène d'intensité $\lambda p$.
 \end{prop1}
 
 \begin{prop1}
-\textbf{Propriété de superposition}
+Superposer deux processus ponctuels $\textbf{X}$ et $\textbf{Y}$ signifie que l'on combine les points des deux processus en un nouveau processus ponctuel $\textbf{Z} = \textbf{X}  \cup \textbf{Y}$. La \textbf{propriété de superposition} des processus de Poisson affirme que si $\textbf{X}$ et $\textbf{Y}$ sont des processus de Poisson homogène de d'intensité $\lambda_{\textbf{X}}$ et $\lambda_{\textbf{Y}}$ alors leur superposition $\textbf{Z}$ est aussi un processus de Poisson homogène d'intesité $\lambda_{\textbf{Z}} = \lambda_{\textbf{X}} + \lambda_{\textbf{Y}}$
 \end{prop1}
 
-
-Bien que les processus ponctuel de Poisson soit très simples, ils sont réalistes pour certains phénomènes réels tels que la radioactivité, les évènements rares ou les évènements extrèmes ce qui a encouragé leur utilisation pour notre étude sur les chutes de météorites.\\
+On peut aisément simuler un processus de Poisson en utilisant les propriétés précédentes. Pour une région $B$ où l'on souhaite générer des points suivant une intensité $\lambda$, on commence par déterminer le nombre total de points en générant un nombre aléatoire $N$ suivant une loi de Poisson de moyenne $\mu = \lambda|B|$. Ces $N$ points sont ensuite placés indépendemment dans $B$ de manière aléatoire.\\
+\\
+Bien que les processus ponctuel de Poisson soient très simples, ils restent réalistes pour un certain nombre de phénomènes réels tels que la radioactivité, les évènements rares ou les évènements extrèmes ce qui a motivé leur utilisation pour notre étude sur les chutes de météorites.\\
 \\
 Ils sont également utilisés comme modèles de références pour faire des comparaisons à d'autres modèles. Ils sont utilisés comme hypothèse nulle pour les tests statistiques.\\
 \\
-D'autres modèles sont construits à partir de lui comme le processus ponctuel de Poisson inhomogène que nous verrons par la suite.
+Enfin, d'autres modèles sont construits à partir de lui comme le processus ponctuel de Poisson inhomogène que nous verrons par la suite.
 \subsubsection*{Simulations}
 
 \subsection{Processus ponctuel de Poisson inhomogène}
 \subsubsection*{Définition et propriétés}
+Les processus de Poisson inhomogènes généralisent légèrement les processus homogènes de Poisson en faisant l'hypothèse que la densité de points n'est pas la même sur tout l'espace et qu'il s'agit d'une fonction $\lambda(u)$ d'un point $u$ de l'espace. Pour une région $B$, le nombre de points attendus dans la région est $\int_B \lambda(u) du$. Cette fonction détermine l'abondance générale de points et leur répartition dans l'espace. Plus rigoureusement :
 
 \begin{defin1}
+Un \textbf{processus ponctuel de Poisson inhomogène} d'intensité $\lambda(u)$ est un processus ponctuel tel que :
+\begin{enumerate}
+    \item \textbf{Fonction d'intensité} : Le nombre de points attendus dans une région $B$ est $\mu = \int_B \lambda(u) du$\\
+    \item \textbf{Indépendance} : Si l'espace est découpé en région ne se croisant pas, les modèles aléatoires au sein de chaque région sont indépendants entre eux.\\
+    \item \textbf{Distribution de Poisson} : Le nombre de points tombants dans une région donnée suit une distribution de Poisson.
+\end{enumerate}
 \end{defin1}
+C'est un modèle très général comme dans le cas homogène puisqu'il y a très peu de restriction sur $\lambda(u)$ ce qui rend ce modèle très adéquat dans beaucoup de contexte. La pricipale hypothèse devient donc l'indépendance des points.\\
+\\
+Les processus inhomogène de Poisson possèdent des propriétés analogues à celle du cas homogène :\\
+\begin{prop1}
+    \textbf{Propriété conditionnelle} : Soit un processus ponctuel inhomogène de Poisson de fonction d'intensité $\lambda(u)$. Si $n$ points sont tombés dans une région $B$ donnée alors ces points sont indépendants entre eux et chaque point a la même probabilité de distribution sur $B$ : $f(u) = \lambda(u)/\mu$ où $\mu = \int_B \lambda(u) du$.
+\end{prop1}
 
+\begin{prop1}
+    \textbf{Propriété de réduction} : Soit un processus ponctuel inhomogène de Poisson de fonction d'intensité $\lambda(u)$ qui est aléatoirement réduit avec une probabilité $p(u)$ de conserver un point situé en le point $u$ de l'espace alors le modèle de point obtenu suit également un processus de Poisson inhomogène de fonction d'intensité $\lambda(u)p(u)$.
+\end{prop1}
+
+\begin{prop1}
+    \textbf{Propriété de superposition} : Soit $\textbf{X}$ et $\textbf{Y}$ deux processus de Poisson inhomogènes et de fonction d'intensité respectives $\lambda_{\textbf{X}}(u)$ et $\lambda_{\textbf{Y}}(u)$ alors leur superposition $\textbf{Z} = \textbf{X} \cup \textbf{Y}$ est également un processus de Poisson inhomogène de fonction d'intensité $\lambda_{\textbf{Z}}(u) = \lambda_{\textbf{X}}(u) + \lambda_{\textbf{Y}}(u)$.
+\end{prop1}
+
+On peut aisément simuler un processus de Poisson inhomogène de fonction d'intensité $\lambda(u)$ à l'aide des propriétés précédemment présentées et en utilisant la méthode de réduction de Lewis-Shedler. Cette méthode consiste à trouver un majorant $M$ tel que pour tout $u$ dans la région où l'on souhaite générer les points $\lambda(u) \leq M$. On génère alors un processus de Poisson homogène d'intensité $M$ comme décrit dans la section sur les processus de Poisson homogènes. Pour chaque point $x_i$ du modèle de points obtenu, on calcule $p_i = \lambda(x_i)/M$ et on conserve aléatoirement $x_i$ avec une probabilité $p_i$ indépendamment de ce qu'il advient des autres points. On obtient alors une réalisation d'un processus de Poisson de fonction d'intensité $\lambda(u)$. Une autre méthode possible est de diviser l'espace en pixels, de calculer la probabilité que chaque pixel contienne un point and de sélectionner aléatoirement des pixels en utilisant ces probabilités. Cette méthode demande d'avantage de calculs que la méthode de Lewis-Shedler mais nécessite moins de calculs pour chaque point.
 \subsubsection*{Simulations}
 
 
