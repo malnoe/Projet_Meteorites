@@ -1,0 +1,76 @@
+---
+title: "Étude de la chute des météorites sur Terre"
+author: "Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen & Garance Malnoë encadré.e.s par Jean-François Coeurjolly"
+format: revealjs
+fontsize: 20pt
+---
+
+# Introduction
+## Présentation du projet
+:::: {.columns}
+
+::: {.column width="60%"}
+
+_Meteorite Landings_ : 
+jeu de données issu de l'Open Data de la **NASA**.
+:::
+
+::: {.column width="40%"}
+<img src="images/nasa_logo.png" alt=" " style="width: 40%; margin-right: 120px; float: right;">
+:::
+
+::::
+
+<div style="margin-top: 30px;">
+Pas d'objectif défini : **exploration libre** des données pour choisir nos axes d'étude du jeu de données. Mais quelques idées initialement données par Jean-François Coeurjolly :
+
+- Etude de la **dimension temporelle** des données.
+
+- Analyse des **relations entre les variables** du jeu de données.
+
+- Construire un **modèle prédictif** du nombre de météorites tombées dans un pays en fonction de sa superficie et de sa localisation géographique.
+
+- Réaliser une **étude spatiale** pour déterminer si certaines régions sont plus touchées.
+
+- **Visualiser** les chutes de météorites sur un planisphère.
+</div>
+
+## Organisation, outils et bibliothèques
+
+
+# Exploration des données
+## Présentation des variables
+
+## Univarié
+
+## Multivarié
+
+## Discussion des limites du jeu de données et choix des pistes à poursuivre
+
+
+# Modélisation de processus ponctuels
+## Objectifs
+
+## Théorie homogène
+
+## Simulations
+
+## Théorie inhomogène
+
+## Simulations
+
+# Visualisation en 3D
+## Pourquoi une visualisation en 3D ?
+
+## Python
+
+## R
+
+# Impact environnemental
+## Impact environnemental personnel
+
+## Impact global du projet
+
+## Politique de la structure d'acceuil
+
+# Conclusion
