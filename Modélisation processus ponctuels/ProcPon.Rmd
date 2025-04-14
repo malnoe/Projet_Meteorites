@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(ggplot2)
 
-file_path <- "Données/Meteorite_Landings.csv"
+file_path <- "C:/Users/garan/Documents/Ecole/M1/Projet/Projet_Meteorites/Données/Meteorite_Landings.csv"
 df <- read.csv(file_path, stringsAsFactors = FALSE)
 
 # Sélection des colonnes et suppression des valeurs manquantes
@@ -40,7 +40,7 @@ library(spatstat)
 world <- ne_countries(scale = "medium", returnclass = "sf")
 
 # Charger les données de météorites (exemple : colonnes reclat, reclong)
-df <- read.csv("Données/Meteorite_Landings.csv", stringsAsFactors = FALSE) |>
+df <- read.csv("C:/Users/garan/Documents/Ecole/M1/Projet/Projet_Meteorites/Données/Meteorite_Landings.csv", stringsAsFactors = FALSE) |>
   na.omit() |>  # Supprimer les NA
   dplyr::select(reclat, reclong)  # Sélectionner les colonnes pertinentes
 
@@ -186,9 +186,15 @@ plot(lambda_density)
 # ---------------------------
 # 1. CHARGEMENT DES DONNÉES
 # ---------------------------
+library(sf)
+library(ggplot2)
+library(dplyr)
+library(spatstat)
+library(patchwork)
+
 oman <- ne_countries(country = "Oman", scale = "medium", returnclass = "sf")
 
-df <- read.csv("Données/Meteorite_Landings.csv", stringsAsFactors = FALSE) |>
+df <- read.csv("C:/Users/garan/Documents/Ecole/M1/Projet/Projet_Meteorites/Données/Meteorite_Landings.csv", stringsAsFactors = FALSE) |>
   na.omit() |>
   dplyr::select(reclat, reclong)
 
@@ -212,9 +218,8 @@ ppp_data <- as.ppp(st_coordinates(df_sf_proj), W = oman_owin)
 lambda_density <- density(ppp_data, sigma = bw.diggle, dimyx = 256, positive = TRUE)
 lambda_density <- lambda_density * (ppp_data$n / integral(lambda_density))
 
-
-# 9 Simulations du processus de Poisson inhomogène
-simulations <- lapply(1:9, function(i) {
+# 8 Simulations du processus de Poisson inhomogène
+simulations <- lapply(1:8, function(i) {
   sim_ppp <- rpoispp(lambda_density)
   sim_points <- data.frame(x = sim_ppp$x, y = sim_ppp$y) |>
     st_as_sf(coords = c("x", "y"), crs = crs_mollweide) |>
@@ -228,22 +233,36 @@ simulations <- lapply(1:9, function(i) {
 # ---------------------------
 # 4. VISUALISATION
 # ---------------------------
-plot_simulation <- function(sim_points, i) {
+plot_simulation <- function(sim_points, i, is_real = FALSE) {
   ggplot() +
     geom_sf(data = oman, fill = "#f7f7f7", color = "gray30", linewidth = 0.3) +
-    geom_point(data = sim_points, aes(x = long, y = lat), color = "blue", alpha = 0.6, size = 1) +
-    labs(title = paste("Simulation", i)) +
+    geom_point(data = if (is_real) {
+      coords <- st_coordinates(df_sf)
+      data.frame(long = coords[, 1], lat = coords[, 2])
+    } else {
+      sim_points
+    }, aes(x = long, y = lat), 
+    color = if (is_real) "red" else "blue", alpha = 0.6, size = 1) +
+    labs(title = if (is_real) "Données" else paste("Simulation", i)) +
     theme_minimal() +
     theme(panel.background = element_rect(fill = "#e0f3f8"))
 }
 
-# Générer les 9 graphiques
-simulation_plots <- lapply(1:9, function(i) plot_simulation(simulations[[i]], i))
-final_plot <- wrap_plots(simulation_plots, ncol = 3)
+# Générer les 8 graphiques de simulation
+simulation_plots <- lapply(1:8, function(i) plot_simulation(simulations[[i]], i))
+
+# Ajouter le graphique des données réelles au milieu
+real_data_plot <- plot_simulation(df_sf, 0, is_real = TRUE)
+
+# Combiner les graphiques
+final_plot <- wrap_plots(c(simulation_plots[1:4], list(real_data_plot), simulation_plots[5:8]), ncol = 3)
 
 # Affichage du résultat
 print(final_plot)
 
+
+```
+```{r}
 
 ```
 

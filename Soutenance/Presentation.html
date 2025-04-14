@@ -173,8 +173,46 @@ Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen &amp; Garance Malnoë encadré.e
 <section id="présentation-des-variables" class="slide level2">
 <h2>Présentation des variables</h2>
 </section>
-<section id="univarié" class="slide level2">
-<h2>Univarié</h2>
+<section id="name" class="slide level2">
+<h2>Name</h2>
+
+<img data-src="Presentation_files/figure-revealjs/unnamed-chunk-1-1.png" width="672" class="r-stretch"></section>
+<section id="nametype" class="slide level2">
+<h2>Nametype</h2>
+</section>
+<section id="recclass" class="slide level2">
+<h2>Recclass</h2>
+
+<img data-src="Presentation_files/figure-revealjs/unnamed-chunk-2-1.png" width="672" class="r-stretch"></section>
+<section id="mass" class="slide level2">
+<h2>Mass</h2>
+</section>
+<section id="fall" class="slide level2">
+<h2>Fall</h2>
+</section>
+<section id="year" class="slide level2">
+<h2>Year</h2>
+
+<img data-src="Presentation_files/figure-revealjs/unnamed-chunk-3-1.png" width="672" class="r-stretch"></section>
+<section id="location" class="slide level2">
+<h2>Location</h2>
+</section>
+<section id="latitude" class="slide level2">
+<h2>Latitude</h2>
+
+<img data-src="Presentation_files/figure-revealjs/unnamed-chunk-4-1.png" width="672" class="r-stretch"></section>
+<section id="longitude" class="slide level2">
+<h2>Longitude</h2>
+
+<img data-src="Presentation_files/figure-revealjs/unnamed-chunk-5-1.png" width="672" class="r-stretch"></section>
+<section id="location-1" class="slide level2">
+<h2>Location</h2>
+
+<img data-src="Presentation_files/figure-revealjs/unnamed-chunk-6-1.png" width="672" class="r-stretch"></section>
+<section id="répartition-selon-les-pays" class="slide level2">
+<h2>Répartition selon les pays</h2>
+<p><img src="images/exploration/map_points_countries_avec_echelle.png" alt="Par pays (échelle logarithmique)" style="width: 50%; float: left;"></p>
+<p><img src="images/exploration/map_points_km2_avec_echelle.png" alt="Selon la superficie (échelle logarithmique)" style="width: 50%; float: right;"></p>
 </section>
 <section id="multivarié" class="slide level2">
 <h2>Multivarié</h2>
@@ -215,6 +253,8 @@ Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen &amp; Garance Malnoë encadré.e
 </section>
 <section id="r" class="slide level2">
 <h2>R</h2>
+<iframe src="http://127.0.0.1:6827" width="110%" height="600px">
+</iframe>
 </section></section>
 <section>
 <section id="impact-environnemental" class="title-slide slide level1 center">
@@ -449,6 +489,82 @@ Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen &amp; Garance Malnoë encadré.e
         ]
       });
     </script>
+    
+
+    <script>
+
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
+      // slide changes (different for each slide format).
+
+      (function () {
+
+        // dispatch for htmlwidgets
+
+        function fireSlideEnter() {
+
+          const event = window.document.createEvent("Event");
+
+          event.initEvent("slideenter", true, true);
+
+          window.document.dispatchEvent(event);
+
+        }
+
+    
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          fireSlideEnter();
+
+    
+
+          // dispatch for shiny
+
+          if (window.jQuery) {
+
+            if (previousSlide) {
+
+              window.jQuery(previousSlide).trigger("hidden");
+
+            }
+
+            if (currentSlide) {
+
+              window.jQuery(currentSlide).trigger("shown");
+
+            }
+
+          }
+
+        }
+
+    
+
+        // hookup for slidy
+
+        if (window.w3c_slidy) {
+
+          window.w3c_slidy.add_observer(function (slide_num) {
+
+            // slide_num starts at position 1
+
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
+          });
+
+        }
+
+    
+
+      })();
+
+    </script>
+
+    
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

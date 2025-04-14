@@ -1,5 +1,5 @@
 \documentclass[12pt]{article}
-\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=2.7cm,right=2.7cm,marginparwidth=1.75cm]{geometry}
 \usepackage{graphicx} % Required for inserting images
 \usepackage[french]{babel}
 \usepackage[T1]{fontenc}
@@ -75,7 +75,7 @@ sorting=ynt
 
 
 \begin{document}
-\title{Rapport de projet tutoré : Etudes des chutes de météorites sur Terre}
+\title{Rapport de projet tutoré : Étude de la chute des météorites sur Terre}
 \author{Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen \& Garance Malnoë \\ encadré.e.s par Jean-François Coeurjolly}
 \date{Janvier-Avril 2025 - M1 SSD}
 
@@ -106,7 +106,7 @@ Notre projet a débuté en janvier, contrairement aux autres groupes qui ont com
 \\
 Pour assurer un suivi régulier de notre avancement, nous avons organisé six réunions d'environ 45 minutes, toutes les deux semaines, avec notre encadrant. Ces rencontres nous ont permis de faire le point sur nos progrès, de poser des questions et d'ajuster notre travail en fonction des retours reçus.\\
 \\
-En ce qui concerne la répartition du travail, chaque membre de l'équipe a contribué de manière spécifique. Garance a pris en charge l'exploration des données et a également collaboré avec Rassem sur la modélisation par les processus ponctuels, où elle s'est concentrée sur la partie mathématique tandis que Rassem s'est occupé de la simulation. Yannis et Duc-Khoi ont chacun travaillé sur la visualisation en 3D, Duc-Khoi utilisant \texttt{Python} pour sa partie, tandis que Yannis s'est concentré sur \texttt{R}. Pour la rédaction du rapport, chaque membre a rédigé la section correspondant à sa contribution. Garance a également pris en charge l'introduction, la partie organisation et la conclusion, tandis que Rassem a rédigé la section sur l'impact environnemental.\\
+En ce qui concerne la répartition du travail, chaque membre de l'équipe a contribué de manière spécifique. Garance a pris en charge l'exploration des données et a également collaboré avec Rassem sur la modélisation par les processus ponctuels, où elle s'est concentrée sur la partie mathématique tandis que Rassem s'est occupé de la simulation. Yannis et Duc-Khoi ont chacun travaillé sur la visualisation en 3D, Duc-Khoi utilisant \texttt{Python} pour sa partie, tandis que Yannis s'est concentré sur \texttt{R}. Pour la rédaction du rapport, chaque membre a rédigé la section correspondant à sa contribution. Garance a également pris en charge l'introduction et la partie organisation, tandis que Rassem a rédigé la section sur l'impact environnemental et Yannis a écrit la conclusion.\\
 \\
 Nous n'avons pas mis en place d'outils d'organisation formels, tels qu'un diagramme Mermaid ou d'autres outils présentés lors de nos cours de gestion de projet que nous avions alors mis en oeuvre pour notre projet inital. Nous avons privilégié des discussions informelles pour définir les tâches à accomplir et faire le point avant chaque rendez-vous avec notre encadrant, chacun travaillant de manière autonome sur sa partie.\\
 \\
@@ -323,6 +323,7 @@ Pour le croisement de variables qualitatives entre elles, nous effectuons des te
   3 & recclass - fall & < $2\times 10^{-16}$  \\ 
    \hline
 \end{tabular}
+\caption{Résultats des tests de $\chi^2$}
 \end{table}
 \subsubsection*{Analyse quantitative-quantitative}
 Pour le croisement de variables quantitatives entre elles, nous regardons cette fois le coefficient de corrélation de Pearson. Les résultats sont résumés dans le tableau ci-contre :
@@ -338,6 +339,7 @@ Pour le croisement de variables quantitatives entre elles, nous regardons cette 
   4 & reclong & -0.0219 & 0.0903 & -0.5932 &  \\ 
    \hline
 \end{tabular}
+\caption{Corrélations de Pearson}
 \end{table}
 A priori, aucune des variables ne sont très corrélées, la plus forte corrélation est entre la latitude et la longitude à $-0.59$ qui reste relativement faible et peut s'expliquer par le biais de recensement identifié lors des analyses univariées.
 
@@ -363,6 +365,7 @@ Avant de faire les croisement entre variables quantitatives et qualitatives, nou
   12 & reclong & fall &< $2\times 10^{-16}$  \\ 
    \hline
 \end{tabular}
+\caption{Résultats des tests de Kruskal-Wallis et de Mann-Whitney}
 \end{table}
 La plupart des croisements sont très significatifs.
 \subsection{Discussion des limites du jeu de données}
@@ -386,16 +389,16 @@ Finalement, nous décidons donc de nous concentrer sur deux axes de travail prin
 - Une visualisation en 3D, afin de se détacher des distorsions engendrées par la projection sur le planisphère et d’obtenir une représentation plus fidèle de la répartition des météorites.\\
 
 \section{Modélisation de processus ponctuels}
-Nous avons vu lors de l'exploration de données que les points de chutes des météorites ne sont pas répartis de manière uniforme sur le globle. Nous nous demandons si par contre elles sont indépendantes ou si peut-être nous pouvons observer des phénomènes de "repoussement" ou à l'inverse de concentration de météorites dans une espace très restreint.\\
+Nous avons vu lors de l'exploration de données que les points de chutes des météorites ne sont pas répartis de manière uniforme sur le globe. Nous pouvons cependant nous demander si le placement des points semble suivre un processus indépendant ou si au contraire on peut observer des phénomènes de "repoussement" ou à l'inverse de concentration des météorites à petite échelle.\\
 \\
-Pour répondre à ce questionnement, nous simulons des processus ponctuels de Poisson où les points sont répartis aléatoirement dans l'espace mais surtout sont placés de manière indépendante les uns des autres. Nous souhaitons voir si nos données sont similaires aux réalisations d'un processus de Poisson homogène ou inhomogène, ce qui nous permettrait d'avoir une idée sur l'indépendance des chutes de météorites.\\
+Pour répondre à ce questionnement, nous nous intéressons aux processus ponctuels de Poisson où les points sont répartis aléatoirement dans l'espace mais surtout sont placés de manière indépendante les uns des autres. Nous souhaitons voir si nos données sont similaires aux réalisations d'un processus de Poisson homogène ou inhomogène ou non, ce qui nous permettrait alors d'avoir une idée sur l'indépendance des chutes de météorites.\\
 \\
-Nous commençons par le processus poncutel de Poisson homogène très simple pour prendre en main la méthode puis nous passon au cas inhomogène plus complexe mais qui peut mieux coller à nos données et au biais de rescensement observé précédemment..\\
-\\
-Dans ces deux approches, nous commençons par développer la théorie mathématique que nous appliquons ensuite à nos données au travers de simulations. Cette partie du projet s'appuie sur le livre \textit{Analysing spatial point patterns in R} \cite{analysing_spacial_points}.
+Pour cela, nous commencerons par définir le cadre des processus ponctuels, ce qui nous permettra de distinguer les processus homogènes et inhomogènes de Poisson, tout en restant moins stricts que le cadre mathématique formel dont nous nous détachons pour cette analyse. Ensuite, nous aborderons le processus ponctuel de Poisson homogène pour explorer les méthodes d'analyse statistique spatiale en \texttt{R}. Puis, nous traiterons le cas inhomogène, qui devrait mieux correspondre à nos données et prendre en compte le biais de recensement observé précédemment. Dans ces deux approches, nous développerons la théorie mathématique que nous appliquerons à nos données à travers des simulations. Cette partie du projet s'appuie sur le livre \textit{Analysing Spatial Point Patterns in R} \cite{analysing_spacial_points}.
 
 \subsection{Définitions générales des processus ponctuels et distribution uniforme}
-Pour simplifier notre analyse, nous nous plaçons en dimension 2 et nous travaillons donc sur $\R^2$ pour représenter le planisphère plutôt qu'en dimension 3 sur la surface du globe. Commençons par quelques définitions :
+Pour simplifier notre analyse, nous travaillons sur $\R^2$ pour représenter le planisphère plutôt qu'en dimension 3 sur la surface du globe.\\
+\\
+Commençons par quelques définitions :
 
 \begin{defin1}
 Un \textbf{modèle de points x} est un ensemble de points dans $\R^2$. On note $n(\textbf{x})$ le nombre d'éléments dans cet ensemble et $n(\textbf{x}\cap B)$ le nombre d'éléments de l'ensemble dans la région $B$.
@@ -416,7 +419,7 @@ Un processus ponctuel \textbf{fini} est un méchanisme aléatoire \textbf{X} tel
     \item Pour toute région $B$ bornée et fermée, le nombre $n(\textbf{X}\cap B)$ de points tombants dans la région $B$ est une variable aléatoire bien définie.
 \end{enumerate}
 \end{defin1}
-Pour notre analyse, nous travaillerons sur des processus ponctuel de Poisson, nous aurons donc besoin de la notion de processus localement fini.
+Pour notre analyse, nous travaillerons sur des processus ponctuel de Poisson, nous aurons donc besoin de la notion de processus localement fini :
 
 \begin{defin1}
 Un modèle de point \textbf{localement fini} est un ensemble $\textbf{x} = \{x_1,x_2,\dots\}$ de points dans $\R^2$ tel que pour toute région $B$, $n(\textbf{x}\cap B)$ est fini même si $\textbf{x}$ n'est pas fini.
@@ -430,34 +433,34 @@ Un processus ponctuel \textbf{localement fini} $\textbf{X}$ est un méchanisme a
 \end{enumerate}
 \end{defin1}
 
-\subsection{Processus ponctuel de Poisson}
-
+\subsection{Processus ponctuel de Poisson homogène}
 \subsubsection*{Définition et propriétés}
 Pour définir les processus ponctuels de Poisson, nous commençons par décrire "avec les mains" les trois propriétés qui le caractérise. Nous donnons la définition plus rigoureuse ensuite.\\
 \\
 Nous nous donnons un nombre aléatoire de points, pas forcément fini et nous souhaitons construire un processus ponctuel totalement aléatoire, pour cela, nous le munissons de trois propriétés :\\
 \\
-1. Homogénéité :\\
+1. \underline{Homogénéité :}\\
 Nous souhaitons que les points n'aient aucune préférence spatiale. C'est-à-dire que le nombre de points attendus dans une région quelconque B soit être proportionnel à son aire : 
 \[
-\mathbb{E}[n(\textbf{X}\cap B] = \lambda|B| \quad \text{ où } \lambda \text{ est une constante.} 
-\] 
-Dans les faits $\lambda$ est la moyenne de points par unité d'aire. On l'apppelle \textbf{l'intensité du processus ponctuel}.\\
+\mathbb{E}[n(\textbf{X}\cap B)] = \lambda|B| \quad \text{ où } \lambda \text{ est une constante.} 
+\]
+\newline
+Dans les faits $\lambda$ est la moyenne de points par unité d'aire. On l'apppelle \textbf{intensité du processus ponctuel}.\\
 \\
-2. Indépendance :\\
+2. \underline{Indépendance :}\\
 Nous souhaitons que l'information sur les réalisations d'une région n'ait pas d'influence sur les réalisations dans les autres régions. C'est à dire que pour deux région $A$ et $B$, $n(\textbf{X}\cap A)$ et $n(\textbf{X}\cap B))$ sont deux variables aléatoires indépendantes : la valeur de $n(\textbf{X}\cap A))$ n'a pas d'influcence sur les probabilités des différentes valeurs de $n(\textbf{X}\cap B))$. On souhaite que cette hypothèse d'indépendance s'applique à n'importe quelles régions disjointes $A$ et $B$ et à n'importe quel nombre de ses régions.\\
 \\
-3. Ordonnancement :\\
+3. \underline{Ordonnancement :}\\
 Nous souhaitons que la probas qu'une région $A$ contienne plus d'un point soit négligable lorsque la région est suffisament petite. C'est à dire :
 $\frac{\mathbb{P}(n(\textbf{X}\cap A))}{|A|} \underset{|A|\to 0 }{\longrightarrow} 0$.  Cela correspond en fait au fait que $n(\textbf{X}\cap A))$ suive une loi de Poisson : $\mathbb{P}(n(\textbf{X}\cap B)=k) = e^{-\mu}\frac{\mu^k}{k!}$ avec $\mu$ la moyenne de la densité de Poisson. Donc $\mathbb{E}[n(\textbf{X}\cap A)] = \mu = \lambda|A|$\\
 \\
-Plus rigoureusement :\\
+Plus rigoureusement :
 \begin{defin1}
     Un \textbf{processus ponctuel de Poisson homogène X d'intensité $\lambda > 0$} est un processus ponctuel localement fini vérifiant :
     \begin{enumerate}
         \item \textbf{Homogénéité} : Pour toute région $B$, la valeur moyenne du nombre de points dans la région $B$ $\mathbb{E}[n(\textbf{X}\cap B)] = \lambda|B|$.
         \item \textbf{Indépendance} : Pour $m$ régions de tests $B_1,B_2,\dots,B_m$ telles que $\forall i \neq j \in \{1,\dots,m\} B_1 \cap B_j = \varnothing $, $n(\textbf{X}\cap B_1),\dots,n(\textbf{X}\cap B_m)$ sont des variables aléatoires bien définies
-        \item \textbf{Distribution de Poisson} : pour toute région $B$, $n(\textbf{X}\cap B$ suit une distribution de Poisson.
+        \item \textbf{Distribution de Poisson} : pour toute région $B$, $n(\textbf{X}\cap B$) suit une distribution de Poisson.
     \end{enumerate}
 \end{defin1}
 Plusieurs propriétés découlent de cette définition :
@@ -473,14 +476,22 @@ Réduire dans le cadre des processus ponctuels signifie que l'on supprime quelqu
 Superposer deux processus ponctuels $\textbf{X}$ et $\textbf{Y}$ signifie que l'on combine les points des deux processus en un nouveau processus ponctuel $\textbf{Z} = \textbf{X}  \cup \textbf{Y}$. La \textbf{propriété de superposition} des processus de Poisson affirme que si $\textbf{X}$ et $\textbf{Y}$ sont des processus de Poisson homogène de d'intensité $\lambda_{\textbf{X}}$ et $\lambda_{\textbf{Y}}$ alors leur superposition $\textbf{Z}$ est aussi un processus de Poisson homogène d'intesité $\lambda_{\textbf{Z}} = \lambda_{\textbf{X}} + \lambda_{\textbf{Y}}$
 \end{prop1}
 
-On peut aisément simuler un processus de Poisson en utilisant les propriétés précédentes. Pour une région $B$ où l'on souhaite générer des points suivant une intensité $\lambda$, on commence par déterminer le nombre total de points en générant un nombre aléatoire $N$ suivant une loi de Poisson de moyenne $\mu = \lambda|B|$. Ces $N$ points sont ensuite placés indépendemment dans $B$ de manière aléatoire.\\
-\\
 Bien que les processus ponctuel de Poisson soient très simples, ils restent réalistes pour un certain nombre de phénomènes réels tels que la radioactivité, les évènements rares ou les évènements extrèmes ce qui a motivé leur utilisation pour notre étude sur les chutes de météorites.\\
 \\
-Ils sont également utilisés comme modèles de références pour faire des comparaisons à d'autres modèles. Ils sont utilisés comme hypothèse nulle pour les tests statistiques.\\
+De plus, Les processus ponctuels de Poisson homogènes sont utilisés comme modèles de références pour faire des comparaisons à d'autres modèles : ils sont utilisés comme hypothèse nulle pour les tests statistiques.\\
 \\
 Enfin, d'autres modèles sont construits à partir de lui comme le processus ponctuel de Poisson inhomogène que nous verrons par la suite.
 \subsubsection*{Simulations}
+Nous regardons maintenant si ces processus permettent de bien représenter les chûtes de météorites. Pour cela, on simule un processus de Poisson. On peut aisément faire cela en utilisant les propriétés énoncées précèdemment. Pour une région $B$ où l'on souhaite générer des points suivant une intensité $\lambda$, on commence par déterminer le nombre total de points en générant un nombre aléatoire $N$ suivant une loi de Poisson de moyenne $\mu = \lambda|B|$. Ces $N$ points sont ensuite placés indépendemment dans $B$ de manière aléatoire.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=16cm]{Images/processus_ponctuel/poisson homogène.png}
+    \caption{Comparaison des distributions de météorites pour un processus de Poisson homogène}
+\end{figure}
+Nous avons de toute évidence une différence nette entre la distribution spatiale observée des impacts de météorites et celle simulée selon un processus de Poisson homogène. Sur la carte de gauche, représentant les données réelles, on observe des concentrations marquées dans certaines régions du monde, notamment en Europe, en Amérique du Nord, en Australie et dans une moindre mesure en Afrique du Sud. À l’inverse, de vastes zones comme les déserts, les forêts denses ou les océans présentent très peu ou pas de points, ce qui traduit une répartition inégale que nous avions relevée précèdemment.\\
+\\
+La carte de droite, issue de la simulation, montre quant à elle une répartition quasi uniforme sur les terres émergées. Le nombre total de points simulés est similaire à celui des observations réelles, mais leur dispersion ne tient pas compte des facteurs géographiques ou humains. Cette comparaison confirme que les impacts réels ne suivent pas un processus spatialement homogène : ils sont influencés par des biais d’observation, des contraintes d’accessibilité ou d’habitat humain. En conséquence, un modèle de Poisson homogène ne permet pas de modéliser cette distribution, et une approche inhomogène est plus appropriée pour refléter la réalité observée. Pour cela, nous nous intéressons au processus de Poisson inhomogènes.
 
 \subsection{Processus ponctuel de Poisson inhomogène}
 \subsubsection*{Définition et propriétés}
@@ -494,9 +505,10 @@ Un \textbf{processus ponctuel de Poisson inhomogène} d'intensité $\lambda(u)$ 
     \item \textbf{Distribution de Poisson} : Le nombre de points tombants dans une région donnée suit une distribution de Poisson.
 \end{enumerate}
 \end{defin1}
-C'est un modèle très général comme dans le cas homogène puisqu'il y a très peu de restriction sur $\lambda(u)$ ce qui rend ce modèle très adéquat dans beaucoup de contexte. La pricipale hypothèse devient donc l'indépendance des points.\\
+C'est un modèle très général comme dans le cas homogène puisqu'il y a très peu de restriction sur $\lambda(u)$ ce qui rend ce modèle très adéquat dans beaucoup de contexte et pourrait ainsi mieux correspondre à nos donénes. La pricipale hypothèse devient donc l'indépendance des points.\\
 \\
-Les processus inhomogène de Poisson possèdent des propriétés analogues à celle du cas homogène :\\
+Les processus inhomogène de Poisson possèdent des propriétés analogues à celle du cas homogène :
+
 \begin{prop1}
     \textbf{Propriété conditionnelle} : Soit un processus ponctuel inhomogène de Poisson de fonction d'intensité $\lambda(u)$. Si $n$ points sont tombés dans une région $B$ donnée alors ces points sont indépendants entre eux et chaque point a la même probabilité de distribution sur $B$ : $f(u) = \lambda(u)/\mu$ où $\mu = \int_B \lambda(u) du$.
 \end{prop1}
@@ -509,44 +521,215 @@ Les processus inhomogène de Poisson possèdent des propriétés analogues à ce
     \textbf{Propriété de superposition} : Soit $\textbf{X}$ et $\textbf{Y}$ deux processus de Poisson inhomogènes et de fonction d'intensité respectives $\lambda_{\textbf{X}}(u)$ et $\lambda_{\textbf{Y}}(u)$ alors leur superposition $\textbf{Z} = \textbf{X} \cup \textbf{Y}$ est également un processus de Poisson inhomogène de fonction d'intensité $\lambda_{\textbf{Z}}(u) = \lambda_{\textbf{X}}(u) + \lambda_{\textbf{Y}}(u)$.
 \end{prop1}
 
-On peut aisément simuler un processus de Poisson inhomogène de fonction d'intensité $\lambda(u)$ à l'aide des propriétés précédemment présentées et en utilisant la méthode de réduction de Lewis-Shedler. Cette méthode consiste à trouver un majorant $M$ tel que pour tout $u$ dans la région où l'on souhaite générer les points $\lambda(u) \leq M$. On génère alors un processus de Poisson homogène d'intensité $M$ comme décrit dans la section sur les processus de Poisson homogènes. Pour chaque point $x_i$ du modèle de points obtenu, on calcule $p_i = \lambda(x_i)/M$ et on conserve aléatoirement $x_i$ avec une probabilité $p_i$ indépendamment de ce qu'il advient des autres points. On obtient alors une réalisation d'un processus de Poisson de fonction d'intensité $\lambda(u)$. Une autre méthode possible est de diviser l'espace en pixels, de calculer la probabilité que chaque pixel contienne un point and de sélectionner aléatoirement des pixels en utilisant ces probabilités. Cette méthode demande d'avantage de calculs que la méthode de Lewis-Shedler mais nécessite moins de calculs pour chaque point.
 \subsubsection*{Simulations}
+On peut aisément simuler un processus de Poisson inhomogène de fonction d'intensité $\lambda(u)$ à l'aide des propriétés précédemment présentées et en utilisant la méthode de réduction de Lewis-Shedler. Cette méthode consiste à trouver un majorant $M$ tel que pour tout $u$ dans la région où l'on souhaite générer les points $\lambda(u) \leq M$. On génère alors un processus de Poisson homogène d'intensité $M$ comme décrit dans la section sur les processus de Poisson homogènes. Pour chaque point $x_i$ du modèle de points obtenu, on calcule $p_i = \lambda(x_i)/M$ et on conserve aléatoirement $x_i$ avec une probabilité $p_i$ indépendamment de ce qu'il advient des autres points. On obtient alors une réalisation d'un processus de Poisson de fonction d'intensité $\lambda(u)$. Une autre méthode possible est de diviser l'espace en pixels, de calculer la probabilité que chaque pixel contienne un point and de sélectionner aléatoirement des pixels en utilisant ces probabilités. Cette méthode demande d'avantage de calculs que la méthode de Lewis-Shedler mais nécessite moins de calculs pour chaque point.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=16cm]{Images/processus_ponctuel/poisson inhomogène world wide.png}
+    \caption{Comparaison des distribution d'un processus de Poisson inhomogène sur le planisphère}
+\end{figure}
+La comparaison entre la distribution réelle des impacts de météorites et la simulation d’un processus de Poisson inhomogène montre une bien meilleure correspondance spatiale que dans le cas homogène à l'échelle du monde (à grand échelle). Contrairement à la simulation homogène, où les points étaient répartis uniformément sur toutes les terres, ici la densité simulée varie selon les zones, ce qui rend la répartition beaucoup plus proche de celle observée. Les régions les plus densément peuplées ou scientifiquement explorées (Europe, États-Unis,Sud de l'Australie, Inde, etc.) présentent des concentrations d’impacts similaires dans les deux cartes.\\
+\\
+Cela suggère que le modèle inhomogène parvient à capturer les hétérogénéités et refléter les caractéristiques spatiales présentes dans les données à grande échelle comme nous pouvions nous y attendre.\\
+\\
+Cependant, à cette échelle, nous ne pouvons pas voir en détail la répartition des points et vérifier si nous données ressemblent, à plus petite échelle, à une réalisation d'un processus de poisson inhomogène. Pour cela, regardons nous regardons une région plus restreinte : l'Oman (309 000km²).\\
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=15cm,height=14.5cm]{Images/processus_ponctuel/poisson inhomogène oman.png}
+    \caption{Comparaisons des réalisation d'un processus de Poisson homogène sur l'Oman avec les données réelles}
+\end{figure}
 
+Les huit simulations présentées pour la région d’Oman illustrent bien la variabilité inhérente à un processus de Poisson inhomogène. On observe une répartition globalement cohérente d’une simulation à l’autre, avec une concentration marquée des points dans le sud et le centre du pays, zones correspondant vraisemblablement à une intensité plus élevée du processus. Toutefois, chaque réalisation présente des différences locales, soulignant le caractère aléatoire du modèle. Cette cohérence globale malgré la variabilité locale confirme la stabilité du modèle en termes de densité spatiale attendue, tout en respectant la nature probabiliste du phénomène. Cela montre que le modèle reproduit fidèlement les grandes tendances d’intensité observées sans figer les positions exactes, ce qui est attendu pour un processus stochastique réaliste.\\
+\\
+Pour ce qui est de la correspondance entre les données réelles et les simulations, on observe bien une distribution similaire avec des points parfois très proches ou à l'inverse regroupés en mini-clusters. La représentation de la chûte des météorites par un processus de Poisson inhomogène semble donc adapté. Cependant, nous ne pouvons pas utiliser ce modèle pour faire des prédictions de part sa nature aléatoire.
 
 \section{Visualisation en 3 dimensions}
-Travail de Yannis et Duc-Khoi.\\
+Une part importante du projet fut consacrée à la représentation des impacts de météorites sur une carte. Notre première approche a été de les faire figurer sur des cartes en 2 dimensions sur \texttt{R} comme sur \texttt{Python} avec les packages \texttt{ggplot2} et \texttt{plotly} pour mieux comprendre le jeu de données. Celles-ci ont permis de conjecturer un potentiel effet de regroupement qui a été exploré lors des processus de Poisson. Toutefois, pour représenter des données présentes sur la surface de la Terre dans un plan, des déformations des angles et des distances sont nécessaires. Ainsi, l'idée de représenter les impacts sur le globe terrestre a eu pour nous une plus-value double : pouvoir représenter le plus fidèlement possibles les données mais aussi pouvoir manipuler et comprendre les limites des outils de visualisation 3D qui nous sont proposés.\\
 \\
-- Choix de R + \texttt{Python} : voir les limites des deux langages, les comparer et utiliser leurs forces et faiblesses pour des applications différentes, Jeff est plus à l'aise en R et les ressources qu'il nous a données sont en R, ...
-- Réexpliquer l'intérêt d'une visualisation end 3D par rapport à une visualisation sur un planisphère (si possible avec des sources).
-- Pour les deux, mettre \textit{QUELQUES} visuels (utiliser la possibilité de faire des colonnes notamment).
-- Pour les deux, expliquer les forces et les faiblesses, les limitations rencontrées.
+La visualisation en 3D a été réalisée avec deux approches complémentaires : une version en Python et une version en R. L’objectif commun était de proposer une visualisation interactive  et informative de la répartition géographique et temporelle des chutes de météorites au cours du temps, tout  en valorisant les atouts spécifiques de chaque langage de programmation :\\
+\begin{itemize}
+    \item[$\bullet$] Python pour bénéficier des bibliothèques \textit{Panda, plotly, numpy, geopandas, shapely.geometry} qui permettent une grande souplesse pour les animations interactives sur
+globe
+    \item[$\bullet$] R pour exploiter les possibilités offertes par le package \textit{threejs} ainsi que pour envisager une intégration dans une application Shiny qui pourrait être déployé sur le web.
+\end{itemize}
+
+Cette approche à deux versions nous a permis de comparer les outils, de tirer profit des forces
+de chaque langage et de mutualiser les idées en vue d’une visualisation finale complète,
+robuste et portable
 
 \subsection{Visualisation avec \texttt{Python}}
+L’approche principale de la visualisation en 3D sur Python s’est faite à l’aide des bibliothèques \textit{Plotly, GeoPandas, Shapely, Pandas} et \textit{NumPy}. L'objectif était de proposer une animation interactive sur un globe terrestre, permettant de visualiser l’évolution spatiale et temporelle des chutes de météorites recensées.
+\\
+
+Un premier traitement a été réalisé pour filtrer les lignes incomplètes, en supprimant les
+observations sans latitude, longitude, masse ou année. L’année a ensuite été convertie au
+format entier afin de pouvoir construire une animation temporelle.
+\\
+
+Concernant la masse des météorites, une transformation logarithmique a été appliquée à l’aide de la fonction log1p() de \textit{NumPy}, afin de limiter l’influence visuelle des valeurs extrêmes dans le dimensionnement des points.
+\\
+
+Pour associer chaque météorite à un pays, une jointure spatiale a été réalisée. Les coordonnées géographiques ont d’abord été converties en objets géométriques (Point) via la bibliothèque \textit{Shapely}. Ces objets ont été intégrés à un GeoDataFrame grâce à \textit{GeoPandas}. La jointure avec les frontières des pays, issues d’un shapefile externe (ne\_110m\_admin\_0\_countries.shp, fourni
+par Natural Earth), a été effectuée à l’aide de la fonction sjoin() de \textit{GeoPandas}.
+\\
+
+
+La visualisation a été conçue avec Plotly. Un globe 3D a été généré en utilisant la projection orthographique. Chaque météorite est représentée par un point :
+
+\begin{itemize}
+    \item[$\bullet$] Sa taille est proportionnelle à la masse transformée.
+    \item[$\bullet$] Sa couleur reflète l’année de chute, avec une échelle de couleur continue.
+    \item[$\bullet$] \texttt{long} : Les longitudes décimales des points de données.
+    \item[$\bullet$] La transparence varie selon qu’il s’agisse d’une météorite cumulée ou de l’année courante.
+\end{itemize}
+\vspace{0.3cm}
+Une animation a été construite en générant une figure avec des frames, chacune correspondant à une année. Chaque frame contient deux groupes de points : les météorites cumulées (en fond) et celles spécifiques à l’année (au premier plan). L’interface est interactive et intègre un curseur temporel ainsi que des boutons pour lancer ou arrêter l’animation. L’utilisateur peut ainsi explorer visuellement l’évolution des chutes de météorites dans le temps et dans l’espace.\\
+\\
+Deux annotations dynamiques sont également affichées :\\
+\begin{itemize}
+    \item[$\bullet$] Le nombre total de météorites recensées à l’année courante.
+    \item[$\bullet$] Le top 10 des pays comptant le plus de chutes à ce moment-là
+\end{itemize}
+\vspace{0.3cm}
+Une image de l'animation est représentée ci-dessous :\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=16cm]{Images/WhatsApp Image 2025-04-14 at 15.47.16.jpeg}
+    \caption{Visualisation 3D avec Plotly}
+\end{figure}
+\vspace{0.3cm}
+
+Bien que les visualisations apportent une lecture intuitive des données, elles restent dépendantes des biais présents dans le jeu de données. On retrouve un biais géographique où certaines régions sont surreprésentées (expéditions en Antarctique), d'autres sous-représentées (zones peu peuplées ou inaccessibles) et un biais temporel avec des données qui sont très concentrées sur les dernières décennies.\\
+\\
+
 \subsection{Visualisation avec \texttt{R}}
 
-\section{Impact environnemental et sociétal du projet}
-J'ai remis les consignes du pdf de l'Ensimag. Cette section doit représenter envrion 20\% du rapport.
-\subsection*{Impact environnemental personnel}
-Partie moins importante.
-Estimation de l'impact des trajets domicile-travail, impact de la consommation des équipements utiliés (ordinateurs perso/fixes, temps d'utilisation des serveurs github,...), autres impacts.
-Expression en exprimé en kg eq. CO2.
+L'approche sur \texttt{R} d'une représentation en 3 dimensions des données s'est notamment faite par une suggestion de notre tuteur du package \texttt{threejs}. \texttt{Three.js} est à l'origine une bibliothèque JavaScript permettant de manipuler des objets en 3D dans un navigateur web. Cette bibliothèque a eu une extention sur le langage \texttt{R}, et notamment la fonction \texttt{globejs()} qui permet de représenter des données spaciales sur un globe que l'on peut faire pivoter librement.\\
+\\
+Cette fonction prend principalement comme argument :\\
+\begin{itemize}
+    \item[$\bullet$] \texttt{img} : Une chaîne de caractères représentant un chemin de fichier ou un URL d'une image à tracer sur la surface du globe. Ici, l'image a été obtenue par imagerie spatiale sur le site de la NASA.
+    \item[$\bullet$] \texttt{lat} : Les latitudes décimales des points de données.
+    \item[$\bullet$] \texttt{long} : Les longitudes décimales des points de données.
+    \item[$\bullet$] \texttt{color} : Un vecteur indiquant la couleur des points sur le globe.
+    \item[$\bullet$] \texttt{value} : Un vecteur indiquant la hauteur des points sur le globe.\\
+\end{itemize}
+\vspace{0.3cm}
+L’objectif initial de cette fonction était de bénéficier de l’interactivité offerte par le langage JavaScript, notamment pour permettre des interactions dynamiques avec l’utilisateur. Cependant, cette interactivité n’a pas pu être pleinement reproduite dans R, car le package utilisé présentait des limitations, en particulier pour la gestion des événements tels que les clics sur des boutons.\\
+\\
+C’est dans ce contexte que l’utilisation de Shiny s’avère pertinente. En effet, Shiny permet de créer des applications web interactives directement en R, en facilitant la communication entre l’interface utilisateur et le serveur. Grâce à sa capacité à gérer les entrées utilisateur (clics, glissements, sélections, etc.) en temps réel, Shiny constitue une solution adaptée pour pallier les limites des packages R standards en matière d’interactivité.\\
+\\
+La réalisation du dashboard Shiny comporte 3 filtres sur les données :\\
+\begin{itemize}
+    \item[$\bullet$] \texttt{Un filtre sur l'année de la chute} : Il se présente sous la forme d'une barre sélectionnant les années décennies par décennies de 1900 à 2013. Cele supprime 706 lignes du jeu de données mais a pour avantage de ne pas débuter à partir de 860 et donc d'alourdir le filtre. Cela reste négligeable parmis les 38115 lignes disponibles.\\
+    \item[$\bullet$] \texttt{Un filtre sur la masse des météorites} : Les masses sont regroupés dans des classes allant de puissance de 10 en puissance de 10 ( de 1 à 10 grammes jusqu`à 10 à 100 tonnes ).\\
+    \item[$\bullet$] \texttt{Un filtre sur le pays dans lequelle est sont tombées} : On sélectionne le ou les pays sur lesquelles on veut focaliser les données. Le jeu de données initial ne comportant pas le pays d`où est-ce qu'elles sont tombées, nous avons dû ajouter une colonne pays en les determinants grâce au package \textit{rnaturalearth}.
+\end{itemize}
+\vspace{0.3cm}
+Nous avons aussi voulu connaître le nombre de météorites tombées selon les filtres mais aussi colorier les points en fonction de leur masse pour améliorer la visualisation. Le rendu est le suivant :\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=16cm]{Images/shiny1.png}
+        \caption{Shiny dashboard sans filtre appliqué}
+\end{figure}
 
-\subsection*{Impact global du projet}
-Dans cette section, nous vous demandons d’évaluer l’impact global du projet sur lequel vous avez travaillé. Si vous avez travaillé sur un produit fini (logiciel, infrastructure…), vous devrez mettre en valeur non seulement l’impact du produit lui-même mais également l’évolution de cet impact entre le début et la fin de votre PFE. Si vous avez travaillé sur une preuve de concept, un avant-projet, un projet de recherche et développement ou un projet de recherche pure, votre évaluation devra tenir compte des possibles utilisations de votre travail dans un contexte applicatif. Cette section sera la plus importante de la partie consacrée à l’impact environnemental et sociétal. Nous ne vous demandons pas une simple évaluation technique, mais une véritable réflexion déclinée sur deux plans :
-1. à petite échelle (concernant uniquement votre projet, à court terme)
-2. à plus grande échelle (long terme, et dans l’hypothèse où le même type de projet venait à se généraliser et/ou
-se transposer dans différents secteurs)
-Nous demandons dans cette section un avis honnête, critique et argumenté sur les impacts positifs et négatifs du projet. Vous ne serez pas évalué sur la quantité ni la qualité des bonnes pratiques sociales et environnementales mises en œuvre dans le cadre de votre PFE : il est donc inutile d’écoblanchir votre discours. Ce qui nous importe est la vision critique que vous adoptez.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=16cm]{Images/shiny2.png}
+    \caption{Shiny dashboard représentant les météorites de 100g - 1kg tombées en France entre 2000 et 2013}
+\end{figure}
+\vspace{0.3cm}
+Ce dashboard correponds à nos attentes en termes de visualisation de données spaciales et permet de les manipuler avec aisance. Toutefois, des limites sont à noter. En effet, il nous est pas possible d'interagir avec les points des météorites même avec le package \textit{shinyjs}. En outre, l'utilisation de la fonction globejs() a un coût important de calculs et l'application de chaque filtre relance cette fonction. Cela a pour effet d'avoir un temps de chargement assez long et donc impacte la fluidité de l'application shiny.\\
+\\
+\section{Impact environnemental et social du projet}
+\subsection{Impact environnemental personnel}
+Avant de s'intéresser à l’impact environnemental directement lié aux calculs et à l’infrastructure logicielle, il est pertinent d’évaluer l’empreinte carbone associée aux activités des membres du groupe tout au long du projet. Ces activités comprennent notamment les déplacements, l’utilisation des ordinateurs personnels, ainsi que l’usage ponctuel d’outils numériques tels que les modèles d’intelligence artificielle.\\
+\\
+Sur une durée de quatre mois et demi (environ 18 semaines), le groupe s’est réuni en présentiel une fois toutes les deux semaines, soit environ six réunions. Deux membres utilisaient le tramway pour se rendre sur le lieu de travail, avec un trajet estimé à 5 km aller. En considérant 6 trajets pour chacun, cela donne un total de 120 km parcourus en tramway. Avec une estimation moyenne de 3 g de CO2 par kilomètre pour ce mode de transport, les émissions associées s’élèvent à environ 360 g de CO2. Les deux autres membres venaient à vélo, un mode de transport sans émission directe, ce qui limite considérablement l’impact des déplacements.\\
+\\
+Concernant l’usage des ordinateurs, chaque membre a travaillé environ deux heures par semaine sur son ordinateur personnel, soit un total de 144 heures cumulées pour les quatre membres. En supposant une consommation électrique moyenne de 50 Wh par heure pour un ordinateur portable, la consommation totale atteint environ 7,2 kWh sur l’ensemble du projet. Étant donné le mix énergétique français relativement bas carbone, cela correspond à environ 360 g de CO2 émis.\\
+\\
+Le groupe a également utilisé l’intelligence artificielle (notamment ChatGPT) pour accompagner certaines phases du travail, à raison d’environ 20 requêtes par semaine, sur 18 semaines, soit environ 360 requêtes au total. En prenant comme ordre de grandeur 2 g de CO2 par requête, cela représente environ 720 g de CO2.\\
+\\
+En additionnant ces différentes composantes – déplacements, consommation énergétique des ordinateurs et usage de l’IA – l’empreinte carbone totale des activités du groupe peut être estimée à environ 1,26 kg de CO2 sur toute la durée du projet. Cette quantité reste très faible : elle équivaut par exemple à l’empreinte d’un petit trajet en voiture thermique sur une dizaine de kilomètres. Cela montre que, dans son ensemble, le projet a été mené avec un impact carbone minimal du point de vue des pratiques des membres du groupe.
 
-\subsection*{Politique de la structure d'acceuil}
-Dans cette section, nous vous demandons de dresser une liste des actions menées par la structure d’accueil sur les aspects écologiques et sociaux. Cela peut concerner des actions individuelles ou la mise en œuvre d’une véritable politique dans ce domaine. De même, cela concerne à la fois des politiques extérieures éventuelles (fondations, dons à des organismes…), mais également des actions destinées à l’ensemble des collaborateurs de l’entreprise (conditions de travail, mise en œuvre de bonnes pratiques environnementales au quotidien…). Vous mettrez bien entendu en évidence tous les aspects positifs de cette politique. En revanche, si vous estimez qu’il y a des voies d’amélioration possibles en termes de politique de responsabilité sociale et environnementale, nous vous encourageons à proposer une liste d’actions concrètes qui pourraient être mises en œuvre. Cela montrera non seulement votre capacité à réaliser une analyse critique, mais cela vous permettra également d’être une force de proposition pour votre structure d’accueil.
+\subsection{Impact environnemental global}
+Le projet sur lequel nous avons travaillé porte sur l’exploration des données d'environ 45 000 chûtes de météorites via des analyses univariées et multivariées, des visualisations en 2D et 3D et une modélisation statistique par processus ponctuels (homogènes et inhomogènes de Poisson). Il s’agit d’une **preuve de concept**, c’est-à-dire que notre objectif n’était pas de livrer un produit final destiné à un large public ou à une mise en production, mais plutôt de démontrer la pertinence d’une approche scientifique dans le cadre d’une recherche exploratoire. Cela a naturellement un impact sur la manière dont le projet s’inscrit dans une réflexion environnementale.
+
+\subsubsection*{À petite échelle : un projet sobre, maîtrisé et temporaire}
+Dès les premières étapes de conception, notre projet s’inscrivant dans un cadre académique sans infrastructure lourde, \textbf{la consommation de ressources est restée relativement limitée} de manière factuelle. Il n’y a pas eu de réflexion poussée sur la sobriété numérique dès le départ, mais la nature exploratoire du travail, sans déploiement intensif ni recours à des serveurs puissants, a fait que \textbf{l’impact environnemental direct} est resté contenu par les circonstances elles-mêmes plutôt que par une démarche volontaire.\\
+\\
+Par exemple, l’essentiel de notre travail s’est fait sur des ordinateurs personnels et mutualisés au sein de notre équipe. Plutôt que de lancer des traitements en parallèle sur plusieurs machines, nous avons préféré partager l’usage de quatre postes pour réduire le temps de fonctionnement global. Cette simple organisation a permis d’éviter la redondance énergétique souvent rencontrée dans les projets menés sans coordination.\\
+\\
+Côté algorithmique, même si l’optimisation du code n’a pas été notre priorité principale, nous avons veillé à adopter des pratiques raisonnables. Par exemple, nous avons utilisé des bibliothèques éprouvées comme NumPy et Pandas, non seulement pour leur simplicité d’utilisation, mais aussi parce qu’elles sont généralement plus efficaces que des implémentations manuelles. Cela nous a permis d’éviter des surcoûts inutiles en termes de calcul, tout en garantissant des résultats fiables. Bien que l’efficacité énergétique n’ait pas été explicitement mesurée, l’utilisation d’outils optimisés contribue indirectement à limiter l’empreinte numérique de notre travail.\\
+\\
+Nous avons également veillé à ne pas laisser traîner de fichiers inutiles : au fil du projet, les fichiers intermédiaires ou obsolètes ont été supprimés régulièrement, et les visualisations ou outputs volumineux ont été compressés avant d’être stockés sur GitHub. Cela a permis d’éviter de surcharger inutilement les serveurs d’hébergement et de réduire la bande passante requise pour le partage des données. Aucun serveur distant n’a été sollicité n’a été mobilisée. Cette \textbf{simplicité technique} est un avantage écologique évident.\\
+\\
+Enfin, nos outils n’ayant pas vocation à être utilisés quotidiennement ou massivement (comme ce serait le cas d’une application web grand public), la fréquence d’exécution de notre code reste faible, ce qui contribue là encore à en limiter l’impact environnemental.
+
+\subsubsection*{À grande échelle : entre potentiel et vigilance}
+
+Si aujourd’hui notre preuve de concept a une empreinte modeste, la question de son \textbf{impact potentiel en cas de généralisation} mérite une réflexion honnête.\\
+\\
+Prenons un cas hypothétique : que se passerait-il si la méthode que nous avons conçue était largement adoptée dans d’autres projets de recherche, dans l’enseignement ou même dans des outils de visualisation accessibles au grand public ? Cette perspective n’est pas irréaliste. En effet, les représentations 3D interactives sont très prisées pour leur impact visuel et pédagogique. Si elles deviennent systématiques dans la communication scientifique, cela pourrait engendrer une \textbf{augmentation notable des ressources utilisées}, notamment sur les navigateurs web ou les plateformes interactives en ligne.\\
+\\
+Par ailleurs, une méthode plus rapide, plus efficace, pourrait inciter à multiplier les analyses. Pourquoi ne pas étudier les météorites par année, par région, par composition, par taille… et ainsi générer de plus en plus de scénarios, de simulations, de visualisations ? C’est là qu’un effet rebond pourrait apparaître : les gains d’efficacité obtenus localement (algorithmes plus rapides, traitements mieux optimisés) pourraient être compensés, voire annulés, par un usage global accru. C’est le **paradoxe de Jevons** : une amélioration technologique entraîne paradoxalement une augmentation de la consommation totale.\\
+\\
+Dans notre cas, ce risque reste contenu pour l’instant, notamment parce que le champ d’application est très spécialisé. La météoritique n’est pas un domaine qui attire les foules, et les outils comme les nôtres ne seront probablement pas utilisés au quotidien par des millions d’utilisateurs.
+ 
+\subsubsection*{Et après ? Quelle fin de vie pour le projet ?}
+La question de la fin de vie du projet se pose naturellement une fois le travail terminé. Dans notre cas, \textbf{le code ainsi que l’application R-Shiny resteront simplement disponibles sur GitHub}, principalement à des fins de consultation ou de réutilisation ponctuelle par des personnes intéressées par le sujet.\\
+\\
+\textbf{Aucun déploiement large ni intégration dans une plateforme existante n’est envisagé — et cela ne serait d’ailleurs ni pertinent ni nécessaire}, compte tenu de la nature exploratoire et académique du travail. Le projet conservera donc une existence discrète, propre aux preuves de concept développées dans un cadre de recherche. Sa mise à disposition sur GitHub assure néanmoins une forme de traçabilité et d’accessibilité minimale : \textbf{le code pourra être exploré ou réutilisé comme base méthodologique dans d’autres contextes}, sans impliquer une consommation accrue de ressources.
+
+\subsection{Impact sociétal}
+Bien que notre projet s’inscrive dans le cadre d’une preuve de concept académique — une exploration scientifique de la répartition spatio-temporelle de 38 000 impacts de météorites — ses implications sociétales ne doivent pas être négligées. À première vue, il ne touche ni aux données personnelles, ni à la prise de décision algorithmique, ni à un usage grand public intensif. Pourtant, même dans ce contexte spécialisé, certaines retombées sociales indirectes méritent d’être soulignées.\\
+\\
+L’un des premiers apports sociétaux du projet tient à son **potentiel éducatif et culturel**. En développant une interface R-Shiny interactive, avec des visualisations en 2D et en 3D, nous avons rendu accessible un jeu de données massif et complexe à un public non expert. Cette mise en forme visuelle, intuitive et librement consultable ouvre la voie à une vulgarisation scientifique de qualité. Elle pourrait s’insérer dans des contextes éducatifs (cours, ateliers, ressources pédagogiques) en contribuant à éveiller la curiosité pour des disciplines telles que l’astronomie. En donnant à voir un phénomène rare, planétaire, presque abstrait comme la chute de météorites, le projet participe à une meilleure compréhension du monde naturel et de notre place dans l’univers.\\
+\\
+Le projet, fondé exclusivement sur des **données ouvertes et publiques** (notamment issues des bases scientifiques de la NASA), ne collecte ni ne traite aucune information personnelle. Il est donc en dehors du champ du RGPD et ne soulève pas d’enjeux en matière de vie privée ou de cybersécurité. Cela ne nous a pas empêchés d’adopter une posture éthique : rigueur dans la traçabilité des données, citation des sources, documentation du code, et transparence dans les traitements effectués. En d’autres termes, même sans enjeu sensible, le projet reste respectueux des principes fondamentaux de l’éthique numérique.\\
+\\
+Par ailleurs, il ne repose sur **aucun algorithme de décision** ni sur des systèmes de recommandation automatisée. L’analyse statistique via des processus ponctuels reste purement exploratoire. Le projet ne formule pas de jugements, ne classe pas, ne propose pas de réponses prédéfinies. Il se positionne comme un outil d’investigation visuelle et statistique, qui laisse à l’utilisateur toute liberté d’interprétation. Cela limite fortement les risques de biais, de mésusage ou d’impacts involontaires sur les comportements humains. Si, un jour, cette approche était adaptée à des domaines plus sensibles (comme la prévention de risques naturels ou la surveillance environnementale), il faudrait alors accompagner ces usages d’une réflexion sur la robustesse des résultats et les responsabilités de leur interprétation.\\
+\\
+En résumé, bien qu’il ne transforme pas directement des conditions de vie ou des pratiques sociales, notre projet s’inscrit dans une logique de **diffusion ouverte de la connaissance**, de **transparence scientifique** et de **sobriété numérique**. 
+
+\subsection{Politique de la structure d'accueil : Université Grenoble Alpes (UGA)}
+En tant qu’établissement public d’enseignement supérieur et de recherche, l’Université Grenoble Alpes (UGA) assume pleinement sa responsabilité sociale et environnementale. Sa politique de développement durable s’inscrit dans une dynamique à la fois institutionnelle, pédagogique, environnementale et sociale, en cohérence avec les cadres nationaux (comme la loi ESR et le référentiel DD\&RS) et internationaux (notamment les Objectifs de Développement Durable de l’ONU). Cette orientation se traduit par des engagements concrets, reconnus notamment par l’obtention du label DD\&RS en 2021, qui atteste d’une approche globale intégrant la gouvernance, la formation, la recherche, la gestion environnementale et la politique sociale.\\
+\\
+L’UGA participe activement à la transition écologique à l’échelle territoriale, notamment à travers le Plan Climat Air Énergie Territorial (PCAET) porté par la Métropole. Elle a également signé la charte "Campus Responsables", affirmant ainsi sa volonté de favoriser des pratiques durables au quotidien dans l’enseignement supérieur. Ces engagements se concrétisent sur ses campus par des actions variées : l’encouragement de la mobilité douce avec l’installation d’abris vélos, des incitations à l’usage des transports en commun, ou encore la participation au challenge annuel "Au boulot à vélo". Sur le plan énergétique, des efforts de rénovation de bâtiments sont engagés, accompagnés d’un plan de sobriété visant à réduire la consommation, par exemple en limitant le chauffage ou en éteignant les bâtiments hors période d’ouverture.\\
+\\
+La gestion des déchets constitue un autre volet actif de cette politique. Le tri sélectif est généralisé, le plastique à usage unique est progressivement éliminé, et du matériel informatique est récupéré et réemployé grâce à des ressourceries. L’alimentation responsable est également prise en compte, avec une diversification de l’offre végétarienne dans les restaurants universitaires, des actions de sensibilisation contre le gaspillage alimentaire, et une collaboration accrue avec le CROUS sur ces enjeux.\\
+\\
+Au-delà des aspects environnementaux, l’université développe une approche sociale attentive à la qualité de vie de ses communautés. Des cellules d’écoute et dispositifs d’alerte ont été mis en place pour lutter contre les discriminations et les situations de harcèlement. Des dispositifs de soutien psychologique existent pour les étudiants et les personnels, renforcés notamment après la crise sanitaire. L’UGA œuvre également pour l’inclusion, avec des aménagements pour les personnes en situation de handicap, des campagnes de sensibilisation sur les questions d’égalité, de genre, de diversité et de santé mentale, ainsi que des actions en faveur du droit à la déconnexion et du bien-être au travail.\\
+\\
+Cependant, malgré une politique claire et des efforts visibles, certaines marges d’amélioration subsistent. Le parc immobilier universitaire, partiellement constitué de bâtiments anciens, reste énergivore, et les rénovations, bien qu’en cours, nécessitent des moyens considérables et des délais importants. Par ailleurs, la diversité des composantes et laboratoires rend parfois difficile une coordination homogène des pratiques durables à l’échelle de l’établissement. L’enjeu de la mobilité internationale, quant à lui, représente une contradiction persistante : les échanges, stages ou conférences génèrent une empreinte carbone élevée, peu compensée à ce jour, bien qu’ils fassent partie intégrante de la vie universitaire.\\
+\\
+Dans cette perspective, plusieurs pistes d’amélioration pourraient être envisagées. La mise en place d’un calculateur individuel d’empreinte carbone, intégré aux outils numériques de l’université, permettrait à chacun de mieux mesurer ses impacts. La création d’un fonds de compensation carbone, financé par les déplacements professionnels, pourrait soutenir des projets de transition sur les campus. Une généralisation des formations au développement durable, rendues obligatoires dans tous les cursus, renforcerait la culture écologique des futurs diplômés, au-delà des seules filières spécialisées. Sur le plan alimentaire, le déploiement de circuits courts en lien avec des producteurs locaux offrirait une alternative concrète aux approvisionnements actuels. Enfin, l’introduction d’un "budget vert" dans les laboratoires favoriserait les projets à faible impact environnemental, tout en incitant à repenser les pratiques de recherche.\\
+\\
+En somme, l’UGA affiche une volonté forte d’intégrer les enjeux de développement durable dans l’ensemble de ses missions. Malgré les contraintes structurelles, elle se positionne comme une institution en mouvement, consciente de son rôle moteur dans la transition écologique et sociale, et ouverte à des évolutions concrètes pour renforcer encore son engagement.
+
 \section{Conclusion}
-
+Ce rapport est le fruit d'un travail de 4 mois, nous laissant libre de la direction du projet. Cette liberté nous a conduit à comprendre les données à traiter et par la suite se questionner sur la répartition inhomogène des météorites sur les surfaces émergées de la Terre. 
+La partie exploratoire des données a été abordées dans un premier indépendament par chaque membre du groupe, ce qui a permis de pousser notre réflexion tout en étant conseillé par notre tuteur.
+\\
+Au fil des discussions formels et informels, deux voies se sont naturellement présentées à nous :
+\\
+\begin{itemize}
+    \item[$\bullet$] \texttt{L'analyse des processus ponctuels} : L'objectif de cette partie est de pouvoir observer et quantifier des phénomènes de "repoussement" ou à l'inverse de concentration des météorites à petite échelle.
+    \\
+    \item[$\bullet$] \texttt{Une visualisation 3D des données} : On a voulu mettre en place un outil de visualisation 3D permettant de représenter et manipuler le plus fidèlement possible les données.\\
+\end{itemize}
+L'étude sur les processus ponctuels de Poisson s'est déroulée en deux temps : on a d'abord appris ce qu'était un processus ponctuel de Poisson grâce à notre tuteur puis avec la litterature. Ensuite on a manié le package \textit{spatstat} sur \texttt{R} pour illustrer ces processus. Le côté inhomogène des impacts de météorites étant clairs, les principaux résultats de l'études ont été obtenus à l'aide du processus ponctuel de Poisson inhomogène.\\
+\\
+La partie de visualisation de données fut aussi une part importante du travail, avec une direction sur \texttt{Python} et \texttt{R}. L'idée étant de comparer ces deux langages pour pouvoir réinvestir les connaissances accumulées dans le futur. Sur \texttt{Python}, la visualisation s'est faite à l'aide du package \textit{Plotly} qui permet une grande interactivité avec le globe et les impacts de météorite, avec la possibilité d'intégrer un fichier GeoJSON sur le globe. Sur \texttt{R}, l'outil de visualisation est donné par le package \textit{threejs}. Contrairement à \texttt{Python}, l'interactivité de la visualisation est moindre. Le développement d'une application shiny a pu améliorer cet aspect.\\
+\\
+Ainsi, ce projet nous a enthousiasmé et nous a plongé dans le domaine de la statistique spaciale, où nos connaissances étaient limitées en début de projet. Il est une réelle plus-value dans notre parcours académique et la démarche employée pour analyser des données brutes sans problèmatique apparente nous sera bénéfique dans un avenir proche. Nous remercions Jean-François Coeurjolly de nous avoir proposé ce sujet et de nous avoir encadré.
 \newpage
 \addcontentsline{toc}{section}{Références}
+
 \printbibliography
-\section{Annexe}
+
 
 
 \end{document}
