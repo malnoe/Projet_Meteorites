@@ -36,12 +36,40 @@ Pas d'objectif défini : **exploration libre** des données pour choisir nos axe
 </div>
 
 ## Organisation, outils et bibliothèques
-
+Khoi
 
 # Exploration des données
 ## Présentation des variables
+Yannis
+
+## Nametype et Fall
+Aucune donnée manquante pour ces deux variables
+
+::: {.column width="50%"}
+**Nametype** : 
+
+Valid -> 99,8%
+
+Relict -> 0,02%
+
+-> Quasiment toutes les météorites du jeu de données sont bien valides (on sait que ce sont des météorites).
+:::
+
+::: {.column width="50%"}
+**Fall** :
+
+Found -> 97,5% du jeu de données.
+
+Fell -> 2,5% du jeu de données.
+
+-> Quasiment toutes les météorites du jeu de données sont trouvées au sol.
+
+:::
 
 ## Name
+Aucune donnée manquante.
+
+::: {.column width="60%"}
 
 ```{r}
 #| echo: false
@@ -71,9 +99,21 @@ ggplot(letter_counts, aes(x = reorder(first_letter, -count), y = count)) +
   theme_minimal()
 ```
 
-## Nametype
+:::
+
+::: {.column width="40%"}
+- a
+- a
+- a
+
+:::
+
 
 ## Recclass
+Aucune donnée manquante.
+
+::: {.column width="60%"}
+
 ```{r}
 #| echo: false
 #| fig-height: 5
@@ -105,18 +145,38 @@ ggplot(recclass_counts, aes(x = "", y = percentage, fill = recclass)) +
             color="white")
 ```
 
+:::
+
+::: {.column width="40%"}
+
+- a
+- a
+- a
+
+:::
 
 ## Mass
-
-
-## Fall
+131 données manquantes soit 0,3% du jeu de données. Très grande hétéorogénéité des valeurs :
+<figure>
+    <img src="images/exploration/boitemoustache_mass.png" alt="" style="width: 80%;  float: center;">
+    <figcaption>Distribution de la variable Mass</figcaption>
+</figure>
 
 
 ## Year
+291 données manquantes et une donnée aberrante. Très grande hétérogénéité des valeurs :
+<figure>
+    <img src="images/exploration/boitemoustache_year.png" alt="" style="width: 70%; float: center;">
+    <figcaption>Distribution de l'année de la chute des météorites</figcaption>
+</figure>
+
+::: {.column width="65%"}
+
 ```{r}
 #| echo: false
-#| fig-height: 5
-#| fig-width: 7
+#| fig-align: center
+#| fig-height: 3.8
+#| fig-width: 6.5
 
 # Year
 # Filtrer les données pour ne garder que les années > 1963 et < 2026
@@ -135,54 +195,22 @@ ggplot(year_counts, aes(x = year, y = count)) +
   theme_minimal()
 ```
 
-## Location
+:::
 
-## Latitude
-```{r}
-#| echo: false
-#| fig-height: 5
-#| fig-width: 7
+::: {.column width="35%"}
+- a
+- a
+- a
 
-# Latitude
-# Arrondir les valeurs de reclat au degré le plus proche et compter les occurrences
-latitude_counts <- Meteorite_Landings %>%
-  mutate(rounded_lat = round(reclat)) %>%  # Arrondir au degré le plus proche
-  group_by(rounded_lat) %>%
-  summarise(count = n())
-# Barplot
-ggplot(latitude_counts, aes(x = rounded_lat, y = count)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Météorites tombées par degré de latitude",
-       x = "Latitude (degré arrondi à l'unité)",
-       y = "Nombre de météorites") +
-  theme_minimal()
-```
-
-## Longitude
-
-```{r}
-#| echo: false
-#| fig-height: 5
-#| fig-width: 7
-
-# Longitude
-# Arrondir les valeurs de reclat au degré le plus proche et compter les occurrences
-longitude_counts <- Meteorite_Landings %>%
-  filter(reclong >= -180 & reclong <= 180)
-longitude_counts <- longitude_counts %>%
-  mutate(rounded_long = round(reclong)) %>%  # Arrondir au degré le plus proche
-  group_by(rounded_long) %>%
-  summarise(count = n())
-# Barplot
-ggplot(longitude_counts, aes(x = rounded_long, y = count)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Météorites tombées par degré de longitude",
-       x = "Longitude (degré arrondi à l'unité)",
-       y = "Nombre de météorites") +
-  theme_minimal()
-```
+:::
 
 ## Location
+7315 données manquantes où la latitude, la longitude et la variable geolocation sont absentes en mêmes temps, environ 16% du jeu de données. 
+
+Visualisation sur le planisphère :
+
+::: {.column width="50%"}
+
 ```{r}
 #| echo: false
 #| fig-height: 5
@@ -207,42 +235,190 @@ ggplot() +
   theme_minimal()
 ```
 
+:::
+
+::: {.column width="35%"}
+- commentaire
+- commentaire
+
+:::
+
+## Latitude
+```{r}
+#| echo: false
+#| fig-height: 3
+#| fig-width: 5
+#| fig-align: center
+
+# Latitude
+# Arrondir les valeurs de reclat au degré le plus proche et compter les occurrences
+latitude_counts <- Meteorite_Landings %>%
+  mutate(rounded_lat = round(reclat)) %>%  # Arrondir au degré le plus proche
+  group_by(rounded_lat) %>%
+  summarise(count = n())
+# Barplot
+ggplot(latitude_counts, aes(x = rounded_lat, y = count)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Météorites tombées par degré de latitude",
+       x = "Latitude (degré arrondi à l'unité)",
+       y = "Nombre de météorites") +
+  theme_minimal()
+```
+
+::: {.column width="50%"}
+- commentaire
+
+:::
+
+::: {.column width="50%"}
+- commentaire
+
+:::
+
+## Longitude
+```{r}
+#| echo: false
+#| fig-height: 3
+#| fig-width: 5
+#| fig-align: center
+
+# Longitude
+# Arrondir les valeurs de reclat au degré le plus proche et compter les occurrences
+longitude_counts <- Meteorite_Landings %>%
+  filter(reclong >= -180 & reclong <= 180)
+longitude_counts <- longitude_counts %>%
+  mutate(rounded_long = round(reclong)) %>%  # Arrondir au degré le plus proche
+  group_by(rounded_long) %>%
+  summarise(count = n())
+# Barplot
+ggplot(longitude_counts, aes(x = rounded_long, y = count)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Météorites tombées par degré de longitude",
+       x = "Longitude (degré arrondi à l'unité)",
+       y = "Nombre de météorites") +
+  theme_minimal()
+```
+
+::: {.column width="50%"}
+- commentaire
+
+:::
+
+::: {.column width="50%"}
+- commentaire
+
+:::
+
 ## Répartition selon les pays
 
-<img src="images/exploration/map_points_countries_avec_echelle.png" alt="Par pays (échelle logarithmique)" style="width: 50%; float: left;">
+::: {.column width="50%"}
 
-<img src="images/exploration/map_points_km2_avec_echelle.png" alt="Selon la superficie (échelle logarithmique)" style="width: 50%; float: right;">
+<figure>
+    <img src="images/exploration/map_points_countries_avec_echelle.png" alt="" style="width: 100%; float: center;" >
+    <figcaption>Nombre de météorites par pays</figcaption>
+  </figure>
+
+
+:::
+
+::: {.column width="50%"}
+  <figure>
+    <img src="images/exploration/map_points_km2_avec_echelle.png" alt="" style="width: 100%; float: center;">
+    <figcaption>Nombre de météorites par km² par pays</figcaption>
+  </figure>
+
+
+:::
+
+
+<div style="margin-top: 30px;">
+Explication
+</div>
 
 ## Multivarié
+- Qualitative-qualitative : Test de $\chi^2$.
+Résultats : 
+- Quantitative-quantitative : Coefficient de Pearson.
+Résultats :
+- Quantitative-qualitative : Test de Shapiro-Wilk pour la normalité. Tous sont très significatif donc tests de Kruskal-Wallis ou Mann-Withney pour être robuste face à l'absence de l'hypothèse de normalité.
+Résultats :
 
-## Discussion des limites du jeu de données et choix des pistes à poursuivre
+Pas très intéressant, skipper ?
 
+## Discussion des limites du jeu de données
+
+- **Peu de données manquantes** mais sur des **variables importantes** (masse, année et localisation). Finalement, 38 115 observations (83% des données), a priori suffisant pour nos analyses.
+
+- Mise en évidence de biais : 
+  - **Biais temporel** : ...
+  - **Biais géographique** :  ...
+
+**Le jeu de données est en réalité très incomplet**. Et nous manquons d'information pour éviter ces biais pour faire nos analyses.
+
+## Choix des pistes à poursuivre
+
+**Pistes initialement envisagées mises de côté** :
+
+- L'analyse temporelle : pas assez de précision temporelle et seulement 40 années exploitables. Nous avons étudié un autre jeu de données (Natural History Museum) plus précis mais également trop incomplet.
+
+- La modélisation prédictive du nombre de météorites tombées par pays : biais de rescencement rendant l'analyse peu pertinente.
+
+**Pistes choisies pour le reste de l'étude** :
+
+- Analyse du processus derrière la chute des météorites : processus de Poisson (in)homogènes ?
+
+- Visualisation en 3D pour se détacher des distortions causées par la projection sur un planisphère.
 
 # Modélisation de processus ponctuels
 ## Objectifs
 
+Rassem
+
 ## Théorie homogène
 
+Rassem
+
 ## Simulations
+
+Rassem
 
 ## Théorie inhomogène
 
+Rassem
+
 ## Simulations
 
+Rassem
+
 # Visualisation en 3D
+
 ## Pourquoi une visualisation en 3D ?
+
+Khoi
 
 ## Python
 
+Khoi
+
 ## R
 
+Yannis
 <iframe src="http://127.0.0.1:6827" width="110%" height="600px"></iframe>
 
 # Impact environnemental
+
 ## Impact environnemental personnel
+
+??
 
 ## Impact global du projet
 
+??
+
 ## Politique de la structure d'acceuil
 
+??
+
 # Conclusion
+
+Gary 
