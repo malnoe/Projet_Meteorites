@@ -29,26 +29,25 @@ ggplot(letter_counts, aes(x = reorder(first_letter, -count), y = count)) +
 recclass_counts <- Meteorite_Landings %>%
   group_by(recclass) %>%
   summarise(count = n()) %>%
-  mutate(percentage = count / sum(count) * 100)
-# Regrouper les classes qui représentent moins de 4 % dans "Autres"
-recclass_counts <- recclass_counts %>%
-  mutate(recclass = ifelse(percentage < 4, "Autres", recclass)) %>%
-  group_by(recclass) %>%
-  summarise(count = sum(count), percentage = sum(percentage))
+  mutate(percentage = count / sum(count) * 100) %>%
+  filter(percentage >= 4)
+
 # Trier par pourcentage
 recclass_counts <- recclass_counts %>%
-  arrange(percentage)
-# Pie chart
-ggplot(recclass_counts, aes(x = "", y = percentage, fill = recclass)) +
-  geom_bar(stat = "identity", width = 1) +
-  coord_polar("y") +
-  labs(title = "Répartition des classes de recclass",
+  arrange(desc(percentage))
+
+# Définir les couleurs des barres
+bar_colors <- c("deepskyblue4", "springgreen4", "deepskyblue4", "springgreen4", "springgreen4", "tan4", "tan4")
+
+# Diagramme en barres avec couleurs personnalisées
+ggplot(recclass_counts, aes(x = reorder(recclass, percentage), y = percentage, fill = recclass)) +
+  geom_bar(stat = "identity", fill = bar_colors[1:nrow(recclass_counts)]) +
+  labs(title = "Répartition des classes de recclass (> 4%)",
+       x = "Classe",
+       y = "Pourcentage",
        fill = "Classe") +
-  theme_void() +  # Utiliser un thème vide pour un pie chart
-  geom_text(aes(label = paste0(round(percentage, 1), "%")), 
-            position = position_stack(vjust = 0.5),
-            size=3,
-            color="white")
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 # Year
 # Filtrer les données pour ne garder que les années > 1963 et < 2026
