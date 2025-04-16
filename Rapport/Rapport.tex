@@ -87,7 +87,7 @@ sorting=ynt
 \section{Introduction}
 Ce rapport présente le projet tutoré réalisé de janvier à avril 2025 dans le cadre de notre première année de Master en Statistique et Sciences des Données, sous la direction de Jean-François Coeurjolly. Ce projet se concentre sur l'analyse du jeu de données \textit{Meteorite Landings}, qui recense les météorites tombées au sol. Ce jeu de données est mis à disposition par la Meteoritical Society et est accessible sur l'Open Data de la NASA \cite{OpenData_NASA}.\\
 \\
-Au départ, ce projet n'a pas d'objectif défini ; l'idée initiale consiste à explorer librement le jeu de données et à identifier les axes d'analyse les plus pertinents. Cependant, Jean-François Coeurjolly nous a suggéré plusieurs pistes lors de notre premier échange :\\
+Au départ, ce projet n'avait pas d'objectif défini ; l'idée initiale consiste à explorer librement le jeu de données et à identifier les axes d'analyse les plus pertinents. Cependant, Jean-François Coeurjolly nous a suggéré plusieurs pistes lors de notre premier échange :\\
 \begin{itemize}
 	\item[-] Étudier la dimension temporelle des données, notamment la présence d'une saisonnalité ou d'une tendance.\\
 	\item[-] Analyser les relations entre différentes variables du jeu de données, en particulier l'influence de la masse des météorites.\\
@@ -97,7 +97,7 @@ Au départ, ce projet n'a pas d'objectif défini ; l'idée initiale consiste à 
 \end{itemize}
 Cependant, en raison de la nature des données, nous n'explorons finalement pas toutes ces pistes. Néanmoins, nous dégageons de nouvelles perspectives que nous détaillons par la suite.\\
 \\
-Nous débutons ce rapport par une présentation de notre organisation de travail ainsi que des outils, langages et bibliothèques utilisés. Nous poursuivons avec une analyse exploratoire des données, comprenant des analyses univariées et multivariées, qui nous amènent à discuter des pistes à explorer. Ensuite, nous étudions la modélisation des chutes de météorites à l'aide des processus ponctuels, avant de proposer une visualisation interactive du jeu de données sur un globe. Enfin, nous concluons par une réflexion sur l'impact environnemental du projet.\\
+Nous débutons ce rapport par une présentation de notre organisation de travail ainsi que des outils, langages et bibliothèques utilisés. Nous poursuivons avec une analyse exploratoire des données, comprenant des analyses univariées et multivariées, qui nous amènent à discuter des pistes à explorer. Ensuite, nous étudions la modélisation des chutes de météorites à l'aide des processus ponctuels, avant de proposer une visualisation interactive du jeu de données en trois dimensions sur le globe. Enfin, nous concluons par une réflexion sur l'impact environnemental et sociétal du projet.\\
 \newpage
 
 \section{Organisation, Outils, bibliothèques \texttt{R} et \texttt{Python}}
@@ -109,7 +109,7 @@ En ce qui concerne la répartition du travail, chaque membre de l'équipe a cont
 \\
 Nous n'avons pas mis en place d'outils d'organisation formels, tels qu'un diagramme prévisionnel ou d'autres outils présentés lors de nos cours de gestion de projet que nous avions alors mis en oeuvre pour notre projet inital. Nous avons privilégié des discussions formelles et informelles pour définir les tâches à accomplir et faire le point avant chaque rendez-vous avec notre encadrant, chacun travaillant de manière autonome sur sa partie.\\
 \\
-Concernant les langages de programmation, nous avons opté pour un mélange de \texttt{R} et de \texttt{Python} afin de tirer parti des avantages offerts par les deux langages. Pour l'exploration des données, nous avons utilisé \texttt{Python} en raison de ses bibliothèques intéressantes pour la création de graphiques interactifs, telles que \texttt{Plotly} et \texttt{Shapely}. En revanche, nous avons choisi R pour produire des graphiques esthétiques avec \texttt{ggplot2} et pour réaliser des tests d'analyse multivariée. Pour les processus ponctuels, \texttt{R} s'est avéré être le choix idéal grâce à la bibliothèque \texttt{Spatstat},  présentée dans le livre \textit{Spatial Point Patterns - Methodology and Applications with \texttt{R}} \cite{analysing_spacial_points} fourni par Jean-François Coeurjolly, qui était spécifiquement axé sur \texttt{R}. Pour la visualisation 3D, nous avons décidé de travailler à la fois sur \texttt{R} et \texttt{Python}, ce choix étant explicité dans la partie correspondante.\\
+Concernant les langages de programmation, nous avons opté pour un mélange de \texttt{R} et de \texttt{Python} afin de tirer parti des avantages offerts par les deux langages. Pour l'exploration des données, nous avons utilisé \texttt{Python} en raison de ses bibliothèques intéressantes pour la création de graphiques interactifs, telles que \texttt{Plotly} et \texttt{Shapely}. En revanche, nous avons choisi \texttt{R} pour produire des graphiques esthétiques avec \texttt{ggplot2} et pour réaliser des tests d'analyse multivariée. Pour les processus ponctuels, \texttt{R} s'est avéré être le choix idéal grâce à la bibliothèque \texttt{Spatstat},  présentée dans le livre \textit{Spatial Point Patterns - Methodology and Applications with \texttt{R}} \cite{analysing_spacial_points} fourni par Jean-François Coeurjolly, qui était spécifiquement axé sur \texttt{R}. Pour la visualisation 3D, nous avons décidé de travailler à la fois sur \texttt{R} et \texttt{Python}, ce choix étant explicité dans la partie correspondante.\\
 \\
 Enfin, pour les outils de développement, nous avons hébergé notre code sur GitHub et utilisé Visual Studio Code (VSCode) ainsi que RStudio pour la rédaction de notre code selon les langages utilisés et les préférences de chacun.\\
 \\
@@ -118,10 +118,13 @@ Packages \texttt{R} : \texttt{corrr}, \texttt{dplyr}, \texttt{ggplot2}, \texttt{
 \texttt{patchwork}.
 \newpage
 \section{Exploration des données}
-L'analyse exploratoire des données constitue la première étape de notre projet. Notre objectif est de comprendre la distribution de chacune des variables tout en identifiant les données manquantes susceptibles d'influencer nos possibilités d'étude par la suite. Au cours de cette exploration, nous nous penchons également sur les relations entre les variables à travers divers tests statistiques. Cette approche nous permet de déterminer les axes d'investigation que nous souhaitons approfondir par la suite dont nous discutons par la suite.\\
+L'analyse exploratoire des données constitue la première étape de notre projet. Notre objectif est de comprendre la distribution de chacune des variables tout en identifiant les données manquantes susceptibles d'influencer nos possibilités d'étude par la suite. Au cours de cette exploration, nous nous penchons également sur les relations entre les variables à travers divers tests statistiques. Cette approche nous permet de déterminer les axes d'investigation que nous souhaitons approfondir par la suite dont nous discutons à la fin de cette section.\\
 \\
-Pour réaliser les analyses univariées, nous commençons par utiliser \texttt{Python} en tirant parti des bibliothèques \texttt{numpy}, \texttt{pandas}, \texttt{geopandas}, \texttt{plotly} et \texttt{shapely}, dont nous avons l'habitude et qui nous offrent la possibilité de créer des planisphères interactifs. Par la suite, nous réalisons également certaines analyses avec \texttt{R}, qui facilite la gestion des sorties graphiques grâce à \texttt{ggplot2}. En ce qui concerne les analyses multivariées, nous nous concentrons exclusivement sur \texttt{R}, qui propose directement de nombreux tests statistiques adaptés à nos besoins. Le code de ces analyses est structuré dans les fichiers \texttt{exploration.ipynb} pour la partie en \texttt{Python} et \texttt{script\_analyses\_multivariées.R} pour la partie en \texttt{R}. Tous ces fichiers sont accessibles sur le repository GitHub du projet, dans le dossier intitulé "Exploration des données".\\
-\\
+Pour réaliser les analyses univariées, nous commençons par utiliser \texttt{Python} en tirant parti des bibliothèques \texttt{numpy}, \texttt{pandas}, \texttt{geopandas}, \texttt{plotly} et \texttt{shapely}, dont nous avons l'habitude et qui nous offrent la possibilité de créer des visuels interactifs. Par la suite, nous réalisons également certaines analyses avec \texttt{R}, qui facilite la gestion des sorties graphiques grâce à \texttt{ggplot2}. En ce qui concerne les analyses multivariées, nous nous concentrons exclusivement sur \texttt{R}, qui propose directement de nombreux tests statistiques adaptés à nos besoins. Le code de ces analyses est structuré dans les fichiers \texttt{exploration.ipynb} pour la partie en \texttt{Python} et \texttt{script\_analyses\_multivariées.R} pour la partie en \texttt{R}. Tous ces fichiers sont accessibles sur le repository GitHub du projet, dans le dossier intitulé "Exploration des données".\\
+\begin{center}
+ \rule{0.5\linewidth}{0.5pt}\\
+ \end{center}
+\vspace{0.3cm}
 Le jeu de données est composé de 45716 entrées décrites par neuf variables :
 
 {\setlength{\baselineskip}{1.5\baselineskip} % Set a larger baselineskip for the itemize environment
@@ -146,7 +149,7 @@ Il n'y a pas de données manquantes pour le nom des météorites et tous les nom
 \includegraphics[width=16cm]{Images/exploration/name_barplot_lettres.png}
 \caption{Diagramme en barres du choix de la première lettre du nom des météorites}
 \end{figure}
-Nous constatons que la lettre Y ressort nettement plus souvent que les autres. Cela n'est pas une coïncidence mais c'est lié aux conventions de nommage des météorites \cite{Convention_nommage_meteorites} : la grande majorité des météorites sont nommées d'après la localité géographique où elles ont été trouvées avec éventuellement une référence numérique après le nom si de nombreuses météorites sont collectées dans la zone. La popularité de la lettre Y est liée aux nombreuses expéditions japonaises effectuées sur le glacier Yamato en Antartique dont ces météorites tiennent leur nom. Sur les 7315 météorites dont le nom commence par la lettre Y, 7269 ont été répertoriées sur le glacier Yamato. De même pour la lettre N, sur 4667 météorites, 4499 météorites commencent par "Northwest Africa" suivi d'un numéro permettant d'identifier la météorite.
+Nous constatons que la lettre Y ressort nettement plus souvent que les autres. Cela n'est pas une coïncidence mais c'est lié aux conventions de nommage des météorites \cite{Convention_nommage_meteorites} : la grande majorité des météorites sont nommées d'après la localité géographique où elles ont été trouvées avec éventuellement une référence numérique après le nom si de nombreuses météorites sont collectées dans la même zone. La popularité de la lettre Y est liée aux nombreuses expéditions japonaises effectuées sur le glacier Yamato en Antartique dont ces météorites tiennent leur nom. Sur les 7315 météorites dont le nom commence par la lettre Y, 7269 ont été répertoriées sur le glacier Yamato. De même pour la lettre N, sur 4667 météorites, 4499 météorites commencent par "Northwest Africa" suivi d'un numéro permettant d'identifier la météorite.
 \subsubsection*{Nametype}
 Cette variable n'a pas de données manquantes. Comme expliqué précédemment, c'est une variable qualitative binaire décrivant si la météorite a bien été identifiée comme valide (Valid) ou s'il s'agit d'un objet fortement déformé qui est probablement d'origine météorite (Relict). Une large majorité de entrées du jeu de données sont considérées comme valides : 45641 météorites valides soit 99,8\% contre 75 "Relict" soit 0,02\%.
 \subsubsection*{Recclass}
@@ -159,92 +162,23 @@ Il n'y a pas de donnée manquante pour la variable \textbf{recclass} corresponda
 Ces 6 classes sont celles de chondrites ordinaires \cite{Classification_meteorites}. Les lettres L, H et LL correspondent aux trois sous-groupes des chrondrites ordinaires : H pour "High Iron" pour celles contenant 25-30\% de fer et de métal libre, L pour "Low Iron" pour celles contenant 20-25\% de fer et moins de métal libre et LL pour celles contenant encore moins de fer (environ 15-20\%) et très peu de métal libre. Le numéro qui suit correspond au degré de métamorphisme, compris entre 3 et 7, il indique le niveau des modifications subies par la météorite lors de sa chute dues à la pression et la chaleur modifiant sa composition minéralogique. Plus le numéro est élevé plus l'altération est importante.
 \subsubsection*{Mass}
 Il manque 131 données pour la variable \textbf{Mass} soit moins de 0,3\% du jeu de données. L'analyse de cette variable révèle tout d'abord une très grande hétérogénéité dans les valeurs possibles : plusieurs milliers de météorites pèsent moins de cinq grammes tandis que la plus grosse pèse 60 tonnes.\\
-\\
-\\
-\begin{tikzpicture}
-
-% Dessiner la boîte (boxplot) - proportions arbitraires
-\draw[thick] (1, 0.25) rectangle (8, 1.75); % Boîte du boxplot
-
-% Médiane (ligne à l'intérieur de la boîte)
-\draw[thick] (4.5, 0.25) -- (4.5, 1.75); % Ligne médiane
-\draw[thick] (10, 0.25) -- (10, 1.75);
-
-% Moustaches (whiskers)
-\draw[thick] (0, 0) -- (0, 2); % Moustache gauche
-
-\draw[thick] (14.5, 0) -- (14.5, 2); % Moustache droite
-
-%Lignes horizontales
-\draw[thick] (0,1) -- (1,1);
-\draw[thick] (8,1)--(9,1);
-\draw[dashed] (9,1)--(14,1);
-\draw[thick] (14,1)--(14.5,1);
-
-% Ajouter des textes en dessous du boxplot
-\node at (0, -0.5) {Min};
-\node at (1,-0.5) {Q1};
-\node at (4.5, -0.5) {Médiane};
-\node at (8,-0.5) {Q3};
-\node at (10, -0.5) {Moyenne};
-\node at (14, -0.5) {Max};
-
-\node at (0, -1) {0};
-\node at (1,-1) {7,2g};
-\node at (4.5, -1) {32,6g};
-\node at (8,-1) {202,6g};
-\node at (10, -1) {13,3kg};
-\node at (14, -1) {60 tonnes};
-
-
-\end{tikzpicture}
-\\
-\\
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=13cm]{Images/exploration/boitemoustache_mass.png}
+    \caption{Distribution de la variable Mass}
+\end{figure}
 En fait, près de 75\% des météorites pèsent moins de 200 grammes mais la moyenne est à 13kg : la très large majorité des météorites recensées sont très légères mais le jeu de données recense quelques météorites très massives qui expliquent donc la moyenne très élevée. Dans les faits, seules 1388 météorites font plus de 10kg soit environ 3\% du jeu de données. Cela est lié au fait que, lors de leur chute, les météorites se vaporisent et se fragmentent sous l'effet de la pression et de la chaleur et au fait qu'elles puissent également se fragmenter lors de l'impact. De plus, en réalité, la proportion de (très) petites météorites est sûrement encore plus importante puisque les météorites les plus massives ont plus de chances d'être découvertes tandis que les petites météorites passent inapercues et peuvent être aisement confondues avec des roches terrestres empêchant ainsi leur recensement.
 \subsubsection*{Fall}
 Il n'y a pas de données manquantes pour cette variable. La très large majorité des météorites ont été trouvées (Found) et peu de météorites ont été obeservées lors de leur chûte (Fell), elles représentent seulement 2,5\% du jeu de données.
 \subsubsection*{Year}
 Pour cette variable, on compte 291 entrées manquantes ainsi qu'une donnée abérrante d'une météorite répertoriée comme tombée en 2101 que nous excluons de notre analyse. Comme pour la variable \textbf{Mass}, il y a de grandes disparités dans la distribution des valeurs :\\
-\\
-\begin{tikzpicture}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=13cm]{Images/exploration/boitemoustache_year.png}
+    \caption{Distribution de la variable Year}
+\end{figure}
 
-% Dessiner la boîte (boxplot) - proportions arbitraires
-\draw[thick] (6, 0.25) rectangle (12, 1.75); % Boîte du boxplot
-
-% Médiane (ligne à l'intérieur de la boîte)
-\draw[thick] (9.5, 0.25) -- (9.5, 1.75); % Ligne médiane
-\draw[thick] (7.2, 0.25) -- (7.2, 1.75); % Ligne moyenne
-
-% Moustaches (whiskers)
-\draw[thick] (0, 0) -- (0, 2); % Moustache gauche
-\draw[thick] (14.5, 0) -- (14.5, 2); % Moustache droite
-
-%Lignes horizontales
-\draw[thick] (0,1) -- (1,1);
-\draw[dashed] (1,1) -- (4,1);
-\draw[thick] (4,1) -- (6,1);
-\draw[thick] (12,1) -- (14.5,1);
-
-% Ajouter des textes en dessous du boxplot
-\node at (0, -0.5) {Min};
-\node at (6,-0.5) {Q1};
-\node at (7.2,-0.5) {Moyenne};
-\node at (9.5, -0.5) {Médiane};
-\node at (12,-0.5) {Q3};
-\node at (14, -0.5) {Max};
-
-\node at (0, -1) {860};
-\node at (6,-1) {1987};
-\node at (7.2,-1) {1991};
-\node at (9.5, -1) {1998};
-\node at (12,-1) {2003};
-\node at (14, -1) {2013};
-
-
-\end{tikzpicture}
-\\
-\\
-Nous pouvons tout de suite voir que la grande majorité des valeurs sont très récentes : même si le jeu de données contient des météorites datant du IXème siècle, plus de 75\% des météorites recensées datent d'il y a moins de 50 ans. Cependant, cette variable nous permet de nous rendre compte que le jeu de données n'est pas récent ou pas mis à jour récemment puisque la dernière météorite recensée date de 2013 bien que d'autres météorites soient tombées sur Terre et aient été trouvées depuis. Intéressons-nous alors plus précisément aux 50 dernières années (1963-2013) :\\
+Nous pouvons tout de suite voir que la grande majorité des valeurs sont très récentes : même si le jeu de données contient des météorites datant du IXème siècle, plus de 75\% des météorites recensées datent d'il y a moins de 50 ans. Cependant, cette variable nous permet de nous rendre compte que le jeu de données n'a pas été mis à jour récemment puisque la dernière météorite recensée date de 2013 bien que d'autres météorites soient tombées sur Terre et aient été trouvées depuis. Intéressons-nous alors plus précisément aux 50 dernières années (1963-2013) :\\
 \begin{figure}[H]
 \centering
 \includegraphics[width=16cm]{Images/exploration/histogramme1963-2013.png}
@@ -282,7 +216,7 @@ Nous pouvons compléter cette première étude par une étude séparée de la la
 
 L'histogramme des latitudes montre une distribution inégale avec plusieurs tendances marquées. On observe un nombre particulièrement élevé d'impacts aux latitudes inférieures à -70°, correspondant aux nombreux points recensés en Antarctique. En revanche, la répartition est plus diffuse entre 15° et 60° Nord, couvrant des régions comme l'Europe de l'Ouest et l'Amérique du Nord. Un autre pic notable apparaît pour la latitude 0° précisément, cependant, sur la carte précédente on observe assez peu de données sur cette latitude, cette anomalie est en réalité due au fait que certains points aient été renseignés aux coordonnées (0,0) lorsque les coordonnées exactes n'ont pas pu être récupérées malgré le fait que certaines de ces météorites proviennent d'Antarctique comme, par exemple, 1666 observations provenant du glacier Yamato.  Il est difficile de dire précisément combien des 6214  observations aux coordonées (0,0) sont faussement renseignées mais nous pensons qu'elles forment probablement une grande part.\\
 \\
-L'analyse des longitudes révèle également une répartition très hétérogène. On retrouve le pic en 0 lié aux données faussement renseignées en (0,0) mais correspondant également  à l'Europe de l'Ouest et au nord de l'Afrique. D'autres concentrations apparaissent entre -150° et -162°, suggérant une fréquence plus élevée d'impacts en Australie et en Antarctique.\\
+L'analyse des longitudes révèle également une répartition très hétérogène. On retrouve le pic en 0 lié aux données faussement renseignées en (0,0) mais correspondant également  à l'Europe de l'Ouest et au nord de l'Afrique. D'autres concentrations apparaissent entre 150° et 162°, suggérant une fréquence plus élevée d'impacts en Australie et à l'Est de l'Antarctique.\\
 \\
 Nous analysons ensuite la répartition du nombre de météorites par pays à l'aide des contours des pays proposé par le projet \textit{Natural Earth} \cite{Natural_Earth} :
 \begin{figure}[H]
@@ -363,11 +297,9 @@ Avant de faire les croisements entre variables quantitatives et qualitatives, no
 La plupart des croisements sont très significatifs.
 \subsection{Discussion des limites du jeu de données}
 
-L’étude des données manquantes révèle que seules trois variables sont concernées : la masse des météorites, l’année de leur chute et leur localisation. Malgré ces lacunes, en supprimant toutes les entrées comportant au moins une valeur manquante, il reste 38 115 observations, soit environ 83\% du jeu de données initial. Ce volume semble a priori suffisant pour mener des analyses pertinentes.\\
+L’étude des données manquantes révèle que seules trois variables sont concernées : la masse des météorites, l’année de leur chute et leur localisation. Malgré ces lacunes, en supprimant toutes les entrées comportant au moins une valeur manquante, il reste 38 115 observations, soit environ 83\% du jeu de données initial. Ce volume peut sembler a priori suffisant pour mener des analyses pertinentes. Cependant, les analyses univariées des variables, en particulier de la masse, de l'année de la chute et de l'emplacement,  mettent en évidence plusieurs biais significatifs dans les données. D’une part, la présence d'un biais temporel : les météorites récentes sont surreprésentées en raison de l’amélioration du suivi, de la centralisation des bases de données et du développement de missions dédiées à leur recherche depuis les années 1970. D’autre part, un biais géographique est également présent : les météorites sont davantage recensées dans les zones densément peuplées, à l’exception notable de l’Antarctique, mais où  le grand nombre de recensements s'explique par des campagnes de recherche intensives menées sur ce territoire. Et nous avons également relevé que plusieurs miliers de points étaient faussement renseignés aux coordonnées (0,0). Enfin, il est probable qu’un biais en faveur des météorites les plus massives existe également, celles-ci étant plus faciles à identifier et à distinguer des roches environnantes. Il semble donc évident que toutes les météorites tombées sur le sol de la Terre ne sont pas répertoriées et que le jeu de données n'est ni complet ni de bonne qualité.\\
 \\
-Cependant, l’analyse univariée des variables, en particulier l’emplacement et l’année de chute,  met en évidence plusieurs biais significatifs dans les données. D’une part, la présence d'un biais temporel : les météorites récentes sont surreprésentées en raison de l’amélioration du suivi, de la centralisation des bases de données et du développement de missions dédiées à leur recherche depuis les années 1970. D’autre part, un biais géographique est également présent : les météorites sont davantage recensées dans les zones densément peuplées, à l’exception notable de l’Antarctique, mais où  le grand nombre de recensements s'explique par des campagnes de recherche intensives menées sur ce territoire. Et nous avons également relevé que plusieurs miliers de points étaient faussement renseignés aux coordonnées (0,0). Enfin, il est probable qu’un biais en faveur des météorites les plus massives existe, celles-ci étant plus faciles à identifier et à distinguer des roches environnantes. Il semble donc évident que toutes les météorites tombées sur le sol de la Terre ne sont pas répertoriées et que le jeu de données n'est ni complet ni de bonne qualité.\\
-\\
-Un problème majeur réside alors dans le manque d’informations sur la constitution du jeu de données : le site de la NASA où nous avons récupéré nos données (ainsi que d’autres sources en ligne) ne précise pas si les données proviennent uniquement d’observations scientifiques (télescopes, chercheurs, etc) ou si elles incluent des signalements grand public. Cette incertitude complique l’interprétation des analyses et ne nous permet pas de palier aux biais identifiés précédemment.\\
+Un problème majeur réside alors dans le manque d’informations sur la constitution du jeu de données : le site de la NASA où nous avons récupéré nos données (ainsi que d’autres sources en ligne) ne précise pas si les données proviennent uniquement d’observations scientifiques (télescopes, chercheurs, etc) ou si elles incluent des signalements grand public et ne nous fournis aucune information vis-à-vis des biais relevés. Cette incertitude complique donc l’interprétation des analyses et ne nous permet pas de palier aux biais identifiés précédemment.\\
 \\
 Concernant les pistes inialement envisagées, nous en écartons donc plusieurs suite à cette première analyse des données :\\
 \\
@@ -543,8 +475,8 @@ Notre second axe de travail pour ce projet est la problématique de la représen
 \\
 Nous réalisons la visualisation en 3D par le biais de deux approches complémentaires : une version en \texttt{Python} et une version en \texttt{R}. L’objectif commun est de proposer une visualisation interactive et informative de la répartition géographique et temporelle des chutes de météorites, tout  en valorisant les atouts spécifiques de chaque langage de programmation :\\
 \begin{itemize}
-    \item[$\bullet$] Python pour bénéficier des bibliothèques \texttt{Panda, plotly, numpy, geopandas, shapely.geometry} qui permettent une grande souplesse pour les animations interactives sur le globe.
-    \item[$\bullet$] R pour exploiter les possibilités offertes par le package \texttt{threejs} ainsi que pour envisager une intégration dans une application Shiny qui pourrait être déployée sur le web.
+    \item[$\bullet$] Python pour bénéficier des bibliothèques \texttt{Panda}, \texttt{plotly}, \texttt{numpy}, \texttt{shapely.geometry}, \texttt{geopandas},  qui permettent une grande souplesse pour les animations interactives sur le globe.
+    \item[$\bullet$] R pour exploiter les possibilités offertes par le package \texttt{threejs} ainsi que pour envisager une intégration dans une application Shiny qui pourrait être déployée sur le web.\\
 \end{itemize}
 Cette approche à deux versions nous permet de comparer les outils, de tirer profit des forces de chaque langage et de mutualiser les idées en vue d’une visualisation finale complète, robuste et potentiellement portable.
 
@@ -620,27 +552,27 @@ Ce dashboard correpond à nos attentes en termes de visualisation de données sp
 
 \section{Impact environnemental et social du projet}
 \subsection{Impact environnemental personnel}
-Avant de s'intéresser à l’impact environnemental directement lié aux calculs et à l’infrastructure logicielle, il est pertinent d’évaluer l’empreinte carbone associée aux activités des membres du groupe tout au long du projet. Ces activités comprennent notamment les déplacements, l’utilisation des ordinateurs personnels, ainsi que l’usage ponctuel d’outils numériques tels que les modèles d’intelligence artificielle.\\
+Avant de s'intéresser à l’impact environnemental directement lié aux calculs et à l’infrastructure logicielle, il est pertinent d’évaluer l’empreinte carbone associée aux activités des membres du groupe tout au long de ce projet. Ces activités comprennent notamment les déplacements, l’utilisation des ordinateurs personnels, ainsi que l’usage ponctuel d’outils numériques tels que les modèles d’intelligence artificielle.\\
 \\
-Sur une durée de quatre mois et demi (environ 18 semaines), le groupe s’est réuni en présentiel une fois toutes les deux semaines, soit environ six réunions. Deux membres utilisaient le tramway pour se rendre sur le lieu de rendez-vous, avec un trajet estimé à 5 km aller. En considérant 6 trajets pour chacun, cela donne un total de 120 km parcourus en tramway. Avec une estimation moyenne de 3 g de CO2 par kilomètre pour ce mode de transport \cite{ADEME}, les émissions associées s’élèvent à environ 360 g de CO2. Les deux autres membres venaient à vélo, un mode de transport sans émission directe, ce qui limite considérablement l’impact des déplacements.\\
+Sur une durée de quatre mois et demi (environ 18 semaines), le groupe s’est réuni en présentiel une fois toutes les deux semaines, soit environ six réunions. Deux membres utilisaient le tramway pour se rendre sur le lieu de rendez-vous, avec un trajet estimé à 10 km aller.-retour. En considérant 6 trajets pour chacun, cela donne un total de 120 km parcourus en tramway. Avec une estimation moyenne de 3g de CO2 par kilomètre pour ce mode de transport \cite{ADEME}, les émissions associées s’élèvent à environ 360g de CO2. Les deux autres membres venaient à vélo, un mode de transport sans émission directe, ce qui limite considérablement l’impact des déplacements.\\
 \\
-Concernant l’usage des ordinateurs, chaque membre a travaillé environ deux heures par semaine sur son ordinateur personnel, soit un total de 144 heures cumulées pour les quatre membres. En supposant une consommation électrique moyenne de 50 Wh par heure pour un ordinateur portable, la consommation totale atteint environ 7,2 kWh sur l’ensemble du projet. Étant donné le mix énergétique français relativement bas carbone, cela correspond à environ 360 g de CO2 émis.\\
+Concernant l’usage des ordinateurs, chaque membre a travaillé environ deux heures par semaine sur son ordinateur personnel, soit un total de 144 heures cumulées pour les quatre membres. En supposant une consommation électrique moyenne de 50 Wh par heure pour un ordinateur portable, la consommation totale atteint environ 7,2 kWh sur l’ensemble du projet. Étant donné le mix énergétique français relativement bas carbone, cela correspond à environ 360g de CO2 émis.\\
 \\
-Le groupe a également utilisé l’intelligence artificielle (notamment ChatGPT) pour accompagner certaines phases du travail, à raison d’environ 30 requêtes par semaine pour le groupe, sur 18 semaines, soit environ 540 requêtes au total. En prenant comme ordre de grandeur 2 g de CO2 par requête, cela représente environ 1080g de CO2, soit la plus grosse source de notre projet.\\
+Le groupe a également utilisé l’intelligence artificielle (notamment ChatGPT) pour accompagner certaines phases du travail, à raison d’environ 30 requêtes par semaine pour le groupe, sur 18 semaines, soit environ 540 requêtes au total. En prenant comme ordre de grandeur 2g de CO2 par requête, cela représente environ 1080g de CO2, soit la plus grosse source de notre projet.\\
 \\
 En additionnant ces différentes composantes – déplacements, consommation énergétique des ordinateurs et usage de l’IA – l’empreinte carbone totale des activités du groupe peut être estimée à environ 1,8 kg de CO2 sur toute la durée du projet. Cette quantité reste très faible : elle équivaut par exemple à l’empreinte d’un petit trajet en voiture thermique de moins de 9 kilomètres \cite{ADEME}. Cela montre que, dans son ensemble, le projet a été mené avec un impact carbone minimal du point de vue des pratiques des membres du groupe.
 
 \subsection{Impact environnemental global}
-Le projet sur lequel nous avons travaillé porte sur l’exploration des données d'environ 45 000 chûtes de météorites via des analyses univariées et multivariées, des visualisations en 2D et 3D et une modélisation statistique par processus ponctuels (homogènes et inhomogènes de Poisson). Il s’agit d’une preuve de concept, c’est-à-dire que notre objectif n’était pas de livrer un produit final destiné à un large public ou à une mise en production, mais plutôt de démontrer la pertinence d’une approche scientifique dans le cadre d’une recherche exploratoire. Cela a naturellement un impact sur la manière dont le projet s’inscrit dans une réflexion environnementale.
+Le projet sur lequel nous avons travaillé porte sur l’exploration des données d'environ 45 000 chûtes de météorites via des analyses univariées et multivariées, des visualisations en 2D et 3D et une modélisation statistique par des processus ponctuels (homogènes et inhomogènes de Poisson). Il s’agit d’une preuve de concept, c’est-à-dire que notre objectif n’était pas de livrer un produit final destiné à un large public ou à une mise en production, mais plutôt de démontrer la pertinence d’une approche scientifique dans le cadre d’une recherche exploratoire. Cela a naturellement un impact sur la manière dont le projet s’inscrit dans une réflexion environnementale.
 
 \subsubsection*{À petite échelle : un projet sobre, maîtrisé et temporaire}
-Dès les premières étapes de conception, notre projet s’inscrivant dans un cadre académique sans infrastructure lourde, la consommation de ressources est restée relativement limitée de manière factuelle. Il n’y a pas eu de réflexion poussée sur la sobriété numérique dès le départ, mais la nature exploratoire du travail, sans déploiement intensif ni recours à des serveurs puissants, a fait que l’impact environnemental direct est resté contenu par les circonstances elles-mêmes plutôt que par une démarche volontaire.\\
+Dès les premières étapes de conception, notre projet s’inscrivant dans un cadre académique sans infrastructure lourde, la consommation de ressources est restée relativement limitée. Il n’y a pas eu de réflexion poussée sur la sobriété numérique dès le départ, mais la nature exploratoire du travail, sans déploiement intensif ni recours à des serveurs puissants, fait que l’impact environnemental direct est resté contenu par les circonstances elles-mêmes plutôt que par une démarche volontaire.\\
 \\
-Par exemple, l’essentiel de notre travail s’est fait sur des ordinateurs personnels et mutualisés au sein de notre équipe. Plutôt que de lancer des traitements en parallèle sur plusieurs machines, nous avons préféré partager l’usage de quatre postes pour réduire le temps de fonctionnement global. Cette simple organisation a permis d’éviter la redondance énergétique souvent rencontrée dans les projets menés sans coordination.\\
+Par exemple, l’essentiel de notre travail s’est fait sur des ordinateurs personnels et de manière autonome au sein de notre équipe. Plutôt que de lancer des traitements en parallèle sur plusieurs machines, nous avons préféré partager l’usage de quatre postes pour chacune de tâches pour réduire le temps de fonctionnement global. Cette simple organisation a permis d’éviter la redondance énergétique souvent rencontrée dans les projets menés sans coordination.\\
 \\
-Côté algorithmique, même si l’optimisation du code n’a pas été notre priorité principale, nous avons veillé à adopter des pratiques raisonnables. Par exemple, nous avons utilisé des bibliothèques éprouvées comme NumPy et Pandas, non seulement pour leur simplicité d’utilisation, mais aussi parce qu’elles sont généralement plus efficaces que des implémentations manuelles. Cela nous a permis d’éviter des surcoûts inutiles en termes de calcul, tout en garantissant des résultats fiables. Bien que l’efficacité énergétique n’ait pas été explicitement mesurée, l’utilisation d’outils optimisés contribue indirectement à limiter l’empreinte numérique de notre travail.\\
+Côté algorithmique, même si l’optimisation du code n’a pas été notre priorité principale, nous avons veillé à adopter des pratiques raisonnables. Par exemple, nous avons utilisé des bibliothèques comme NumPy et Pandas, éprouvées non seulement pour leur simplicité d’utilisation, mais aussi parce qu’elles sont généralement plus efficaces que des implémentations manuelles. Cela nous a permis d’éviter des surcoûts inutiles en termes de calcul, tout en garantissant des résultats fiables. Bien que l’efficacité énergétique n’ait pas été explicitement mesurée, l’utilisation d’outils optimisés contribue indirectement à limiter l’empreinte numérique de notre travail.\\
 \\
-Nous avons également veillé à ne pas laisser traîner de fichiers inutiles : au fil du projet, les fichiers intermédiaires ou obsolètes ont été supprimés régulièrement, et les visualisations ou outputs volumineux ont été compressés avant d’être stockés sur GitHub. Cela a permis d’éviter de surcharger inutilement les serveurs d’hébergement et de réduire la bande passante requise pour le partage des données. Aucun serveur distant n’a été sollicité. Cette simplicité technique est un avantage écologique évident.\\
+Nous avons également veillé à ne pas laisser traîner de fichiers inutiles : au fil du projet, les fichiers intermédiaires ou obsolètes ont été supprimés régulièrement, et les visualisations ou outputs volumineux ont été compressés avant d’être stockés sur GitHub. Cela a permis d’éviter de surcharger inutilement les serveurs d’hébergement et de réduire la bande passante requise pour le partage des données. Aucun serveur distant n’a été sollicité. Cette simplicité technique représente un avantage écologique pour notre projet.\\
 \\
 Enfin, nos outils n’ayant pas vocation à être utilisés quotidiennement ou massivement (comme ce serait le cas d’une application web grand public), la fréquence d’exécution de notre code reste faible, ce qui contribue là encore à en limiter l’impact environnemental.
 
@@ -648,27 +580,27 @@ Enfin, nos outils n’ayant pas vocation à être utilisés quotidiennement ou m
 
 Si aujourd’hui notre preuve de concept a une empreinte modeste, la question de son impact potentiel en cas de généralisation mérite une réflexion honnête.\\
 \\
-Prenons un cas hypothétique : que se passerait-il si la méthode que nous avons conçue était largement adoptée dans d’autres projets de recherche, dans l’enseignement ou même dans des outils de visualisation accessibles au grand public ? Cette perspective n’est pas irréaliste. En effet, les représentations 3D interactives sont très prisées pour leur impact visuel et pédagogique. Si elles deviennent systématiques dans la communication scientifique, cela pourrait engendrer une augmentation notable des ressources utilisées, notamment sur les navigateurs web ou les plateformes interactives en ligne.\\
+Prenons un cas hypothétique : que se passerait-il si la méthode que nous avons conçue pour la visualisation était largement adoptée dans d’autres projets de recherche, dans l’enseignement ou même dans des outils de visualisation accessibles au grand public ? Cette perspective n’est pas irréaliste. En effet, les représentations 3D interactives sont très prisées pour leur impact visuel et pédagogique. Si elles deviennent systématiques dans la communication scientifique, cela pourrait engendrer une augmentation notable des ressources utilisées, notamment sur les navigateurs web ou les plateformes interactives en ligne.\\
 \\
 Par ailleurs, une méthode plus rapide, plus efficace, pourrait inciter à multiplier les analyses. Pourquoi ne pas étudier les météorites par année, par région, par composition, par taille… et ainsi générer de plus en plus de scénarios, de simulations, de visualisations ? C’est là qu’un effet rebond pourrait apparaître : les gains d’efficacité obtenus localement (algorithmes plus rapides, traitements mieux optimisés) pourraient être compensés, voire annulés, par un usage global accru. C’est le paradoxe de Jevons : une amélioration technologique entraîne paradoxalement une augmentation de la consommation totale.\\
 \\
 Dans notre cas, ce risque reste contenu pour l’instant, notamment parce que le champ d’application est très spécialisé. La météoritique n’est pas un domaine qui attire les foules, et les outils comme les nôtres ne seront probablement pas utilisés au quotidien par des millions d’utilisateurs.
  
-\subsubsection*{Et après ? Quelle fin de vie pour le projet ?}
+\subsubsection*{Quelle fin de vie pour le projet ?}
 La question de la fin de vie du projet se pose naturellement une fois le travail terminé. Dans notre cas, le code ainsi que l’application R-Shiny resteront simplement disponibles sur GitHub, principalement à des fins de consultation ou de réutilisation ponctuelle par des personnes intéressées par le sujet.\\
 \\
-Aucun déploiement large ni intégration dans une plateforme existante n’est envisagé — et cela ne serait d’ailleurs ni pertinent ni nécessaire, compte tenu de la nature exploratoire et académique du travail. Le projet conservera donc une existence discrète, propre aux preuves de concept développées dans un cadre de recherche. Sa mise à disposition sur GitHub assure néanmoins une forme de traçabilité et d’accessibilité minimale : le code pourra être exploré ou réutilisé comme base méthodologique dans d’autres contextes, sans impliquer une consommation accrue de ressources.
+Aucun déploiement large ni intégration dans une plateforme existante n’est envisagé — et cela ne serait d’ailleurs ni pertinent ni nécessaire, compte tenu de la nature exploratoire et académique du travail. Le projet conservera donc une existence discrète. Sa mise à disposition sur GitHub assure néanmoins une forme de traçabilité et d’accessibilité minimale : le code pourra être exploré ou réutilisé comme base méthodologique dans d’autres projets, sans impliquer une consommation accrue de ressources.
 
 \subsection{Impact sociétal}
-Bien que notre projet s’inscrive dans le cadre d’une preuve de concept académique — une exploration scientifique de la répartition spatio-temporelle de 38 000 impacts de météorites — ses implications sociétales ne doivent pas être négligées. À première vue, il ne touche ni aux données personnelles, ni à la prise de décision algorithmique, ni à un usage grand public intensif. Pourtant, même dans ce contexte spécialisé, certaines retombées sociales indirectes méritent d’être soulignées.\\
+Bien que notre projet s’inscrive dans le cadre d’une preuve de concept , il peut être intéressant de se questionner sur son impact social. À première vue, il ne touche ni aux données personnelles, ni à la prise de décision algorithmique, ni à un usage grand public intensif. Pourtant, même dans ce contexte spécialisé, certaines retombées sociales indirectes méritent d’être soulignées.\\
 \\
-L’un des premiers apports sociétaux du projet tient à son potentiel éducatif et culturel. En développant une interface R-Shiny interactive, avec des visualisations en 2D et en 3D, nous avons rendu accessible un jeu de données massif et complexe à un public non expert. Cette mise en forme visuelle, intuitive et librement consultable ouvre la voie à une vulgarisation scientifique de qualité. Elle pourrait s’insérer dans des contextes éducatifs (cours, ateliers, ressources pédagogiques) en contribuant à éveiller la curiosité pour des disciplines telles que l’astronomie. En donnant à voir un phénomène rare, planétaire, presque abstrait comme la chute de météorites, le projet participe à une meilleure compréhension du monde naturel et de notre place dans l’univers.\\
+L’un des premiers apports sociétaux du projet tient à son potentiel éducatif et culturel. En développant une interface R-Shiny interactive, avec des visualisations en 2D et en 3D, nous avons rendu accessible un jeu de données massif et complexe à un public non expert. Cette mise en forme visuelle, intuitive et librement consultable ouvre la voie à une vulgarisation scientifique. Elle pourrait s’insérer dans des contextes éducatifs (cours, ateliers, ressources pédagogiques) en contribuant à éveiller la curiosité pour des disciplines telles que l’astronomie. En donnant à voir un phénomène rare, planétaire, presque abstrait comme la chute de météorites, le projet participe à une meilleure compréhension du monde naturel et de notre place dans l’univers.\\
 \\
 Le projet, fondé exclusivement sur des données ouvertes et publiques (notamment issues des bases scientifiques de la NASA), ne collecte ni ne traite aucune information personnelle. Il est donc en dehors du champ du RGPD et ne soulève pas d’enjeux en matière de vie privée ou de cybersécurité. Cela ne nous a pas empêchés d’adopter une posture éthique : rigueur dans la traçabilité des données, citation des sources, documentation du code, et transparence dans les traitements effectués. En d’autres termes, même sans enjeu sensible, le projet reste respectueux des principes fondamentaux de l’éthique numérique.\\
 \\
 Par ailleurs, il ne repose sur aucun algorithme de décision ni sur des systèmes de recommandation automatisée. L’analyse statistique via des processus ponctuels reste purement exploratoire. Le projet ne formule pas de jugements, ne classe pas, ne propose pas de réponses prédéfinies. Il se positionne comme un outil d’investigation visuelle et statistique, qui laisse à l’utilisateur toute liberté d’interprétation. Cela limite fortement les risques de biais, de mésusage ou d’impacts involontaires sur les comportements humains. Si, un jour, cette approche était adaptée à des domaines plus sensibles (comme la prévention de risques naturels ou la surveillance environnementale), il faudrait alors accompagner ces usages d’une réflexion sur la robustesse des résultats et les responsabilités de leur interprétation.\\
 \\
-En résumé, bien qu’il ne transforme pas directement des conditions de vie ou des pratiques sociales, notre projet s’inscrit dans une logique de diffusion ouverte de la connaissance, de transparence scientifique et de sobriété numérique. 
+En résumé, bien que le projet ne transforme pas directement des conditions de vie ou des pratiques sociales, notre projet s’inscrit dans une logique de diffusion ouverte de la connaissance, de transparence scientifique et de sobriété numérique. 
 
 \subsection{Politique de la structure d'accueil : Université Grenoble Alpes (UGA)}
 En tant qu’établissement public d’enseignement supérieur et de recherche, l’Université Grenoble Alpes (UGA) assume pleinement sa responsabilité sociale et environnementale. Sa politique de développement durable s’inscrit dans une dynamique à la fois institutionnelle, pédagogique, environnementale et sociale, en cohérence avec les cadres nationaux (comme la loi ESR et le référentiel DD\&RS) et internationaux (notamment les Objectifs de Développement Durable de l’ONU). Cette orientation se traduit par des engagements concrets, reconnus notamment par l’obtention du label DD\&RS en 2021, qui atteste d’une approche globale intégrant la gouvernance, la formation, la recherche, la gestion environnementale et la politique sociale.\\
@@ -687,7 +619,7 @@ En somme, l’UGA affiche une volonté forte d’intégrer les enjeux de dévelo
 
 \section{Conclusion}
 Ce rapport est le fruit d'un travail de 4 mois, nous laissant libre de la direction du projet. Cette liberté nous a conduit à comprendre les données à traiter et par la suite se questionner sur la répartition inhomogène des météorites sur les surfaces émergées de la Terre. 
-La partie exploratoire des données a été abordées dans un premier indépendament par chaque membre du groupe, ce qui a permis de pousser notre réflexion tout en étant conseillé par notre tuteur.
+La partie exploratoire des données a été abordées dans un premier indépendament par chaque membre du groupe, ce qui a permis de pousser notre réflexion tout en étant conseillé par notre tuteur.\\
 \\
 Au fil des discussions formels et informels, deux voies se sont naturellement présentées à nous :
 \\
