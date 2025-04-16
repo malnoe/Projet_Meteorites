@@ -43,7 +43,21 @@ Pas d'objectif défini : **exploration libre** des données pour choisir nos axe
 
 # Exploration des données
 ## Présentation des variables
-Yannis
+
+Le jeu de données comporte 45716 observations pour 10 variables.
+Pour l'étude, nous nous sommes concentrés sur ces 5 variables :
+
+- $\underline{\textbf{mass..g.}}$ : Elle corresponds à la masse de la météorite en gramme.
+
+- $\underline{\textbf{mass..g.}}$ : Année où la météorite est tombée sur Terre.
+
+- $\underline{\textbf{reclat}}$ : Lattitude de là où est tombée la météorite.
+
+- $\underline{\textbf{reclong}}$ : Longitude de là où est tombée la météorite.
+
+<div style="margin-top: 300px;">
+On a par la suite créé la variable $\underline{\textbf{pays}}$ qui indique le pays dans lequel la météorite est tombée. Cela servira à filtrer les données par pays.
+</div>
 
 ## Masse de la météorite (variable mass)
 
@@ -96,7 +110,7 @@ library(xtable)
 library(ggplot2)
 library(dplyr)
 
-Meteorite_Landings <- read.csv("~/Ecole/M1/Projet/Projet_Meteorites/Données/Meteorite_Landings.csv")
+Meteorite_Landings <- read.csv("C:/Users/Yanni/OneDrive/Desktop/Projet tutoré/Meteorite_Landings.csv")
 
 # Year
 # Filtrer les données pour ne garder que les années > 1963 et < 2026
@@ -144,7 +158,7 @@ library(sf)
 world <- ne_countries(scale = "medium", returnclass = "sf")
 
 # Charger les données de météorites (exemple : colonnes reclat, reclong)
-df <- read.csv("C:/Users/garan/Documents/Ecole/M1/Projet/Projet_Meteorites/Données/Meteorite_Landings.csv", stringsAsFactors = FALSE) |>
+df <- read.csv("C:/Users/Yanni/OneDrive/Desktop/Projet tutoré/Meteorite_Landings.csv", stringsAsFactors = FALSE) |>
   na.omit() |>  # Supprimer les NA
   dplyr::select(reclat, reclong)  # Sélectionner les colonnes pertinentes
 
@@ -291,9 +305,46 @@ Khoi
 
 Khoi
 
-## R
+## Représentation 3D avec **threejs**
 
-<iframe src="http://127.0.0.1:5133" width="100%" height="800px" ></iframe>
+Sur R, la visualision a été faite avec le package **threejs**, basé sur la bibliothèque JavaScript **Three.js**.  
+La fonction **globejs()** permet de représenter des données spatiales sur un globe interactif via les arguments :  
+- **img** : image du globe (obtenue sur le site de la NASA),  
+- **lat / long** : coordonnées géographiques,  
+- **color / value** : couleur et hauteur des points.
+
+
+
+
+Cette approche permet une manipulation intuitive des données, mais reste limitée en R pour l’interactivité.
+
+<div style="margin-top: 250px;">
+$\rightarrow$ Nous avons donc choisi d'utiliser **Shiny** pour développer un dashboard interactif, plus flexible et réactif.
+</div>
+
+## Création d'un dashboard
+
+Le dashboard développé permet d’explorer les données à l’aide de trois filtres :  
+
+- **Année de la chute** : par décennies (1900–2013) pour simplifier l’interface.
+
+- **Masse des météorites** : de 1g à 100 tonnes par puissance de 10.
+
+- **Pays de la chute** : ajout d’une colonne **pays** via le package **rnaturalearth**.
+
+Fonctionnalités supplémentaires :
+
+- Affichage du **nombre de météorites** selon les filtres appliqués.  
+
+- **Coloration des points** selon la masse pour enrichir la lecture.
+
+<div style="margin-top: 250px;">
+$\rightarrow$ L'application reste limitée par le temps de chargement dû à **globejs()**, qui est relancé à chaque filtre.
+</div>
+
+## Dashboard shiny
+
+<iframe src="http://127.0.0.1:7868" width="100%" height="1000px" ></iframe>
 
 
 ## Conclusion
