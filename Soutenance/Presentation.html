@@ -29,7 +29,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="Presentation_files/libs/revealjs/dist/theme/quarto-367017fa2871343a8466c6f0f2630bc9.css">
+  <link rel="stylesheet" href="Presentation_files/libs/revealjs/dist/theme/quarto-ec0caa90877c2a065937c1b24532da6d.css">
   <link href="Presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="Presentation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="Presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -137,6 +137,17 @@ Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen &amp; Garance Malnoë encadré.e
 </div>
 </div>
 
+</section><section id="TOC">
+<nav role="doc-toc"> 
+<h2 id="toc-title">Table of contents</h2>
+<ul>
+<li><a href="#/introduction" id="/toc-introduction">Introduction</a></li>
+<li><a href="#/exploration-des-données" id="/toc-exploration-des-données">Exploration des données</a></li>
+<li><a href="#/modélisation-de-processus-ponctuels" id="/toc-modélisation-de-processus-ponctuels">Modélisation de processus ponctuels</a></li>
+<li><a href="#/visualisation-en-3d" id="/toc-visualisation-en-3d">Visualisation en 3D</a></li>
+<li><a href="#/conclusion" id="/toc-conclusion">Conclusion</a></li>
+</ul>
+</nav>
 </section>
 <section>
 <section id="introduction" class="title-slide slide level1 center">
@@ -175,44 +186,58 @@ Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen &amp; Garance Malnoë encadré.e
 <h2>Présentation des variables</h2>
 <p>Yannis</p>
 </section>
-<section id="nametype-et-fall" class="slide level2">
-<h2>Nametype et Fall</h2>
-<p>Aucune donnée manquante pour ces deux variables</p>
-<div class="column" style="width:50%;">
-<p><strong>Nametype</strong> :</p>
-<p>Valid -&gt; 99,8%</p>
-<p>Relict -&gt; 0,02%</p>
-<p>-&gt; Quasiment toutes les météorites du jeu de données sont bien valides (on sait que ce sont des météorites).</p>
-</div><div class="column" style="width:50%;">
-<p><strong>Fall</strong> :</p>
-<p>Found -&gt; 97,5% du jeu de données.</p>
-<p>Fell -&gt; 2,5% du jeu de données.</p>
-<p>-&gt; Quasiment toutes les météorites du jeu de données sont trouvées au sol.</p>
-</div></section>
-<section id="name" class="slide level2">
-<h2>Name</h2>
-<p>Aucune donnée manquante.</p>
-<div class="column" style="width:60%;">
-<div class="cell">
-<div class="cell-output-display">
-<div>
+<section id="masse-de-la-météorite-variable-mass" class="slide level2">
+<h2>Masse de la météorite (variable mass)</h2>
+<p>131 données manquantes soit 0,3% du jeu de données.</p>
+<p><strong>Très grande hétéorogénéité</strong> des valeurs :</p>
 <figure>
-<p><img data-src="Presentation_files/figure-revealjs/unnamed-chunk-1-1.png" width="672"></p>
+<img src="images/exploration/boitemoustache_mass.png" alt="" style="width: 90%; float: center; margin-left:70px">
+</figure>
+<div style="margin-top: 30px;">
+<ul>
+<li><p>Majorité de petites météorites.</p></li>
+<li><p>Quelques météorites très volumineuses.</p></li>
+<li><p>Biais de recensement en faveur des météorites les plus grosses.</p></li>
+</ul>
+</div>
+</section>
+<section id="année-de-la-chute-de-la-météorite-variable-year" class="slide level2">
+<h2>Année de la chute de la météorite (variable year)</h2>
+<p>291 données manquantes et une donnée aberrante. <strong>Très grande hétérogénéité</strong> des valeurs :</p>
+<div class="column" style="width:50%;">
+<figure>
+<img src="images/exploration/boitemoustache_year.png" alt="" style="width: 100%; margin-left:1px; float: left;">
+</figure>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>Large majorité des données date des 50 dernières années</li>
+<li>Dernière valeur en 2013 : jeu de données non mis à jour.</li>
+</ul>
+</div><div class="column" style="margin-top: 10px;">
+<div class="cell" data-layout-align="left">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-left">
+<figure>
+<p><img data-src="Presentation_files/figure-revealjs/unnamed-chunk-1-1.png" class="quarto-figure quarto-figure-left" width="595"></p>
 </figure>
 </div>
 </div>
 </div>
-</div><div class="column" style="width:40%;">
+</div><div class="column" style="margin-top: 10px;">
 <ul>
-<li>a</li>
-<li>a</li>
-<li>a</li>
+<li><strong>Augmentation des recensements à partir de 1974</strong> :
+<ul>
+<li>Réseaux de surveillance.</li>
+<li>Centralisation des données.</li>
+<li>Mise en place de mission de recherche sur la chute des météorites.</li>
+</ul></li>
 </ul>
 </div></section>
-<section id="recclass" class="slide level2">
-<h2>Recclass</h2>
-<p>Aucune donnée manquante.</p>
-<div class="column" style="width:60%;">
+<section id="emplacement-de-la-chute-de-la-météorite-variables-reclat-relong-et-geolocation" class="slide level2">
+<h2>Emplacement de la chute de la météorite (variables reclat, relong et geolocation)</h2>
+<p>7315 données manquantes où la latitude, la longitude et la variable geolocation sont absentes en mêmes temps, environ 16% du jeu de données.</p>
+<p>Visualisation sur le planisphère :</p>
+<div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -222,121 +247,38 @@ Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen &amp; Garance Malnoë encadré.e
 </div>
 </div>
 </div>
-</div><div class="column" style="width:40%;">
+</div><div class="column" style="width:50%;">
+<div style="margin-top: 10px;">
 <ul>
-<li>a</li>
-<li>a</li>
-<li>a</li>
+<li>Seulement les terres émmergées.</li>
+<li>Quelques régions concentrent beaucoup de points : Etats-Unis, Europe de l’Ouest, Nord-Ouest de l’Affrique, Sud de l’Australie, Antarctique.</li>
+<li>Quelques régions avec très peu de météorites recensées : Nord du Canada, forêt amazonienne, Nord de la Russie.</li>
 </ul>
-</div></section>
-<section id="mass" class="slide level2">
-<h2>Mass</h2>
-131 données manquantes soit 0,3% du jeu de données. Très grande hétéorogénéité des valeurs :
-<figure>
-<img src="images/exploration/boitemoustache_mass.png" alt="" style="width: 80%;  float: center;">
-<figcaption>
-Distribution de la variable Mass
-</figcaption>
-</figure>
+</div>
+</div><p><span class="math inline">\(\rightarrow\)</span> <strong>Biais géographique</strong> en faveur des régions les plus densément peuplées. Exectption de l’Antarctique expliquée par les expéditions réalisées pour la recherche sur les chûtes de météorites.</p>
 </section>
-<section id="year" class="slide level2">
-<h2>Year</h2>
-291 données manquantes et une donnée aberrante. Très grande hétérogénéité des valeurs :
-<figure>
-<img src="images/exploration/boitemoustache_year.png" alt="" style="width: 70%; float: center;">
-<figcaption>
-Distribution de l’année de la chute des météorites
-</figcaption>
-</figure>
-<div class="column" style="width:65%;">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="Presentation_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center" width="624"></p>
-</figure>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:35%;">
-<ul>
-<li>a</li>
-<li>a</li>
-<li>a</li>
-</ul>
-</div></section>
-<section id="location" class="slide level2">
-<h2>Location</h2>
-<p>7315 données manquantes où la latitude, la longitude et la variable geolocation sont absentes en mêmes temps, environ 16% du jeu de données.</p>
-<p>Visualisation sur le planisphère :</p>
-<div class="column" style="width:50%;">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="Presentation_files/figure-revealjs/unnamed-chunk-4-1.png" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:35%;">
-<ul>
-<li>commentaire</li>
-<li>commentaire</li>
-</ul>
-</div></section>
 <section id="latitude" class="slide level2">
 <h2>Latitude</h2>
 
-<img data-src="Presentation_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" width="480"><div class="column" style="width:50%;">
+<img data-src="Presentation_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" width="384"><div class="columns">
+<div class="column" data-align="left" style="width:60%;">
+<p><strong>Latitudes des régions avec beaucoup de points</strong> :</p>
 <ul>
-<li>commentaire</li>
+<li><p>-90 à -70° (Australie du Sud et Antarctique)</p></li>
+<li><p>15° à 60° (Amérique du Nord et Europe).</p></li>
 </ul>
-</div><div class="column" style="width:50%;">
-<ul>
-<li>commentaire</li>
-</ul>
-</div></section>
+</div><div class="column" data-align="right" style="width:40%;">
+<p><strong>Pic en 0</strong> : Données faussement renseignées en (0,0) en cas d’absence des coordonnées exactes (plusieurs milliers de données).</p>
+</div></div>
+</section>
 <section id="longitude" class="slide level2">
 <h2>Longitude</h2>
 
-<img data-src="Presentation_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" width="480"><div class="column" style="width:50%;">
-<ul>
-<li>commentaire</li>
+<img data-src="Presentation_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" width="384"><ul>
+<li><strong>Autour de -100°</strong> : Amérique du Nord.</li>
+<li><strong>150° à 165°</strong> : Australie et Est de l’Antarctique</li>
+<li><strong>Pic fort en 0</strong> : Données faussement renseignées mais également données provenant de l’Europe et de l’Afrique de l’Ouest.</li>
 </ul>
-</div><div class="column" style="width:50%;">
-<ul>
-<li>commentaire</li>
-</ul>
-</div></section>
-<section id="répartition-selon-les-pays" class="slide level2">
-<h2>Répartition selon les pays</h2>
-<div class="column" style="width:50%;">
-<figure>
-<img src="images/exploration/map_points_countries_avec_echelle.png" alt="" style="width: 100%; float: center;">
-<figcaption>
-Nombre de météorites par pays
-</figcaption>
-</figure>
-</div><div class="column" style="width:50%;">
-<figure>
-<img src="images/exploration/map_points_km2_avec_echelle.png" alt="" style="width: 100%; float: center;">
-<figcaption>
-Nombre de météorites par km² par pays
-</figcaption>
-</figure>
-</div><div style="margin-top: 30px;">
-<p>Explication</p>
-</div>
-</section>
-<section id="multivarié" class="slide level2">
-<h2>Multivarié</h2>
-<ul>
-<li>Qualitative-qualitative : Test de <span class="math inline">\(\chi^2\)</span>. Résultats :</li>
-<li>Quantitative-quantitative : Coefficient de Pearson. Résultats :</li>
-<li>Quantitative-qualitative : Test de Shapiro-Wilk pour la normalité. Tous sont très significatif donc tests de Kruskal-Wallis ou Mann-Withney pour être robuste face à l’absence de l’hypothèse de normalité. Résultats :</li>
-</ul>
-<p>Pas très intéressant, skipper ?</p>
 </section>
 <section id="discussion-des-limites-du-jeu-de-données" class="slide level2">
 <h2>Discussion des limites du jeu de données</h2>
@@ -344,24 +286,24 @@ Nombre de météorites par km² par pays
 <li><p><strong>Peu de données manquantes</strong> mais sur des <strong>variables importantes</strong> (masse, année et localisation). Finalement, 38 115 observations (83% des données), a priori suffisant pour nos analyses.</p></li>
 <li><p>Mise en évidence de biais :</p>
 <ul>
-<li><strong>Biais temporel</strong> : …</li>
-<li><strong>Biais géographique</strong> : …</li>
-<li><strong>Biais en faveur des plus grosses météorites</strong> : …</li>
+<li><strong>Biais temporel</strong> : sureprésentation des météorites les plus récentes, seulement 40 années exploitables.</li>
+<li><strong>Biais géographique</strong> : plus de recensements dans les zones densément peuplées et données faussement référencées en (0,0).</li>
+<li><strong>Biais en faveur des plus grosses météorites</strong> : plus faciles à identifier que les petites météorites qui sont aisément confondues avec des roches terrestres.</li>
 </ul></li>
 </ul>
 <p><strong>Le jeu de données est en réalité très incomplet</strong>. Et nous manquons d’information pour éviter ces biais pour faire nos analyses.</p>
 </section>
 <section id="choix-des-pistes-à-poursuivre" class="slide level2">
 <h2>Choix des pistes à poursuivre</h2>
-<p><strong>Pistes initialement envisagées mises de côté</strong> :</p>
+<p><span class="math inline">\(\underline{\textbf{Pistes initialement envisagées mises de côté}}\)</span> :</p>
 <ul>
-<li><p>L’analyse temporelle : pas assez de précision temporelle et seulement 40 années exploitables. Nous avons étudié un autre jeu de données (Natural History Museum) plus précis mais également trop incomplet.</p></li>
-<li><p>La modélisation prédictive du nombre de météorites tombées par pays : biais de rescencement rendant l’analyse peu pertinente.</p></li>
+<li><p><strong>L’analyse temporelle</strong> : pas assez de précision temporelle et seulement 40 années exploitables. Nous avons étudié un autre jeu de données (Natural History Museum) plus précis mais également trop incomplet.</p></li>
+<li><p><strong>La modélisation prédictive</strong> du nombre de météorites tombées par pays : le biais géographique rend l’analyse peu pertinente.</p></li>
 </ul>
-<p><strong>Pistes choisies pour le reste de l’étude</strong> :</p>
+<p><span class="math inline">\(\underline{\textbf{Pistes choisies pour le reste de l'étude}}\)</span> :</p>
 <ul>
-<li><p>Analyse du processus derrière la chute des météorites : processus de Poisson (in)homogènes ?</p></li>
-<li><p>Visualisation en 3D pour se détacher des distortions causées par la projection sur un planisphère.</p></li>
+<li><p><strong>Modélisation du processus de la chute des météorites</strong> : processus de Poisson homogènes et inhomogènes.</p></li>
+<li><p><strong>Visualisation en 3D</strong> pour se détacher des distortions causées par la projection sur un planisphère.</p></li>
 </ul>
 </section></section>
 <section>
@@ -404,28 +346,13 @@ Nombre de météorites par km² par pays
 </section>
 <section id="r" class="slide level2">
 <h2>R</h2>
-<p>Yannis <iframe src="http://127.0.0.1:6827" width="110%" height="600px"></iframe></p>
-</section></section>
-<section>
-<section id="impact-environnemental" class="title-slide slide level1 center">
-<h1>Impact environnemental</h1>
-
-</section>
-<section id="impact-environnemental-personnel" class="slide level2">
-<h2>Impact environnemental personnel</h2>
-<p>??</p>
-</section>
-<section id="impact-global-du-projet" class="slide level2">
-<h2>Impact global du projet</h2>
-<p>??</p>
-</section>
-<section id="politique-de-la-structure-dacceuil" class="slide level2">
-<h2>Politique de la structure d’acceuil</h2>
-<p>??</p>
+<iframe src="http://127.0.0.1:5133" width="100%" height="800px">
+</iframe>
 </section></section>
 <section id="conclusion" class="title-slide slide level1 center">
 <h1>Conclusion</h1>
 <p>Gary</p>
+<p>Impact environnemental + ouvertures possibles + limites</p>
 
 </section>
     </div>
@@ -484,7 +411,7 @@ Nombre de météorites par km² par pays
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: 'c/t',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',

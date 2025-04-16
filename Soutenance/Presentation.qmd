@@ -1,8 +1,14 @@
 ---
 title: "Étude de la chute des météorites sur Terre"
 author: "Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen & Garance Malnoë encadré.e.s par Jean-François Coeurjolly"
-format: revealjs
-fontsize: 20pt
+format: 
+  revealjs :
+    toc: true
+    slide-number: true
+    toc-depth: 1
+    number-section: true
+
+fontsize: 19pt
 ---
 
 # Introduction
@@ -42,141 +48,58 @@ Khoi
 ## Présentation des variables
 Yannis
 
-## Nametype et Fall
-Aucune donnée manquante pour ces deux variables
+## Masse de la météorite (variable mass)
+
+131 données manquantes soit 0,3% du jeu de données. 
+
+**Très grande hétéorogénéité** des valeurs :
+
+<figure>
+    <img src="images/exploration/boitemoustache_mass.png" alt="" style="width: 90%; float: center; margin-left:70px">
+</figure>
+
+<div style="margin-top: 30px;">
+
+- Majorité de petites météorites.
+
+- Quelques météorites très volumineuses.
+
+- Biais de recensement en faveur des météorites les plus grosses.
+</div>
+
+
+## Année de la chute de la météorite (variable year)
+
+291 données manquantes et une donnée aberrante. **Très grande hétérogénéité** des valeurs :
+
+::: {.column width="50%" }
+
+<figure>
+    <img src="images/exploration/boitemoustache_year.png" alt="" style="width: 100%; margin-left:1px; float: left;">
+</figure>
+
+::: 
 
 ::: {.column width="50%"}
-**Nametype** : 
-
-Valid -> 99,8%
-
-Relict -> 0,02%
-
--> Quasiment toutes les météorites du jeu de données sont bien valides (on sait que ce sont des météorites).
-:::
-
-::: {.column width="50%"}
-**Fall** :
-
-Found -> 97,5% du jeu de données.
-
-Fell -> 2,5% du jeu de données.
-
--> Quasiment toutes les météorites du jeu de données sont trouvées au sol.
+- Large majorité des données date des 50 dernières années
+- Dernière valeur en 2013 : jeu de données non mis à jour.
 
 :::
 
-## Name
-Aucune donnée manquante.
-
-::: {.column width="60%"}
+::: {.column width="50%" style="margin-top: 10px;"}
 
 ```{r}
 #| echo: false
-#| fig-height: 5
-#| fig-width: 7
+#| fig-align: left
+#| fig-height: 3.8
+#| fig-width: 6.2
+
 library(corrr)
 library(xtable)
 library(ggplot2)
 library(dplyr)
 
-Meteorite_Landings <- read.csv("C:/Users/garan/Documents/Ecole/M1/Projet/Projet_Meteorites/Données/Meteorite_Landings.csv")
-
-# Name - Première lettre
-Meteorite_Landings <- Meteorite_Landings %>%
-  mutate(first_letter = substr(name, 1, 1))
-# Compter le nombre d'occurrences de chaque première lettre et trier par ordre décroissant
-letter_counts <- Meteorite_Landings %>%
-  group_by(first_letter) %>%
-  summarise(count = n()) %>%
-  arrange(desc(count))  # Trier par ordre décroissant
-# Créer l'histogramme
-ggplot(letter_counts, aes(x = reorder(first_letter, -count), y = count)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Histogramme des premières lettres des noms de météorites",
-       x = "Première lettre",
-       y = "Nombre de météorites") +
-  theme_minimal()
-```
-
-:::
-
-::: {.column width="40%"}
-- a
-- a
-- a
-
-:::
-
-
-## Recclass
-Aucune donnée manquante.
-
-::: {.column width="60%"}
-
-```{r}
-#| echo: false
-#| fig-height: 5
-#| fig-width: 7
-#Recclass
-# Calcul pourcentage en ne gardant que ceux > 4%
-recclass_counts <- Meteorite_Landings %>%
-  group_by(recclass) %>%
-  summarise(count = n()) %>%
-  mutate(percentage = count / sum(count) * 100)
-# Regrouper les classes qui représentent moins de 4 % dans "Autres"
-recclass_counts <- recclass_counts %>%
-  mutate(recclass = ifelse(percentage < 4, "Autres", recclass)) %>%
-  group_by(recclass) %>%
-  summarise(count = sum(count), percentage = sum(percentage))
-# Trier par pourcentage
-recclass_counts <- recclass_counts %>%
-  arrange(percentage)
-# Pie chart
-ggplot(recclass_counts, aes(x = "", y = percentage, fill = recclass)) +
-  geom_bar(stat = "identity", width = 1) +
-  coord_polar("y") +
-  labs(title = "Répartition des classes de recclass",
-       fill = "Classe") +
-  theme_void() +  # Utiliser un thème vide pour un pie chart
-  geom_text(aes(label = paste0(round(percentage, 1), "%")), 
-            position = position_stack(vjust = 0.5),
-            size=3,
-            color="white")
-```
-
-:::
-
-::: {.column width="40%"}
-
-- a
-- a
-- a
-
-:::
-
-## Mass
-131 données manquantes soit 0,3% du jeu de données. Très grande hétéorogénéité des valeurs :
-<figure>
-    <img src="images/exploration/boitemoustache_mass.png" alt="" style="width: 80%;  float: center;">
-    <figcaption>Distribution de la variable Mass</figcaption>
-</figure>
-
-
-## Year
-291 données manquantes et une donnée aberrante. Très grande hétérogénéité des valeurs :
-<figure>
-    <img src="images/exploration/boitemoustache_year.png" alt="" style="width: 70%; float: center;">
-    <figcaption>Distribution de l'année de la chute des météorites</figcaption>
-</figure>
-
-::: {.column width="65%"}
-
-```{r}
-#| echo: false
-#| fig-align: center
-#| fig-height: 3.8
-#| fig-width: 6.5
+Meteorite_Landings <- read.csv("~/Ecole/M1/Projet/Projet_Meteorites/Données/Meteorite_Landings.csv")
 
 # Year
 # Filtrer les données pour ne garder que les années > 1963 et < 2026
@@ -196,15 +119,16 @@ ggplot(year_counts, aes(x = year, y = count)) +
 ```
 
 :::
-
-::: {.column width="35%"}
-- a
-- a
-- a
+::: {.column width="50%" style="margin-top: 10px;"}
+- **Augmentation des recensements à partir de 1974** :
+  - Réseaux de surveillance.
+  - Centralisation des données.
+  - Mise en place de mission de recherche sur la chute des météorites.
 
 :::
 
-## Location
+
+## Emplacement de la chute de la météorite (variables reclat, relong et geolocation)
 7315 données manquantes où la latitude, la longitude et la variable geolocation sont absentes en mêmes temps, environ 16% du jeu de données. 
 
 Visualisation sur le planisphère :
@@ -237,17 +161,24 @@ ggplot() +
 
 :::
 
-::: {.column width="35%"}
-- commentaire
-- commentaire
+::: {.column width="50%"}
+<div style="margin-top: 10px;">
+
+- Seulement les terres émmergées.
+- Quelques régions concentrent beaucoup de points : Etats-Unis, Europe de l'Ouest, Nord-Ouest de l'Affrique, Sud de l'Australie, Antarctique.
+- Quelques régions avec très peu de météorites recensées : Nord du Canada, forêt amazonienne, Nord de la Russie.
+
+</div>
 
 :::
+$\rightarrow$ **Biais géographique** en faveur des régions les plus densément peuplées. Exectption de l'Antarctique expliquée par les expéditions réalisées pour la recherche sur les chûtes de météorites.
+
 
 ## Latitude
 ```{r}
 #| echo: false
-#| fig-height: 3
-#| fig-width: 5
+#| fig-height: 2
+#| fig-width: 4
 #| fig-align: center
 
 # Latitude
@@ -262,24 +193,34 @@ ggplot(latitude_counts, aes(x = rounded_lat, y = count)) +
   labs(title = "Météorites tombées par degré de latitude",
        x = "Latitude (degré arrondi à l'unité)",
        y = "Nombre de météorites") +
-  theme_minimal()
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 10),  # Réduire la hauteur du titre
+    axis.title = element_text(size = 8)    # Réduire la hauteur des axes
+  )
 ```
 
-::: {.column width="50%"}
-- commentaire
 
+::: {.columns}
+::: {.column width="60%" align="left"}
+**Latitudes des régions avec beaucoup de points** :
+
+ - -90 à -70° (Australie du Sud et Antarctique) 
+
+ - 15° à 60° (Amérique du Nord et Europe).
 :::
 
-::: {.column width="50%"}
-- commentaire
-
+::: {.column width="40%" align="right"}
+**Pic en 0** : Données faussement renseignées en (0,0) en cas d'absence des coordonnées exactes (plusieurs milliers de données).
 :::
+:::
+
 
 ## Longitude
 ```{r}
 #| echo: false
-#| fig-height: 3
-#| fig-width: 5
+#| fig-height: 2
+#| fig-width: 4
 #| fig-align: center
 
 # Longitude
@@ -296,79 +237,41 @@ ggplot(longitude_counts, aes(x = rounded_long, y = count)) +
   labs(title = "Météorites tombées par degré de longitude",
        x = "Longitude (degré arrondi à l'unité)",
        y = "Nombre de météorites") +
-  theme_minimal()
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 10),  # Réduire la hauteur du titre
+    axis.title = element_text(size = 8)    # Réduire la hauteur des axes
+  )
 ```
 
-::: {.column width="50%"}
-- commentaire
-
-:::
-
-::: {.column width="50%"}
-- commentaire
-
-:::
-
-## Répartition selon les pays
-
-::: {.column width="50%"}
-
-<figure>
-    <img src="images/exploration/map_points_countries_avec_echelle.png" alt="" style="width: 100%; float: center;" >
-    <figcaption>Nombre de météorites par pays</figcaption>
-  </figure>
-
-
-:::
-
-::: {.column width="50%"}
-  <figure>
-    <img src="images/exploration/map_points_km2_avec_echelle.png" alt="" style="width: 100%; float: center;">
-    <figcaption>Nombre de météorites par km² par pays</figcaption>
-  </figure>
-
-
-:::
-
-
-<div style="margin-top: 30px;">
-Explication
-</div>
-
-## Multivarié
-- Qualitative-qualitative : Test de $\chi^2$.
-Résultats : 
-- Quantitative-quantitative : Coefficient de Pearson.
-Résultats :
-- Quantitative-qualitative : Test de Shapiro-Wilk pour la normalité. Tous sont très significatif donc tests de Kruskal-Wallis ou Mann-Withney pour être robuste face à l'absence de l'hypothèse de normalité.
-Résultats :
-
-Pas très intéressant, skipper ?
+- **Autour de -100°** : Amérique du Nord.
+- **150° à 165°** : Australie et Est de l'Antarctique
+- **Pic fort en 0** : Données faussement renseignées mais également données provenant de l'Europe et de l'Afrique de l'Ouest.
 
 ## Discussion des limites du jeu de données
 
 - **Peu de données manquantes** mais sur des **variables importantes** (masse, année et localisation). Finalement, 38 115 observations (83% des données), a priori suffisant pour nos analyses.
 
 - Mise en évidence de biais : 
-  - **Biais temporel** : ...
-  - **Biais géographique** :  ...
-  - **Biais en faveur des plus grosses météorites** : ...
+  - **Biais temporel** : sureprésentation des météorites les plus récentes, seulement 40 années exploitables.
+  - **Biais géographique** : plus de recensements dans les zones densément peuplées et données faussement référencées en (0,0).
+  - **Biais en faveur des plus grosses météorites** : plus faciles à identifier que les petites météorites qui sont aisément confondues avec des roches terrestres.
 
 **Le jeu de données est en réalité très incomplet**. Et nous manquons d'information pour éviter ces biais pour faire nos analyses.
 
 ## Choix des pistes à poursuivre
 
-**Pistes initialement envisagées mises de côté** :
+$\underline{\textbf{Pistes initialement envisagées mises de côté}}$ :
 
-- L'analyse temporelle : pas assez de précision temporelle et seulement 40 années exploitables. Nous avons étudié un autre jeu de données (Natural History Museum) plus précis mais également trop incomplet.
+- **L'analyse temporelle** : pas assez de précision temporelle et seulement 40 années exploitables. Nous avons étudié un autre jeu de données (Natural History Museum) plus précis mais également trop incomplet.
 
-- La modélisation prédictive du nombre de météorites tombées par pays : biais de rescencement rendant l'analyse peu pertinente.
+- **La modélisation prédictive** du nombre de météorites tombées par pays : le biais géographique rend l'analyse peu pertinente.
 
-**Pistes choisies pour le reste de l'étude** :
+$\underline{\textbf{Pistes choisies pour le reste de l'étude}}$ :
 
-- Analyse du processus derrière la chute des météorites : processus de Poisson (in)homogènes ?
+- **Modélisation du processus de la chute des météorites** : processus de Poisson homogènes et inhomogènes.
 
-- Visualisation en 3D pour se détacher des distortions causées par la projection sur un planisphère.
+- **Visualisation en 3D** pour se détacher des distortions causées par la projection sur un planisphère.
 
 # Modélisation de processus ponctuels
 ## Objectifs
@@ -403,23 +306,11 @@ Khoi
 
 ## R
 
-Yannis
-<iframe src="http://127.0.0.1:6827" width="110%" height="600px"></iframe>
+<iframe src="http://127.0.0.1:5133" width="100%" height="800px" ></iframe>
 
-# Impact environnemental
-
-## Impact environnemental personnel
-
-??
-
-## Impact global du projet
-
-??
-
-## Politique de la structure d'acceuil
-
-??
 
 # Conclusion
 
 Gary 
+
+Impact environnemental + ouvertures possibles + limites
