@@ -8,7 +8,7 @@ format:
     toc-depth: 1
     number-section: true
 
-fontsize: 19pt
+fontsize: 18pt
 ---
 
 # Introduction
@@ -40,9 +40,6 @@ Pas d'objectif défini : **exploration libre** des données pour choisir nos axe
 
 - **Visualiser** les chutes de météorites sur un planisphère.
 </div>
-
-## Organisation, outils et bibliothèques
-Khoi
 
 # Exploration des données
 ## Présentation des variables
@@ -81,8 +78,8 @@ Yannis
 ::: 
 
 ::: {.column width="50%"}
-- Large majorité des données date des 50 dernières années
-- Dernière valeur en 2013 : jeu de données non mis à jour.
+- Large majorité des données date des **50 dernières années**.
+- Dernière valeur en 2013 : jeu de données **non mis à jour**.
 
 :::
 
@@ -123,7 +120,7 @@ ggplot(year_counts, aes(x = year, y = count)) +
 - **Augmentation des recensements à partir de 1974** :
   - Réseaux de surveillance.
   - Centralisation des données.
-  - Mise en place de mission de recherche sur la chute des météorites.
+  - Mise en place de missions de recherche sur la chute des météorites.
 
 :::
 
@@ -174,53 +171,14 @@ ggplot() +
 $\rightarrow$ **Biais géographique** en faveur des régions les plus densément peuplées. Exectption de l'Antarctique expliquée par les expéditions réalisées pour la recherche sur les chûtes de météorites.
 
 
-## Latitude
-```{r}
-#| echo: false
-#| fig-height: 2
-#| fig-width: 4
-#| fig-align: center
-
-# Latitude
-# Arrondir les valeurs de reclat au degré le plus proche et compter les occurrences
-latitude_counts <- Meteorite_Landings %>%
-  mutate(rounded_lat = round(reclat)) %>%  # Arrondir au degré le plus proche
-  group_by(rounded_lat) %>%
-  summarise(count = n())
-# Barplot
-ggplot(latitude_counts, aes(x = rounded_lat, y = count)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Météorites tombées par degré de latitude",
-       x = "Latitude (degré arrondi à l'unité)",
-       y = "Nombre de météorites") +
-  theme_minimal() +
-  theme(
-    plot.title = element_text(size = 10),  # Réduire la hauteur du titre
-    axis.title = element_text(size = 8)    # Réduire la hauteur des axes
-  )
-```
-
+## Latitude et longitude
 
 ::: {.columns}
-::: {.column width="60%" align="left"}
-**Latitudes des régions avec beaucoup de points** :
-
- - -90 à -70° (Australie du Sud et Antarctique) 
-
- - 15° à 60° (Amérique du Nord et Europe).
-:::
-
-::: {.column width="40%" align="right"}
-**Pic en 0** : Données faussement renseignées en (0,0) en cas d'absence des coordonnées exactes (plusieurs milliers de données).
-:::
-:::
-
-
-## Longitude
+::: {.column width="50%" align="left"}
 ```{r}
 #| echo: false
-#| fig-height: 2
-#| fig-width: 4
+#| fig-height: 3
+#| fig-width: 5
 #| fig-align: center
 
 # Longitude
@@ -243,10 +201,39 @@ ggplot(longitude_counts, aes(x = rounded_long, y = count)) +
     axis.title = element_text(size = 8)    # Réduire la hauteur des axes
   )
 ```
+:::
 
-- **Autour de -100°** : Amérique du Nord.
-- **150° à 165°** : Australie et Est de l'Antarctique
-- **Pic fort en 0** : Données faussement renseignées mais également données provenant de l'Europe et de l'Afrique de l'Ouest.
+::: {.column width="50%" align="right"}
+```{r}
+#| echo: false
+#| fig-height: 3
+#| fig-width: 5
+#| fig-align: center
+
+# Latitude
+# Arrondir les valeurs de reclat au degré le plus proche et compter les occurrences
+latitude_counts <- Meteorite_Landings %>%
+  mutate(rounded_lat = round(reclat)) %>%  # Arrondir au degré le plus proche
+  group_by(rounded_lat) %>%
+  summarise(count = n())
+# Barplot
+ggplot(latitude_counts, aes(x = rounded_lat, y = count)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Météorites tombées par degré de latitude",
+       x = "Latitude (degré arrondi à l'unité)",
+       y = "Nombre de météorites") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 10),  # Réduire la hauteur du titre
+    axis.title = element_text(size = 8)    # Réduire la hauteur des axes
+  )
+```
+
+:::
+:::
+
+**Pic en 0** : Données faussement renseignées en (0,0) en cas d'absence des coordonnées exactes (plusieurs milliers de données).
+
 
 ## Discussion des limites du jeu de données
 
@@ -309,8 +296,22 @@ Khoi
 <iframe src="http://127.0.0.1:5133" width="100%" height="800px" ></iframe>
 
 
-# Conclusion
+## Conclusion
+$\underline{\textbf{Impact environnemental}}$ :
 
-Gary 
+- Projet sobre : autant de $CO_2$ 9km en voiture thermique.
+- Pas d'algorithmes de Machine Learning ou de longs calculs.
 
-Impact environnemental + ouvertures possibles + limites
+$\underline{\textbf{Impact social}}$ :
+
+- Impact assez limité mais potentielle utilisation des visualisation 3D pour la médiation scientifique et la découverte de la météoritique.
+
+$\underline{\textbf{Ce que l'on retient}}$ :
+
+- Découverte de la statistique spatiale, des processus ponctuels et du package spastat.
+- Voir les limites et avantage de la visualisation 3D en R et Python.
+
+$\underline{\textbf{Ouvertures possibles}}$ :
+
+- Prolonger l'analyse des processus ponctuels.
+- Trouver ou former nous-même un jeu de données plus propre et plus précis pour explorer les pistes initialement envisagées mais mises de côté.

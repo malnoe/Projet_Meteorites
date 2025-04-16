@@ -29,7 +29,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="Presentation_files/libs/revealjs/dist/theme/quarto-ec0caa90877c2a065937c1b24532da6d.css">
+  <link rel="stylesheet" href="Presentation_files/libs/revealjs/dist/theme/quarto-76747c94a35996ac0b5265139f68aa0e.css">
   <link href="Presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="Presentation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="Presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -145,7 +145,6 @@ Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen &amp; Garance Malnoë encadré.e
 <li><a href="#/exploration-des-données" id="/toc-exploration-des-données">Exploration des données</a></li>
 <li><a href="#/modélisation-de-processus-ponctuels" id="/toc-modélisation-de-processus-ponctuels">Modélisation de processus ponctuels</a></li>
 <li><a href="#/visualisation-en-3d" id="/toc-visualisation-en-3d">Visualisation en 3D</a></li>
-<li><a href="#/conclusion" id="/toc-conclusion">Conclusion</a></li>
 </ul>
 </nav>
 </section>
@@ -172,10 +171,6 @@ Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen &amp; Garance Malnoë encadré.e
 <li><p><strong>Visualiser</strong> les chutes de météorites sur un planisphère.</p></li>
 </ul>
 </div>
-</section>
-<section id="organisation-outils-et-bibliothèques" class="slide level2">
-<h2>Organisation, outils et bibliothèques</h2>
-<p>Khoi</p>
 </section></section>
 <section>
 <section id="exploration-des-données" class="title-slide slide level1 center">
@@ -210,8 +205,8 @@ Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen &amp; Garance Malnoë encadré.e
 </figure>
 </div><div class="column" style="width:50%;">
 <ul>
-<li>Large majorité des données date des 50 dernières années</li>
-<li>Dernière valeur en 2013 : jeu de données non mis à jour.</li>
+<li>Large majorité des données date des <strong>50 dernières années</strong>.</li>
+<li>Dernière valeur en 2013 : jeu de données <strong>non mis à jour</strong>.</li>
 </ul>
 </div><div class="column" style="margin-top: 10px;">
 <div class="cell" data-layout-align="left">
@@ -229,7 +224,7 @@ Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen &amp; Garance Malnoë encadré.e
 <ul>
 <li>Réseaux de surveillance.</li>
 <li>Centralisation des données.</li>
-<li>Mise en place de mission de recherche sur la chute des météorites.</li>
+<li>Mise en place de missions de recherche sur la chute des météorites.</li>
 </ul></li>
 </ul>
 </div></section>
@@ -257,28 +252,31 @@ Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen &amp; Garance Malnoë encadré.e
 </div>
 </div><p><span class="math inline">\(\rightarrow\)</span> <strong>Biais géographique</strong> en faveur des régions les plus densément peuplées. Exectption de l’Antarctique expliquée par les expéditions réalisées pour la recherche sur les chûtes de météorites.</p>
 </section>
-<section id="latitude" class="slide level2">
-<h2>Latitude</h2>
-
-<img data-src="Presentation_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center r-stretch" width="384"><div class="columns">
-<div class="column" data-align="left" style="width:60%;">
-<p><strong>Latitudes des régions avec beaucoup de points</strong> :</p>
-<ul>
-<li><p>-90 à -70° (Australie du Sud et Antarctique)</p></li>
-<li><p>15° à 60° (Amérique du Nord et Europe).</p></li>
-</ul>
-</div><div class="column" data-align="right" style="width:40%;">
-<p><strong>Pic en 0</strong> : Données faussement renseignées en (0,0) en cas d’absence des coordonnées exactes (plusieurs milliers de données).</p>
+<section id="latitude-et-longitude" class="slide level2">
+<h2>Latitude et longitude</h2>
+<div class="columns">
+<div class="column" data-align="left" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Presentation_files/figure-revealjs/unnamed-chunk-3-1.png" class="quarto-figure quarto-figure-center" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" data-align="right" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Presentation_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
 </div></div>
-</section>
-<section id="longitude" class="slide level2">
-<h2>Longitude</h2>
-
-<img data-src="Presentation_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" width="384"><ul>
-<li><strong>Autour de -100°</strong> : Amérique du Nord.</li>
-<li><strong>150° à 165°</strong> : Australie et Est de l’Antarctique</li>
-<li><strong>Pic fort en 0</strong> : Données faussement renseignées mais également données provenant de l’Europe et de l’Afrique de l’Ouest.</li>
-</ul>
+<p><strong>Pic en 0</strong> : Données faussement renseignées en (0,0) en cas d’absence des coordonnées exactes (plusieurs milliers de données).</p>
 </section>
 <section id="discussion-des-limites-du-jeu-de-données" class="slide level2">
 <h2>Discussion des limites du jeu de données</h2>
@@ -348,13 +346,30 @@ Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen &amp; Garance Malnoë encadré.e
 <h2>R</h2>
 <iframe src="http://127.0.0.1:5133" width="100%" height="800px">
 </iframe>
-</section></section>
-<section id="conclusion" class="title-slide slide level1 center">
-<h1>Conclusion</h1>
-<p>Gary</p>
-<p>Impact environnemental + ouvertures possibles + limites</p>
-
 </section>
+<section id="conclusion" class="slide level2">
+<h2>Conclusion</h2>
+<p><span class="math inline">\(\underline{\textbf{Impact environnemental}}\)</span> :</p>
+<ul>
+<li>Projet sobre : autant de <span class="math inline">\(CO_2\)</span> 9km en voiture thermique.</li>
+<li>Pas d’algorithmes de Machine Learning ou de longs calculs.</li>
+</ul>
+<p><span class="math inline">\(\underline{\textbf{Impact social}}\)</span> :</p>
+<ul>
+<li>Impact assez limité mais potentielle utilisation des visualisation 3D pour la médiation scientifique et la découverte de la météoritique.</li>
+</ul>
+<p><span class="math inline">\(\underline{\textbf{Ce que l'on retient}}\)</span> :</p>
+<ul>
+<li>Découverte de la statistique spatiale, des processus ponctuels et du package spastat.</li>
+<li>Voir les limites et avantage de la visualisation 3D en R et Python.</li>
+</ul>
+<p><span class="math inline">\(\underline{\textbf{Ouvertures possibles}}\)</span> :</p>
+<ul>
+<li>Prolonger l’analyse des processus ponctuels.</li>
+<li>Trouver ou former nous-même un jeu de données plus propre et plus précis pour explorer les pistes initialement envisagées mais mises de côté.</li>
+</ul>
+
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
