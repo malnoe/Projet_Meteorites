@@ -49,13 +49,16 @@ Pour l'étude, nous nous sommes concentrés sur ces 5 variables :
 
 - $\underline{\textbf{mass..g.}}$ : Elle corresponds à la masse de la météorite en gramme.
 
-- $\underline{\textbf{mass..g.}}$ : Année où la météorite est tombée sur Terre.
+- $\underline{\textbf{year}}$ : Année où la météorite est tombée sur Terre.
 
 - $\underline{\textbf{reclat}}$ : Lattitude de là où est tombée la météorite.
 
 - $\underline{\textbf{reclong}}$ : Longitude de là où est tombée la météorite.
 
-<div style="margin-top: 300px;">
+
+Autres variables : $\textbf{id, nametype, recclass, fall, GeoLocation, geometry}$.
+
+<div style="margin-top: 180px;">
 On a par la suite créé la variable $\underline{\textbf{pays}}$ qui indique le pays dans lequel la météorite est tombée. Cela servira à filtrer les données par pays.
 </div>
 
@@ -337,27 +340,77 @@ Un *processus ponctuel* est une mesure aléatoire discrète Φ sur un espace mé
 # Visualisation en 3D
 
 ## Pourquoi une visualisation en 3D ?
+- Les cartes 2D classiques introduisent des *distorsions* :
+  - Déformation des surfaces, surtout aux pôles
+  - Distances mal représentées
+  - Difficulté à percevoir la répartition réelle
 
-Khoi
+- Une visualisation en *3D sur un globe* permet :
+  - Une *représentation plus fidèle* des localisations
+  - Une *meilleure lisibilité* des zones d’impact
+  - Une exploration *dynamique dans le temps*
 
-## Python
+- Animation temporelle :
+  - Visualisation de l’*évolution historique* des chutes
+  - Mise en évidence des *zones les plus touchées*
+  - Identification des périodes d’intensification (ex : après 1970)
 
-Khoi
+> La visualisation 3D est un *complément précieux* aux analyses statistiques classiques.
+
+---
+
+## Visualisation 3D avec Python
+
+<div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 2em;">
+
+<div style="flex: 1; font-size: 0.9em;">
+
+- *Langage* : Python  
+- *Librairies* :  
+  [Plotly](https://plotly.com/python/),  [GeoPandas](https://geopandas.org/),  
+  [Shapely](https://shapely.readthedocs.io/),  [NumPy](https://numpy.org/),  [Pandas](https://pandas.pydata.org/)
+
+- *Traitement des données* :  
+  - Nettoyage, filtrage, log(masse)  
+  - Jointure spatiale avec shapefile externe
+
+- *Globe 3D* :  
+  - Projection orthographique  
+  - Taille = masse, Couleur = année  
+  - Annotations dynamiques : total + top 10 pays
+
+- *Interactivité* :  
+  - Slider temporel  
+  - Boutons Play / Pause  
+  - Info-bulles (nom, masse, année)
+
+</div>
+
+<div style="flex: 1; text-align: right;">
+  <video width="100%" controls autoplay loop muted>
+    <source src="3Dviz.mp4" type="video/mp4">
+    Votre navigateur ne supporte pas les vidéos HTML5.
+  </video>
+</div>
+
+</div>
 
 ## Représentation 3D avec **threejs**
 
 Sur R, la visualision a été faite avec le package **threejs**, basé sur la bibliothèque JavaScript **Three.js**.  
 La fonction **globejs()** permet de représenter des données spatiales sur un globe interactif via les arguments :  
-- **img** : image du globe (obtenue sur le site de la NASA),  
-- **lat / long** : coordonnées géographiques,  
-- **color / value** : couleur et hauteur des points.
 
+- **img** : image du globe (obtenue sur le site de la NASA).
+
+- **lat / long** : coordonnées géographiques.
+
+- **color / value** : couleur et hauteur des points.
 
 
 
 Cette approche permet une manipulation intuitive des données, mais reste limitée en R pour l’interactivité.
 
-<div style="margin-top: 250px;">
+<div style="margin-top: 180px;">
 $\rightarrow$ Nous avons donc choisi d'utiliser **Shiny** pour développer un dashboard interactif, plus flexible et réactif.
 </div>
 
@@ -377,19 +430,19 @@ Fonctionnalités supplémentaires :
 
 - **Coloration des points** selon la masse pour enrichir la lecture.
 
-<div style="margin-top: 250px;">
+<div style="margin-top: 180px;">
 $\rightarrow$ L'application reste limitée par le temps de chargement dû à **globejs()**, qui est relancé à chaque filtre.
 </div>
 
 ## Dashboard shiny
 
-<iframe src="http://127.0.0.1:7868" width="100%" height="1000px" ></iframe>
+<iframe src="http://127.0.0.1:5133" width="100%" height="1000px" ></iframe>
 
 
 ## Conclusion
 $\underline{\textbf{Impact environnemental}}$ :
 
-- Projet sobre : autant de $CO_2$ 9km en voiture thermique.
+- Projet sobre : autant de $CO_2$ que 9km en voiture thermique.
 - Pas d'algorithmes de Machine Learning ou de longs calculs.
 
 $\underline{\textbf{Impact social}}$ :
@@ -398,7 +451,7 @@ $\underline{\textbf{Impact social}}$ :
 
 $\underline{\textbf{Ce que l'on retient}}$ :
 
-- Découverte de la statistique spatiale, des processus ponctuels et du package spastat.
+- Découverte de la statistique spatiale, des processus ponctuels et du package spatstat.
 - Voir les limites et avantage de la visualisation 3D en R et Python.
 
 $\underline{\textbf{Ouvertures possibles}}$ :

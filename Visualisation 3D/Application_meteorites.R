@@ -9,7 +9,7 @@ library(rnaturalearth)
 
 # 🌐 Préparation des données géographiques
 meteorite <- read.csv("C:/Users/garan/Documents/Ecole/M1/Projet/Projet_Meteorites/Données/Meteorite_Landings.csv")
-earth <- "http://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73909/world.topo.bathy.200412.3x5400x2700.jpg"
+namesearth <- "http://eoimages.gsfc.nasa.gov/images/imagerecords/73000/73909/world.topo.bathy.200412.3x5400x2700.jpg"
 meteorite <- na.omit(meteorite)
 meteorite <- meteorite[meteorite$year != 860,]
 world <- ne_countries(scale = "medium", returnclass = "sf")
