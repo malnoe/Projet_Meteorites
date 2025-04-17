@@ -110,7 +110,7 @@ library(xtable)
 library(ggplot2)
 library(dplyr)
 
-Meteorite_Landings <- read.csv("C:/Users/Yanni/OneDrive/Desktop/Projet tutoré/Meteorite_Landings.csv")
+Meteorite_Landings <- read.csv("../Données/Meteorite_Landings.csv")
 
 # Year
 # Filtrer les données pour ne garder que les années > 1963 et < 2026
@@ -158,7 +158,7 @@ library(sf)
 world <- ne_countries(scale = "medium", returnclass = "sf")
 
 # Charger les données de météorites (exemple : colonnes reclat, reclong)
-df <- read.csv("C:/Users/Yanni/OneDrive/Desktop/Projet tutoré/Meteorite_Landings.csv", stringsAsFactors = FALSE) |>
+df <- read.csv("../Données/Meteorite_Landings.csv", stringsAsFactors = FALSE) |>
   na.omit() |>  # Supprimer les NA
   dplyr::select(reclat, reclong)  # Sélectionner les colonnes pertinentes
 
@@ -275,25 +275,64 @@ $\underline{\textbf{Pistes choisies pour le reste de l'étude}}$ :
 - **Visualisation en 3D** pour se détacher des distortions causées par la projection sur un planisphère.
 
 # Modélisation de processus ponctuels
-## Objectifs
+## Qu'est-ce qu'un processus ponctuel ?
 
-Rassem
 
-## Théorie homogène
+**Définition**  
+Un *processus ponctuel* est une mesure aléatoire discrète Φ sur un espace métrique 𝕊 , caractérisée par une distribution de probabilité gouvernant la configuration des points {x₁, x₂, ...} ⊂ 𝕊.
 
-Rassem
+
+
+\vspace{3cm} 
+
+::: {.full-page-content}
+**Types de processus de Poisson** :
+
+1. **Processus de Poisson homogène**  
+   *Caractéristique* : Intensité constante λ(x,y) = λ₀ sur tout l'espace.
+
+2. **Processus de Poisson inhomogène**  
+   *Caractéristique* : Intensité variable λ(x,y) dépendant de la position.
+:::  
+
+
+
+## Processus de Poisson Homogène
+
+**Propriétés clés** :
+
+- Intensité constante : λ(x,y) = λ₀  
+- Points indépendants entre eux  
+- Répartition uniforme dans l'espace  
+- Nombre de points dans une zone A suit :  
+  N(A) ~ Poisson(λ₀ × aire(A))
+
 
 ## Simulations
 
-Rassem
+![](images/poisson_homogene.png){style="display: block; margin: auto; width: 100%;"}
 
-## Théorie inhomogène
 
-Rassem
+## Processus de Poisson Inhomogène
+
+**Propriétés clés** :
+
+- Intensité variable : λ(x,y) dépend de la position  
+- Points indépendants entre eux  
+- Densité non-uniforme dans l'espace  
+- Nombre de points dans une zone A suit :  
+  N(A) ~ Poisson(∫∫ₐ λ(x,y) dxdy)
+
 
 ## Simulations
 
-Rassem
+![](images/poisson_inhom.png){style="display: block; margin: auto; width: 100%;"}
+
+## Focus sur Oman
+
+![](images/poisson_oman.png){style="display: block; margin: auto; width: 100%;"}
+
+
 
 # Visualisation en 3D
 
