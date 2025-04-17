@@ -179,15 +179,15 @@ Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen &amp; Garance Malnoë encadré.e
 </section>
 <section id="présentation-des-variables" class="slide level2">
 <h2>Présentation des variables</h2>
-<p>Le jeu de données comporte 45716 observations pour 10 variables. Pour l’étude, nous nous sommes concentrés sur ces 5 variables :</p>
+<p>Le jeu de données comporte 45716 observations pour 10 variables. Pour l’étude, nous nous sommes concentrés sur ces 4 variables :</p>
 <ul>
 <li><p><span class="math inline">\(\underline{\textbf{mass..g.}}\)</span> : Elle corresponds à la masse de la météorite en gramme.</p></li>
 <li><p><span class="math inline">\(\underline{\textbf{year}}\)</span> : Année où la météorite est tombée sur Terre.</p></li>
 <li><p><span class="math inline">\(\underline{\textbf{reclat}}\)</span> : Lattitude de là où est tombée la météorite.</p></li>
 <li><p><span class="math inline">\(\underline{\textbf{reclong}}\)</span> : Longitude de là où est tombée la météorite.</p></li>
 </ul>
-<p>Autres variables : <span class="math inline">\(\textbf{id, nametype, recclass, fall, GeoLocation, geometry}\)</span>.</p>
-<div style="margin-top: 180px;">
+<p>Autres variables : <span class="math inline">\(\textbf{id}, \textbf{name}, \textbf{nametype}, \textbf{recclass}, \textbf{fall}, \textbf{GeoLocation}\)</span>.</p>
+<div style="margin-top: 100px;">
 <p>On a par la suite créé la variable <span class="math inline">\(\underline{\textbf{pays}}\)</span> qui indique le pays dans lequel la météorite est tombée. Cela servira à filtrer les données par pays.</p>
 </div>
 </section>
@@ -323,54 +323,55 @@ Yannis Petit, Rassem Djimadoum, Duc-Khoi Nguyen &amp; Garance Malnoë encadré.e
 <h2>Qu’est-ce qu’un processus ponctuel ?</h2>
 <p><strong>Définition</strong><br>
 Un <em>processus ponctuel</em> est une mesure aléatoire discrète Φ sur un espace métrique 𝕊 , caractérisée par une distribution de probabilité gouvernant la configuration des points {x₁, x₂, …} ⊂ 𝕊.</p>
-<div class="full-page-content">
+<div style="margin-top: 50px;">
 <p><strong>Types de processus de Poisson</strong> :</p>
 <ol type="1">
 <li><p><strong>Processus de Poisson homogène</strong><br>
-<em>Caractéristique</em> : Intensité constante λ(x,y) = λ₀ sur tout l’espace.</p></li>
+<em>Caractéristique</em> : Intensité constante <span class="math inline">\(\lambda (x,y) = \lambda_0\)</span> sur tout l’espace.</p></li>
 <li><p><strong>Processus de Poisson inhomogène</strong><br>
-<em>Caractéristique</em> : Intensité variable λ(x,y) dépendant de la position.</p></li>
+<em>Caractéristique</em> : Intensité variable dépendant de la position suivant une fonction <span class="math inline">\(\lambda(x,y)\)</span>.</p></li>
 </ol>
 </div>
 </section>
 <section id="processus-de-poisson-homogène" class="slide level2">
-<h2>Processus de Poisson Homogène</h2>
+<h2>Processus de Poisson homogène</h2>
 <p><strong>Propriétés clés</strong> :</p>
+<div class="column" data-align="left" style="width:50%;">
 <ul>
-<li>Intensité constante : λ(x,y) = λ₀<br>
-</li>
+<li>Intensité constante : <span class="math inline">\(\lambda (x,y) = \lambda_0\)</span>
+<ul>
+<li>Répartition uniforme dans l’espace</li>
+</ul></li>
+</ul>
+</div><div class="column" data-align="right" style="width:50%;">
+<ul>
 <li>Points indépendants entre eux<br>
 </li>
-<li>Répartition uniforme dans l’espace<br>
-</li>
-<li>Nombre de points dans une zone A suit :<br>
-N(A) ~ Poisson(λ₀ × aire(A))</li>
+<li>Nombre de points dans une zone <span class="math inline">\(A\)</span> suit une loi de Poisson : <span class="math inline">\(n(A)\sim Poisson(\lambda_0 \times |A|)\)</span></li>
 </ul>
-</section>
-<section id="simulations" class="slide level2">
-<h2>Simulations</h2>
+</div><p><strong>Simulation</strong> :</p>
 
 <img data-src="images/poisson_homogene.png" style="display: block; margin: auto; width: 100%;" class="r-stretch"></section>
 <section id="processus-de-poisson-inhomogène" class="slide level2">
-<h2>Processus de Poisson Inhomogène</h2>
+<h2>Processus de Poisson inhomogène</h2>
 <p><strong>Propriétés clés</strong> :</p>
+<div class="column" data-align="left" style="width:50%;">
 <ul>
-<li>Intensité variable : λ(x,y) dépend de la position<br>
-</li>
-<li>Points indépendants entre eux<br>
-</li>
-<li>Densité non-uniforme dans l’espace<br>
-</li>
-<li>Nombre de points dans une zone A suit :<br>
-N(A) ~ Poisson(∫∫ₐ λ(x,y) dxdy)</li>
+<li>Intensité variable : fonction <span class="math inline">\(\lambda(x,y)\)</span>
+<ul>
+<li>Densité non-uniforme dans l’espace.</li>
+</ul></li>
 </ul>
-</section>
-<section id="simulations-1" class="slide level2">
-<h2>Simulations</h2>
+</div><div class="column" data-align="right" style="width:50%;">
+<ul>
+<li>Points indépendants entre eux.</li>
+<li>Nombre de points dans une zone <span class="math inline">\(A\)</span> suit une loi de Poisson : <span class="math inline">\(n(A)\sim Poisson(\int\int_A \lambda(x,y) dxdy \times |A|)\)</span></li>
+</ul>
+</div><p><strong>Simulation</strong> :</p>
 
 <img data-src="images/poisson_inhom.png" style="display: block; margin: auto; width: 100%;" class="r-stretch"></section>
-<section id="focus-sur-oman" class="slide level2">
-<h2>Focus sur Oman</h2>
+<section id="focus-sur-loman" class="slide level2">
+<h2>Focus sur l’Oman</h2>
 
 <img data-src="images/poisson_oman.png" style="display: block; margin: auto; width: 100%;" class="r-stretch"></section></section>
 <section>
@@ -381,68 +382,68 @@ N(A) ~ Poisson(∫∫ₐ λ(x,y) dxdy)</li>
 <section id="pourquoi-une-visualisation-en-3d" class="slide level2">
 <h2>Pourquoi une visualisation en 3D ?</h2>
 <ul>
-<li>Les cartes 2D classiques introduisent des <em>distorsions</em> :
+<li>Les cartes 2D classiques introduisent des <strong>distorsions</strong> :
 <ul>
-<li>Déformation des surfaces, surtout aux pôles</li>
-<li>Distances mal représentées</li>
-<li>Difficulté à percevoir la répartition réelle</li>
+<li><strong>Déformation des surfaces</strong>, surtout aux pôles.</li>
+<li>Distances mal représentées.</li>
+<li>Difficulté à percevoir la répartition réelle.</li>
 </ul></li>
-<li>Une visualisation en <em>3D sur un globe</em> permet :
+<li>Une visualisation en <strong>3D sur un globe</strong> permet :
 <ul>
-<li>Une <em>représentation plus fidèle</em> des localisations</li>
-<li>Une <em>meilleure lisibilité</em> des zones d’impact</li>
-<li>Une exploration <em>dynamique dans le temps</em></li>
+<li>Une <strong>représentation plus fidèle</strong> des localisations.</li>
+<li>Une <strong>meilleure lisibilité</strong> des zones d’impact.</li>
+<li>Une exploration dynamique dans le temps.</li>
 </ul></li>
 <li>Animation temporelle :
 <ul>
-<li>Visualisation de l’<em>évolution historique</em> des chutes</li>
-<li>Mise en évidence des <em>zones les plus touchées</em></li>
-<li>Identification des périodes d’intensification (ex : après 1970)</li>
+<li>Visualisation de l’<strong>évolution historique</strong> des chutes.</li>
+<li>Mise en évidence des <strong>zones les plus touchées</strong>.</li>
+<li>Identification des périodes d’intensification (ex : après 1970).</li>
 </ul></li>
 </ul>
 <blockquote>
-<p>La visualisation 3D est un <em>complément précieux</em> aux analyses statistiques classiques.</p>
+<p>La visualisation 3D est un <strong>complément précieux</strong> aux analyses statistiques classiques.</p>
 </blockquote>
 </section>
 <section id="visualisation-3d-avec-python" class="slide level2">
 <h2>Visualisation 3D avec Python</h2>
-<div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 2em;">
-<div style="flex: 1; font-size: 0.9em;">
+<div class="column" data-align="left" style="width:50%;">
 <ul>
-<li><p><em>Langage</em> : Python<br>
-</p></li>
-<li><p><em>Librairies</em> :<br>
+<li><p><strong>Librairies</strong> :<br>
 <a href="https://plotly.com/python/">Plotly</a>, <a href="https://geopandas.org/">GeoPandas</a>,<br>
 <a href="https://shapely.readthedocs.io/">Shapely</a>, <a href="https://numpy.org/">NumPy</a>, <a href="https://pandas.pydata.org/">Pandas</a></p></li>
-<li><p><em>Traitement des données</em> :</p>
+<li><p><strong>Traitement des données</strong> :</p>
 <ul>
-<li>Nettoyage, filtrage, log(masse)<br>
-</li>
-<li>Jointure spatiale avec shapefile externe</li>
-</ul></li>
-<li><p><em>Globe 3D</em> :</p>
-<ul>
-<li>Projection orthographique<br>
-</li>
-<li>Taille = masse, Couleur = année<br>
-</li>
-<li>Annotations dynamiques : total + top 10 pays</li>
-</ul></li>
-<li><p><em>Interactivité</em> :</p>
-<ul>
-<li>Slider temporel<br>
-</li>
-<li>Boutons Play / Pause<br>
-</li>
-<li>Info-bulles (nom, masse, année)</li>
+<li>Nettoyage, filtrage, échelle logarithmique pour la masse.</li>
+<li>Jointure spatiale avec shapefile externe.</li>
 </ul></li>
 </ul>
-</div>
+</div><div class="column" data-align="right" style="width:50%;">
 <div style="flex: 1; text-align: right;">
 <p><video width="100%" controls="" autoplay="" loop="" muted=""> <source src="3Dviz.mp4" type="video/mp4"> Votre navigateur ne supporte pas les vidéos HTML5. </video></p>
 </div>
+</div><div style="margin-top:40px">
+
 </div>
-</section>
+<div class="column" data-align="left" style="width:50%;">
+<ul>
+<li><strong>Globe 3D</strong> :
+<ul>
+<li>Projection orthographique.</li>
+<li>Visualisation des co-variables (taille masse, couleur année).</li>
+<li>Annotations dynamiques : nombre total de points et top 10 des pays.</li>
+</ul></li>
+</ul>
+</div><div class="column" data-align="right" style="width:50%;">
+<ul>
+<li><strong>Interactivité</strong> :
+<ul>
+<li>Slider temporel.</li>
+<li>Boutons Play / Pause.</li>
+<li>Info-bulles (nom, masse, année).</li>
+</ul></li>
+</ul>
+</div></section>
 <section id="représentation-3d-avec-threejs" class="slide level2">
 <h2>Représentation 3D avec <strong>threejs</strong></h2>
 <p>Sur R, la visualision a été faite avec le package <strong>threejs</strong>, basé sur la bibliothèque JavaScript <strong>Three.js</strong>.<br>
@@ -453,7 +454,7 @@ La fonction <strong>globejs()</strong> permet de représenter des données spati
 <li><p><strong>color / value</strong> : couleur et hauteur des points.</p></li>
 </ul>
 <p>Cette approche permet une manipulation intuitive des données, mais reste limitée en R pour l’interactivité.</p>
-<div style="margin-top: 180px;">
+<div style="margin-top: 100px;">
 <p><span class="math inline">\(\rightarrow\)</span> Nous avons donc choisi d’utiliser <strong>Shiny</strong> pour développer un dashboard interactif, plus flexible et réactif.</p>
 </div>
 </section>
@@ -470,7 +471,7 @@ La fonction <strong>globejs()</strong> permet de représenter des données spati
 <li><p>Affichage du <strong>nombre de météorites</strong> selon les filtres appliqués.</p></li>
 <li><p><strong>Coloration des points</strong> selon la masse pour enrichir la lecture.</p></li>
 </ul>
-<div style="margin-top: 180px;">
+<div style="margin-top: 100px;">
 <p><span class="math inline">\(\rightarrow\)</span> L’application reste limitée par le temps de chargement dû à <strong>globejs()</strong>, qui est relancé à chaque filtre.</p>
 </div>
 </section>

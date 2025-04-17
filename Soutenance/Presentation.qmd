@@ -45,7 +45,7 @@ Pas d'objectif défini : **exploration libre** des données pour choisir nos axe
 ## Présentation des variables
 
 Le jeu de données comporte 45716 observations pour 10 variables.
-Pour l'étude, nous nous sommes concentrés sur ces 5 variables :
+Pour l'étude, nous nous sommes concentrés sur ces 4 variables :
 
 - $\underline{\textbf{mass..g.}}$ : Elle corresponds à la masse de la météorite en gramme.
 
@@ -56,9 +56,9 @@ Pour l'étude, nous nous sommes concentrés sur ces 5 variables :
 - $\underline{\textbf{reclong}}$ : Longitude de là où est tombée la météorite.
 
 
-Autres variables : $\textbf{id, nametype, recclass, fall, GeoLocation, geometry}$.
+Autres variables : $\textbf{id}, \textbf{name}, \textbf{nametype}, \textbf{recclass}, \textbf{fall}, \textbf{GeoLocation}$.
 
-<div style="margin-top: 180px;">
+<div style="margin-top: 100px;">
 On a par la suite créé la variable $\underline{\textbf{pays}}$ qui indique le pays dans lequel la météorite est tombée. Cela servira à filtrer les données par pays.
 </div>
 
@@ -284,108 +284,97 @@ $\underline{\textbf{Pistes choisies pour le reste de l'étude}}$ :
 **Définition**  
 Un *processus ponctuel* est une mesure aléatoire discrète Φ sur un espace métrique 𝕊 , caractérisée par une distribution de probabilité gouvernant la configuration des points {x₁, x₂, ...} ⊂ 𝕊.
 
-
-
-\vspace{3cm} 
-
-::: {.full-page-content}
+ <div style="margin-top: 50px;">
 **Types de processus de Poisson** :
 
 1. **Processus de Poisson homogène**  
-   *Caractéristique* : Intensité constante λ(x,y) = λ₀ sur tout l'espace.
+   *Caractéristique* : Intensité constante $\lambda (x,y) = \lambda_0$ sur tout l'espace.
 
 2. **Processus de Poisson inhomogène**  
-   *Caractéristique* : Intensité variable λ(x,y) dépendant de la position.
-:::  
+   *Caractéristique* : Intensité variable dépendant de la position suivant une fonction $\lambda(x,y)$.
+</div>
 
 
 
-## Processus de Poisson Homogène
+
+## Processus de Poisson homogène
 
 **Propriétés clés** :
 
-- Intensité constante : λ(x,y) = λ₀  
+::: {.column width="50%" align="left"}
+- Intensité constante : $\lambda (x,y) = \lambda_0$  
+  - Répartition uniforme dans l'espace
+:::
+
+::: {.column width="50%" align="right"}
 - Points indépendants entre eux  
-- Répartition uniforme dans l'espace  
-- Nombre de points dans une zone A suit :  
-  N(A) ~ Poisson(λ₀ × aire(A))
+- Nombre de points dans une zone $A$ suit une loi de Poisson : 
+  $n(A)\sim Poisson(\lambda_0 \times |A|)$ 
+:::
 
-
-## Simulations
+**Simulation** :
 
 ![](images/poisson_homogene.png){style="display: block; margin: auto; width: 100%;"}
 
-
-## Processus de Poisson Inhomogène
+## Processus de Poisson inhomogène
 
 **Propriétés clés** :
 
-- Intensité variable : λ(x,y) dépend de la position  
-- Points indépendants entre eux  
-- Densité non-uniforme dans l'espace  
-- Nombre de points dans une zone A suit :  
-  N(A) ~ Poisson(∫∫ₐ λ(x,y) dxdy)
+::: {.column width="50%" align="left"}
+- Intensité variable : fonction $\lambda(x,y)$ 
+  - Densité non-uniforme dans l'espace.
+:::
 
+::: {.column width="50%" align="right"}
+- Points indépendants entre eux.
+- Nombre de points dans une zone $A$ suit une loi de Poisson : 
+  $n(A)\sim Poisson(\int\int_A \lambda(x,y) dxdy \times |A|)$ 
+:::
 
-## Simulations
+**Simulation** :
 
 ![](images/poisson_inhom.png){style="display: block; margin: auto; width: 100%;"}
 
-## Focus sur Oman
+## Focus sur l'Oman
 
 ![](images/poisson_oman.png){style="display: block; margin: auto; width: 100%;"}
-
 
 
 # Visualisation en 3D
 
 ## Pourquoi une visualisation en 3D ?
-- Les cartes 2D classiques introduisent des *distorsions* :
-  - Déformation des surfaces, surtout aux pôles
-  - Distances mal représentées
-  - Difficulté à percevoir la répartition réelle
+- Les cartes 2D classiques introduisent des **distorsions** :
+  - **Déformation des surfaces**, surtout aux pôles.
+  - Distances mal représentées.
+  - Difficulté à percevoir la répartition réelle.
 
-- Une visualisation en *3D sur un globe* permet :
-  - Une *représentation plus fidèle* des localisations
-  - Une *meilleure lisibilité* des zones d’impact
-  - Une exploration *dynamique dans le temps*
+- Une visualisation en **3D sur un globe** permet :
+  - Une **représentation plus fidèle** des localisations.
+  - Une **meilleure lisibilité** des zones d’impact.
+  - Une exploration dynamique dans le temps.
 
 - Animation temporelle :
-  - Visualisation de l’*évolution historique* des chutes
-  - Mise en évidence des *zones les plus touchées*
-  - Identification des périodes d’intensification (ex : après 1970)
+  - Visualisation de l’**évolution historique** des chutes.
+  - Mise en évidence des **zones les plus touchées**.
+  - Identification des périodes d’intensification (ex : après 1970).
 
-> La visualisation 3D est un *complément précieux* aux analyses statistiques classiques.
-
----
+> La visualisation 3D est un **complément précieux** aux analyses statistiques classiques.
 
 ## Visualisation 3D avec Python
 
-<div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 2em;">
-
-<div style="flex: 1; font-size: 0.9em;">
-
-- *Langage* : Python  
-- *Librairies* :  
+::: {.column width="50%" align="left"}
+- **Librairies** :  
   [Plotly](https://plotly.com/python/),  [GeoPandas](https://geopandas.org/),  
   [Shapely](https://shapely.readthedocs.io/),  [NumPy](https://numpy.org/),  [Pandas](https://pandas.pydata.org/)
 
-- *Traitement des données* :  
-  - Nettoyage, filtrage, log(masse)  
-  - Jointure spatiale avec shapefile externe
 
-- *Globe 3D* :  
-  - Projection orthographique  
-  - Taille = masse, Couleur = année  
-  - Annotations dynamiques : total + top 10 pays
+- **Traitement des données** :  
+  - Nettoyage, filtrage, échelle logarithmique pour la masse.
+  - Jointure spatiale avec shapefile externe.
 
-- *Interactivité* :  
-  - Slider temporel  
-  - Boutons Play / Pause  
-  - Info-bulles (nom, masse, année)
+:::
 
-</div>
-
+::: {.column width="50%" align="right"}
 <div style="flex: 1; text-align: right;">
   <video width="100%" controls autoplay loop muted>
     <source src="3Dviz.mp4" type="video/mp4">
@@ -393,7 +382,30 @@ Un *processus ponctuel* est une mesure aléatoire discrète Φ sur un espace mé
   </video>
 </div>
 
+:::
+<div style="margin-top:40px">
 </div>
+::: {.column width="50%" align="left"}
+- **Globe 3D** :  
+  - Projection orthographique.
+  - Visualisation des co-variables (taille \rightarrow masse, couleur \rightarrow année).
+  - Annotations dynamiques : nombre total de points et top 10 des pays.
+
+:::
+
+::: {.column width="50%" align="right"}
+- **Interactivité** :  
+  - Slider temporel.
+  - Boutons Play / Pause.
+  - Info-bulles (nom, masse, année).
+
+:::
+
+
+
+
+
+
 
 ## Représentation 3D avec **threejs**
 
@@ -407,10 +419,9 @@ La fonction **globejs()** permet de représenter des données spatiales sur un g
 - **color / value** : couleur et hauteur des points.
 
 
-
 Cette approche permet une manipulation intuitive des données, mais reste limitée en R pour l’interactivité.
 
-<div style="margin-top: 180px;">
+<div style="margin-top: 100px;">
 $\rightarrow$ Nous avons donc choisi d'utiliser **Shiny** pour développer un dashboard interactif, plus flexible et réactif.
 </div>
 
@@ -430,7 +441,7 @@ Fonctionnalités supplémentaires :
 
 - **Coloration des points** selon la masse pour enrichir la lecture.
 
-<div style="margin-top: 180px;">
+<div style="margin-top: 100px;">
 $\rightarrow$ L'application reste limitée par le temps de chargement dû à **globejs()**, qui est relancé à chaque filtre.
 </div>
 
