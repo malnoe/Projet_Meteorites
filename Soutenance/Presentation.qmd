@@ -47,13 +47,13 @@ Pas d'objectif défini : **exploration libre** des données pour choisir nos axe
 Le jeu de données comporte 45716 observations pour 10 variables.
 Pour l'étude, nous nous sommes concentrés sur ces 4 variables :
 
-- $\underline{\textbf{mass..g.}}$ : Elle corresponds à la masse de la météorite en gramme.
+- $\underline{\textbf{mass..g.}}$ : Elle correspond à la masse de la météorite en gramme.
 
 - $\underline{\textbf{year}}$ : Année où la météorite est tombée sur Terre.
 
-- $\underline{\textbf{reclat}}$ : Lattitude de là où est tombée la météorite.
+- $\underline{\textbf{reclat}}$ : Latitude de l'emplacement de la chute de la météorite.
 
-- $\underline{\textbf{reclong}}$ : Longitude de là où est tombée la météorite.
+- $\underline{\textbf{reclong}}$ : Longitude de l'emplacement de la chute de la météorite.
 
 
 Autres variables : $\textbf{id}, \textbf{name}, \textbf{nametype}, \textbf{recclass}, \textbf{fall}, \textbf{GeoLocation}$.
@@ -143,7 +143,7 @@ ggplot(year_counts, aes(x = year, y = count)) +
 
 
 ## Emplacement de la chute de la météorite (variables reclat, relong et geolocation)
-7315 données manquantes où la latitude, la longitude et la variable geolocation sont absentes en mêmes temps, environ 16% du jeu de données. 
+7315 données manquantes où la latitude, la longitude et la variable geolocation sont absentes en même temps, environ 16% du jeu de données. 
 
 Visualisation sur le planisphère :
 
@@ -185,7 +185,7 @@ ggplot() +
 </div>
 
 :::
-$\rightarrow$ **Biais géographique** en faveur des régions les plus densément peuplées. Exectption de l'Antarctique expliquée par les expéditions réalisées pour la recherche sur les chûtes de météorites.
+$\rightarrow$ **Biais géographique** en faveur des régions les plus densément peuplées. Exception de l'Antarctique expliquée par les expéditions réalisées pour la recherche sur les chûtes de météorites.
 
 
 ## Latitude et longitude
